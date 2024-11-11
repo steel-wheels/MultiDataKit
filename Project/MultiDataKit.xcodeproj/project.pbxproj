@@ -58,7 +58,7 @@
 		051CF6962CE0A6D7000B690D /* MultiDataKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiDataKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		051CF6B82CE0A84C000B690D /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0543D35F2CE0963400B492FE /* MultiDataKit_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0543D35F2CE0963400B492FE /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0543D36C2CE097F000B492FE /* MIJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIJson.swift; sourceTree = "<group>"; };
 		0543D36D2CE097F000B492FE /* MIToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIToken.swift; sourceTree = "<group>"; };
 		0543D3722CE0985B00B492FE /* MICharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MICharacter.swift; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 		0543D3752CE0985B00B492FE /* MIText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIText.swift; sourceTree = "<group>"; };
 		0543D3762CE0985B00B492FE /* MIValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIValue.swift; sourceTree = "<group>"; };
 		0544BDB12CE09B0B00A31D7A /* install.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = install.mk; sourceTree = "<group>"; };
-		05BE2E6A2CE095110081DA89 /* MultiDataKit_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -210,8 +210,8 @@
 		05BE2E6B2CE095110081DA89 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				05BE2E6A2CE095110081DA89 /* MultiDataKit_macOS.framework */,
-				0543D35F2CE0963400B492FE /* MultiDataKit_iOS.framework */,
+				05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */,
+				0543D35F2CE0963400B492FE /* MultiDataKit.framework */,
 				051CF6962CE0A6D7000B690D /* MultiDataKit.bundle */,
 				051CF6B82CE0A84C000B690D /* UnitTest */,
 			);
@@ -320,7 +320,7 @@
 			packageProductDependencies = (
 			);
 			productName = MultiDataKit_iOS;
-			productReference = 0543D35F2CE0963400B492FE /* MultiDataKit_iOS.framework */;
+			productReference = 0543D35F2CE0963400B492FE /* MultiDataKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		05BE2E692CE095110081DA89 /* MultiDataKit_macOS */ = {
@@ -343,7 +343,7 @@
 			packageProductDependencies = (
 			);
 			productName = MultiDataKit;
-			productReference = 05BE2E6A2CE095110081DA89 /* MultiDataKit_macOS.framework */;
+			productReference = 05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -573,14 +573,14 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.TrustedSearch.iOS.MultiDataKit-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.iOS";
+				PRODUCT_NAME = MultiDataKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -613,14 +613,14 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.TrustedSearch.iOS.MultiDataKit-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.iOS";
+				PRODUCT_NAME = MultiDataKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -672,7 +672,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(HOME)/local/Frameworks";
-				LD_MAP_FILE_PATH = "$(TARGET_TEMP_DIR)/$(PRODUCT_NAME)_macOS-LinkMap-$(CURRENT_VARIANT)-$(CURRENT_ARCH).txt";
+				LD_MAP_FILE_PATH = "$(TARGET_TEMP_DIR)/$(PRODUCT_NAME)-LinkMap-$(CURRENT_VARIANT)-$(CURRENT_ARCH).txt";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -681,13 +681,13 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.TrustedSearch.iOS.MultiDataKit";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.macOS";
+				PRODUCT_NAME = MultiDataKit;
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -719,13 +719,13 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.TrustedSearch.iOS.MultiDataKit";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.macOS";
+				PRODUCT_NAME = MultiDataKit;
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

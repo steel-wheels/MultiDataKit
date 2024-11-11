@@ -15,9 +15,9 @@ clean:
 install_xc: install_osx install_ios install_ios_sim
 	(cd $(HOME)/Library/Frameworks ; rm -rf $(PROJECT_NAME).xcframework)
 	xcodebuild -create-xcframework \
-	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_macOS/$(PRODUCT_PATH)/$(PROJECT_NAME)_macOS.framework \
-	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS/$(PRODUCT_PATH)-iphoneos/$(PROJECT_NAME)_iOS.framework \
-	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS_sim/$(PRODUCT_PATH)-iphonesimulator/$(PROJECT_NAME)_iOS.framework \
+	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_macOS/$(PRODUCT_PATH)/$(PROJECT_NAME).framework \
+	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS/$(PRODUCT_PATH)-iphoneos/$(PROJECT_NAME).framework \
+	  -framework $(DERIVED_BASE)/$(PROJECT_NAME)_iOS_sim/$(PRODUCT_PATH)-iphonesimulator/$(PROJECT_NAME).framework \
 	  -output $(HOME)/Library/Frameworks/$(PROJECT_NAME).xcframework
 
 install_osx: dummy
