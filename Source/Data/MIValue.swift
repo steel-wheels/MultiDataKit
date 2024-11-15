@@ -293,7 +293,7 @@ public struct MIValue {
                 case .uint(let value):          valstr = "\(value)"
                 case .int(let value):           valstr = "\(value)"
                 case .float(let value):         valstr = "\(value)"
-                case .string(let value):        valstr = value
+                case .string(let value):        valstr = "\"" + value + "\""
                 case .array(let values):
                         var is1st = true
                         var str   = "["
@@ -308,9 +308,9 @@ public struct MIValue {
                         str += "]"
                         valstr = str
                 case .dictionary(let values):
-                        valstr = MIValue.toString(ductionary: values, withType: wtype)
+                        valstr = MIValue.toString(dictionary: values, withType: wtype)
                 case .interface(let values):
-                        valstr = MIValue.toString(ductionary: values, withType: wtype)
+                        valstr = MIValue.toString(dictionary: values, withType: wtype)
                 }
                 
                 let result: String
@@ -322,7 +322,7 @@ public struct MIValue {
                 return result
         }
         
-        private static func toString(ductionary dict: Dictionary<String, MIValue>, withType wtype: Bool) -> String {
+        private static func toString(dictionary dict: Dictionary<String, MIValue>, withType wtype: Bool) -> String {
                 var is1st = true
                 var str   = "{"
                 let keys =  dict.keys.sorted()
@@ -339,9 +339,10 @@ public struct MIValue {
                                 str += "?"
                         }
                 }
+                str += "}"
                 return str
         }
-        
+
         public static func adjustValueTypes(values: Array<MIValue>) -> Result<(MIValueType, Array<MIValue>), NSError> {
                 guard values.count > 0 else {
                         return .success((.boolean, [])) // empty array

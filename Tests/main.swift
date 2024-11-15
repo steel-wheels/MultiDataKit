@@ -10,7 +10,7 @@ import Foundation
 print("Hello, World!")
 
 let result0 = testValue()
-let result1 = testStringStream()
+let result1 = testJsonFile()
 
 let summary = result0 && result1
 

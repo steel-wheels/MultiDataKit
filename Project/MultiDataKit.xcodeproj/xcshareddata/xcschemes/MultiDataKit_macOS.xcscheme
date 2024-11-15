@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "05BE2E692CE095110081DA89"
-               BuildableName = "MultiDataKit_macOS.framework"
+               BuildableName = "MultiDataKit.framework"
                BlueprintName = "MultiDataKit_macOS"
                ReferencedContainer = "container:MultiDataKit.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "05BE2E692CE095110081DA89"
-            BuildableName = "MultiDataKit_macOS.framework"
+            BuildableName = "MultiDataKit.framework"
             BlueprintName = "MultiDataKit_macOS"
             ReferencedContainer = "container:MultiDataKit.xcodeproj">
          </BuildableReference>

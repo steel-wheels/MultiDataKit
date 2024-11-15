@@ -5,7 +5,7 @@
  *   Copyright (C) 2024 Steel Wheels Project
  */
 
-import MultiDataKit_macOS
+import MultiDataKit
 import Foundation
 
 public func printValue(name nm: String, value val: MIValue){

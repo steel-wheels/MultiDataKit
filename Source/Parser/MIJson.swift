@@ -131,26 +131,30 @@ public class MIJsonDecoder
                 var result: Array<MIValue> = []
                 loop: while index < count {
                         if tokens[index].isSymbol(c: "]") {
+                                index += 1
                                 break loop
                         }
+
                         switch parse(index: &index, tokens: tokens) {
                         case .success(let val):
                                 result.append(val)
-                                index += 1
                         case .failure(let err):
                                 return .failure(err)
+                        }
+
+                        /* skip "," (option) */
+                        if let c = checkSymbol(index: &index, tokens: tokens) {
+                                if c == "," {
+                                        index += 1
+                                }
                         }
                 }
-                
-                if let err = requireSymbol(index: &index, tokens: tokens, symbol: "]") {
+
+                switch MIValue.adjustValueTypes(values: result) {
+                case .success(let (restype, resvals)):
+                        return .success(MIValue.arrayValue(elementType: restype, values: resvals))
+                case .failure(let err):
                         return .failure(err)
-                } else {
-                        switch MIValue.adjustValueTypes(values: result) {
-                        case .success(let (restype, resvals)):
-                                return .success(MIValue.arrayValue(elementType: restype, values: resvals))
-                        case .failure(let err):
-                                return .failure(err)
-                        }
                 }
         }
         
