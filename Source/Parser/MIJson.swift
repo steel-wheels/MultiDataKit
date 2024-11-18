@@ -18,7 +18,7 @@ public class MIJsonDecoder
                 var index = 0
                 return parse(index: &index, tokens: tokens)
         }
-        
+
         public static func parse(index: inout Int, tokens: Array<MIToken>) -> Result<MIValue, NSError> {
                 guard index < tokens.count else {
                         let err = MIError.parseError(message: "Unexpected end of token", line: MIToken.lastLine(tokens: tokens))
@@ -68,7 +68,7 @@ public class MIJsonDecoder
                 index += 1
                 return .success(result)
         }
-        
+
         public static func parseInterface(index: inout Int, tokens: Array<MIToken>) -> Result<MIValue, NSError> {
                 let count = tokens.count
                 guard index < count else {
@@ -79,7 +79,7 @@ public class MIJsonDecoder
 
                 var members: Dictionary<String, MIValue> = [:]
                 loop: while index < count {
-                        
+
                         /* of "} is given, finish collect members */
                         if let c = checkSymbol(index: &index, tokens: tokens) {
                                 if c == "}" {
@@ -87,7 +87,7 @@ public class MIJsonDecoder
                                         break loop
                                 }
                         }
-                        
+
                         /* get string */
                         let ident: String
                         switch requireString(index: &index, tokens: tokens){
@@ -96,12 +96,12 @@ public class MIJsonDecoder
                         case .failure(let err):
                                 return .failure(err)
                         }
-                        
+
                         /* get symbol */
                         if let err = requireSymbol(index: &index, tokens: tokens, symbol: ":") {
                                 return .failure(err)
                         }
-                        
+
                         /* get value */
                         switch parse(index: &index, tokens: tokens) {
                         case .success(let value):
@@ -109,7 +109,7 @@ public class MIJsonDecoder
                         case .failure(let err):
                                 return .failure(err)
                         }
-                        
+
                         /* skip "," (option) */
                         if let c = checkSymbol(index: &index, tokens: tokens) {
                                 if c == "," {
@@ -119,7 +119,7 @@ public class MIJsonDecoder
                 }
                 return .success(.interfaceValue(name: nil, values: members))
         }
-        
+
         public static func parseArray(index: inout Int, tokens: Array<MIToken>) -> Result<MIValue, NSError> {
                 let count = tokens.count
                 guard index < count else {
@@ -127,7 +127,7 @@ public class MIJsonDecoder
                         return .failure(err)
                 }
                 index += 1
-                
+
                 var result: Array<MIValue> = []
                 loop: while index < count {
                         if tokens[index].isSymbol(c: "]") {
@@ -157,7 +157,7 @@ public class MIJsonDecoder
                         return .failure(err)
                 }
         }
-        
+
         private static func checkSymbol(index: inout Int, tokens: Array<MIToken>) -> Character? {
                 var result: Character? = nil
                 if index < tokens.count {
@@ -170,7 +170,7 @@ public class MIJsonDecoder
                 }
                 return result
         }
-        
+
         private static func requireSymbol(index: inout Int, tokens: Array<MIToken>, symbol expsym: Character) -> NSError? {
                 guard index < tokens.count else {
                         let err = MIError.parseError(message: "Symbol \(expsym) is required but no more tokens", line: MIToken.lastLine(tokens: tokens))
@@ -191,7 +191,7 @@ public class MIJsonDecoder
                 }
                 return nil
         }
-        
+
         private static func requireIdentifier(index: inout Int, tokens: Array<MIToken>) -> Result<String, NSError> {
                 guard index < tokens.count else {
                         let err = MIError.parseError(message: "Identifier is required", line: MIToken.lastLine(tokens: tokens))
@@ -207,7 +207,7 @@ public class MIJsonDecoder
                         return .failure(err)
                 }
         }
-        
+
         private static func requireString(index: inout Int, tokens: Array<MIToken>) -> Result<String, NSError> {
                 guard index < tokens.count else {
                         let err = MIError.parseError(message: "String is required", line: MIToken.lastLine(tokens: tokens))

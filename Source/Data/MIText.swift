@@ -24,7 +24,7 @@ public extension MIText {
                 var words: Array<KSWord> = []
                 var lines: Array<KSLine> = []
                 let result: KSLines = KSLines()
-                
+
                 for text in texts {
                         switch text.type {
                         case .word:
@@ -59,7 +59,7 @@ public extension MIText {
                 }
                 return result
         }
-        
+
         private func flush(words: Array<KSWord>) -> KSLine? {
                 if words.count > 0 {
                         return KSLine(words: words)
@@ -72,13 +72,13 @@ public extension MIText {
 public class KSWord: MIText
 {
         private var mString: String
-        
+
         public var type: MITextType { get { return .word }}
 
         public init(word: String) {
                 mString = word
         }
-        
+
         public func toString() -> String {
                 return mString
         }
@@ -87,13 +87,13 @@ public class KSWord: MIText
 public class KSLine: MIText
 {
         private var mWords: Array<KSWord>
-        
+
         public var type: MITextType { get { return .line }}
-        
+
         public init() {
                 mWords = []
         }
-        
+
         public init(words: Array<KSWord>){
                 mWords = words
         }
@@ -116,21 +116,21 @@ public class KSLine: MIText
 public class KSLines: MIText
 {
         private var mLines: Array<KSLine>
-        
+
         public var type: MITextType { get { return .lines }}
-        
+
         public init(){
                 mLines = []
         }
-        
+
         public init(lines: Array<KSLine>){
                 mLines = lines
         }
-        
+
         public func append(line: KSLine) {
                 mLines.append(line)
         }
-        
+
         public func append(lines: KSLines) {
                 mLines.append(contentsOf: lines.mLines)
         }

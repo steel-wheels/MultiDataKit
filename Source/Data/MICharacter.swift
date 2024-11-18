@@ -16,11 +16,11 @@ public extension Character
         static let tab: Character               = "\t"
         static let null: Character              = "\0"
         static let carriageReturn: Character    = "\r"
-        
+
         var isFirstIdentifier: Bool { get {
                 return self.isLetter || (self == "_")
         }}
-        
+
         var isMiddleIdentifier: Bool { get {
                 return self.isLetter || (self == "_") || self.isNumber
         }}

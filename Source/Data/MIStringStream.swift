@@ -17,12 +17,12 @@ public class MIStringStream: KSInputStream
 {
         private var mString:    String
         private var mIndex:     String.Index
-        
+
         public init(string str: String){
                 mString = str
                 mIndex  = str.startIndex
         }
-        
+
         public func getc() -> Character? {
                 if mIndex < mString.endIndex {
                         let c = mString[mIndex]
@@ -32,7 +32,7 @@ public class MIStringStream: KSInputStream
                         return nil
                 }
         }
-        
+
         public func ungetc() -> Character? {
                 if mString.startIndex < mIndex {
                         mIndex = mString.index(before: mIndex)

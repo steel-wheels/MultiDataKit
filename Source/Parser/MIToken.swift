@@ -23,7 +23,7 @@ public struct MIToken
 {
         public var value:       MITokenValue
         public var lineNo:      Int
-        
+
         public init(_ value: MITokenValue, at lineNo: Int) {
                 self.value  = value
                 self.lineNo = lineNo
@@ -37,7 +37,7 @@ public struct MIToken
                         return false
                 }
         }
-        
+
         public func uIntValue() -> UInt? {
                 switch self.value {
                 case .uint(let val):
@@ -46,7 +46,7 @@ public struct MIToken
                         return nil
                 }
         }
-        
+
         public func toString() -> String {
                 let result: String
                 switch self.value {
@@ -62,7 +62,7 @@ public struct MIToken
                 }
                 return result
         }
-        
+
         public static func lastLine(tokens tkns: Array<MIToken>) -> Int {
                 let count = tkns.count
                 return count > 0 ? tkns[count - 1].lineNo : 1
@@ -88,7 +88,7 @@ public class MITokenizer
                 }
                 return .success(replaceTokens(tokens: result))
         }
-        
+
         private static func parseToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = skipSpaces(stream: strm, lineNo: &line) else {
                         return .success(nil)
@@ -109,7 +109,7 @@ public class MITokenizer
                         return .success(MIToken(.symbol(c), at: line))
                 }
         }
-        
+
         private static func skipSpaces(stream strm: KSInputStream, lineNo line: inout Int) -> Character? {
                 var result: Character? = nil
                 while let c = strm.getc() {
@@ -122,7 +122,7 @@ public class MITokenizer
                 }
                 return result
         }
-        
+
         private static func parseHexToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
                         return .success(MIToken(.uint(0), at: line))
@@ -152,7 +152,7 @@ public class MITokenizer
                 }
                 return result
         }
-        
+
         private static func parseDecToken(firstChar fval: UInt, stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: UInt = fval
                 while let c = strm.getc() {
@@ -165,7 +165,7 @@ public class MITokenizer
                 }
                 return .success(MIToken(.uint(result), at: line))
         }
-        
+
         private static func parseIdentifierToken(firstChar fc: Character, stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: String = String(fc)
                 while let c = strm.getc() {
@@ -178,7 +178,7 @@ public class MITokenizer
                 }
                 return .success(MIToken(.string(result), at: line))
         }
-        
+
         private static func parseStringToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: String = ""
                 var closed = false
@@ -205,7 +205,7 @@ public class MITokenizer
                         return .failure(err)
                 }
         }
-       
+
         // called after "/"
         private static func parseCommentToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
@@ -226,7 +226,7 @@ public class MITokenizer
                         return .success(MIToken(.symbol("/"), at: line))
                 }
         }
-        
+
         // called after "%"
         private static func parseTextToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
@@ -280,14 +280,14 @@ public class MITokenizer
                         return .failure(err)
                 }
         }
-        
+
         private static func replaceTokens(tokens src: Array<MIToken>) ->Array<MIToken> {
                 let dst0 = replaceByBooleanToken(tokens: src)
                 let dst1 = replaceByNegativeToken(tokens: dst0)
                 let dst2 = replaceByDoubleToken(tokens: dst1)
                 return dst2
         }
-        
+
         private static func replaceByBooleanToken(tokens src: Array<MIToken>) ->Array<MIToken> {
                 var dst: Array<MIToken> = []
                 for token in src {
@@ -306,7 +306,7 @@ public class MITokenizer
                 }
                 return dst
         }
-        
+
         /* replace "-" + int by negative int */
         private static func replaceByNegativeToken(tokens src: Array<MIToken>) ->Array<MIToken> {
                 var result: Array<MIToken> = []
@@ -338,7 +338,7 @@ public class MITokenizer
                 }
                 return result
         }
-        
+
         /* replace int + "." + int by double value */
         private static func replaceByDoubleToken(tokens src: Array<MIToken>) ->Array<MIToken> {
                 var result: Array<MIToken> = []

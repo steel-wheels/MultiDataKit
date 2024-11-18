@@ -16,7 +16,7 @@ public indirect enum MIValueType {
         case array(MIValueType)
         case dictionary(MIValueType) // key is string
         case interface(String?, Dictionary<String, MIValueType>)
-        
+
         public var elementType: MIValueType? { get {
                 switch self {
                 case .array(let elmtype):       return elmtype
@@ -24,7 +24,7 @@ public indirect enum MIValueType {
                 default:                        return nil
                 }
         }}
-        
+
         public var interfaceName: String? { get {
                 switch self {
                 case .interface(let name, _):   return name
@@ -101,7 +101,7 @@ public indirect enum MIValueType {
                 }
                 return result
         }
-        
+
         private static func isSame(types0 t0: Array<MIValueType>, types1 t1: Array<MIValueType>) -> Bool {
                 var result = false
                 let num0 = t0.count ; let num1 = t1.count
@@ -116,7 +116,7 @@ public indirect enum MIValueType {
                 }
                 return result
         }
-        
+
         private static func isSame(types0 t0: Dictionary<String, MIValueType>, types1 t1: Dictionary<String, MIValueType>) -> Bool {
                 guard t0.count == t1.count else {
                         return false
@@ -132,7 +132,7 @@ public indirect enum MIValueType {
                 }
                 return true
         }
-        
+
         public static func union(type0 t0: MIValueType, type1 t1: MIValueType) -> MIValueType? {
                 if isSame(type0: t0, type1: t1) {
                         return t0
@@ -184,12 +184,68 @@ public indirect enum MIValueBody {
 public struct MIValue {
         public var      type:  MIValueType
         public var      value: MIValueBody
-        
+
         public init(type: MIValueType, value: MIValueBody) {
                 self.type = type
                 self.value = value
         }
-        
+
+        public var booleanValue: Bool? { get {
+                switch self.value {
+                case .boolean(let val): return val
+                default:                return nil
+                }
+        }}
+
+        public var uintValue: UInt? { get {
+                switch self.value {
+                case .uint(let val):    return val
+                default:                return nil
+                }
+        }}
+
+        public var intValue: Int? { get {
+                switch self.value {
+                case .int(let val):     return val
+                default:                return nil
+                }
+        }}
+
+        public var floatValue: Double? { get {
+                switch self.value {
+                case .float(let val):   return val
+                default:                return nil
+                }
+        }}
+
+        public var stringValue: String? { get {
+                switch self.value {
+                case .string(let val):  return val
+                default:                return nil
+                }
+        }}
+
+        public var arrayValue: Array<MIValue>? { get {
+                switch self.value {
+                case .array(let val):   return val
+                default:                return nil
+                }
+        }}
+
+        public var dictionaryValue: (Dictionary<String, MIValue>)? { get {
+                switch self.value {
+                case .dictionary(let val):      return val
+                default:                        return nil
+                }
+        }}
+
+        public var interfaceyValue: (Dictionary<String, MIValue>)? { get {
+                switch self.value {
+                case .interface(let val):       return val
+                default:                        return nil
+                }
+        }}
+
         public func cast(to dsttype: MIValueType) -> MIValue? {
                 let result: MIValue?
                 switch self.value {
@@ -285,7 +341,7 @@ public struct MIValue {
                 }
                 return result
         }
-        
+
         public func toString(withType wtype: Bool) -> String {
                 let valstr: String
                 switch self.value {
@@ -312,7 +368,7 @@ public struct MIValue {
                 case .interface(let values):
                         valstr = MIValue.toString(dictionary: values, withType: wtype)
                 }
-                
+
                 let result: String
                 if wtype {
                         result = "(" + self.type.toString() + ") " + valstr
@@ -321,7 +377,7 @@ public struct MIValue {
                 }
                 return result
         }
-        
+
         private static func toString(dictionary dict: Dictionary<String, MIValue>, withType wtype: Bool) -> String {
                 var is1st = true
                 var str   = "{"
@@ -347,7 +403,7 @@ public struct MIValue {
                 guard values.count > 0 else {
                         return .success((.boolean, [])) // empty array
                 }
-                
+
                 /* get unioned type */
                 var utype: MIValueType = values[0].type
                 for i in 1..<values.count {
@@ -358,7 +414,7 @@ public struct MIValue {
                                 return .failure(err)
                         }
                 }
-                
+
                 /* get unioned value */
                 var uvalues: Array<MIValue> = []
                 for i in 0..<values.count {
@@ -372,35 +428,35 @@ public struct MIValue {
 
                 return .success((utype, uvalues))
         }
-        
+
         public static func booleanValue(_ value: Bool) -> MIValue {
                 return MIValue(type: .boolean, value: .boolean(value))
         }
-        
+
         public static func uintValue(_ value: UInt) -> MIValue {
                 return MIValue(type: .uint, value: .uint(value))
         }
-        
+
         public static func intValue(_ value: Int) -> MIValue {
                 return MIValue(type: .int, value: .int(value))
         }
-        
+
         public static func floatValue(_ value: Double) -> MIValue {
                 return MIValue(type: .float, value: .float(value))
         }
-        
+
         public static func stringValue(_ value: String) -> MIValue {
                 return MIValue(type: .string, value: .string(value))
         }
-        
+
         public static func arrayValue(elementType: MIValueType, values: Array<MIValue>) -> MIValue {
                 return MIValue(type: .array(elementType), value: .array(values))
         }
-        
+
         public static func dictionaryValue(elementType: MIValueType, values: Dictionary<String, MIValue>) -> MIValue {
                 return MIValue(type: .dictionary(elementType), value: .dictionary(values))
         }
-        
+
         public static func interfaceValue(name: String?, values: Dictionary<String, MIValue>) -> MIValue {
                 var valtypes: Dictionary<String, MIValueType> = [:]
                 for (ident, value) in values {
