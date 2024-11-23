@@ -7,6 +7,11 @@
 
 import Foundation
 
+public func MILog(_ msg: String, file fl: String, function fc: String)
+{
+        NSLog(msg + " at " + fc + " in " + fl)
+}
+
 public class MIError
 {
         private static let ErrorDomain = "com.github.steel-wheels.MultiDataKit"

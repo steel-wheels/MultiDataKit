@@ -89,12 +89,15 @@ public indirect enum MIValueType {
                         case .dictionary(let e1):    result = MIValueType.isSame(type0: e0, type1: e1)
                         default:                break
                         }
-                case .interface(let t0, let e0):
+                case .interface(let name0, let dict0):
                         switch t1 {
-                        case .interface(let t1, let e1):
-                                let t0m = t0 ?? "" ; let t1m = t1 ?? ""
-                                if t0m == t1m {
-                                        result = isSame(types0: e0, types1: e1)
+                        case .interface(let name1, let dict1):
+                                if name0 == nil && name1 == nil {
+                                        result = true
+                                } else if let n0 = name0, let n1 = name1 {
+                                        if n0 == n1 {
+                                                result = isSame(types0: dict0, types1: dict1)
+                                        }
                                 }
                         default:                break
                         }
@@ -160,6 +163,19 @@ public indirect enum MIValueType {
                         case .uint:     result = .float
                         case .int:      result = .float
                         case .float:    result = .float
+                        default:
+                                break
+                        }
+                case .interface(let name0, _):
+                        switch t1 {
+                        case .interface(let name1, _):
+                                if name0 == nil && name1 == nil {
+                                        result = t0
+                                } else if let n0 = name0, let n1 = name1 {
+                                        if n0 == n1 {
+                                                result = t0
+                                        }
+                                }
                         default:
                                 break
                         }
@@ -400,7 +416,13 @@ public struct MIValue {
         }
 
         public static func adjustValueTypes(values: Array<MIValue>) -> Result<(MIValueType, Array<MIValue>), NSError> {
+                NSLog("ELEMENT: {")
+                for val in values {
+                        NSLog("Element: " + val.toString(withType: true))
+                }
+                NSLog("ELEMENT: }")
                 guard values.count > 0 else {
+                        NSLog("SKIP")
                         return .success((.boolean, [])) // empty array
                 }
 
