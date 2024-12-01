@@ -358,7 +358,7 @@ public class MITokenizer
                                                         result.append(MIToken(.float(dval), at: src[i].lineNo))
                                                         doskip = 2
                                                 } else {
-                                                        NSLog("Failed to convert to double: \(dstr)")
+                                                        NSLog("[Error] Failed to convert to double: \(dstr)")
                                                         result.append(src[i])
                                                 }
                                         } else {
@@ -375,7 +375,7 @@ public class MITokenizer
                                                         result.append(MIToken(.float(dval), at: src[i].lineNo))
                                                         doskip = 2
                                                 } else {
-                                                        NSLog("Failed to convert to double: \(dstr)")
+                                                        NSLog("[Error] Failed to convert to double: \(dstr)")
                                                         result.append(src[i])
                                                 }
                                         } else {

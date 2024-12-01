@@ -18,14 +18,42 @@ extension FileManager
                 }
         }}
 
-        public var applicationSupportDirectory: URL { get {
+        public var applicationSupportDirectory: URL? { get {
                 let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask)
                 if let url = urls.first {
                         return url
                 } else {
-                        NSLog("Can not find application support directory path")
-                        let dir = NSHomeDirectory() + "/Library/Application\\ Support"
-                        return URL(filePath: dir)
+                        NSLog("[Error] Can not find application support directory path")
+                        return nil
                 }
         }}
+
+        public func copyFile(from furl: URL, to turl: URL) -> NSError? {
+                do {
+                        try self.copyItem(at: furl, to: turl)
+                        return nil
+                } catch {
+                        let err = MIError.error(errorCode: .fileError, message: "Failed to copy file from \(furl.absoluteString) to \(turl.absoluteString)")
+                        return err
+                }
+        }
+
+        public func createCacheFile(source src: URL) -> Result<URL, NSError> {
+                let filename = src.lastPathComponent
+                guard let appdir = applicationSupportDirectory else {
+                        let err = MIError.error(errorCode: .fileError, message: "Application support directory is not found", atFile: #file, function: #function)
+                        return .failure(err)
+                }
+                let cachefile = appdir.appending(path: filename)
+                if !self.fileExists(atPath: cachefile.path) {
+                        NSLog("file is NOT exist: \(cachefile.absoluteString)")
+                        if let err = self.copyFile(from: src, to: cachefile) {
+                                return .failure(err)
+                        }
+                        NSLog("success to copy file")
+                } else {
+                        NSLog("file is exist: \(cachefile.absoluteString)")
+                }
+                return .success(cachefile)
+        }
 }

@@ -416,13 +416,13 @@ public struct MIValue {
         }
 
         public static func adjustValueTypes(values: Array<MIValue>) -> Result<(MIValueType, Array<MIValue>), NSError> {
-                NSLog("ELEMENT: {")
-                for val in values {
-                        NSLog("Element: " + val.toString(withType: true))
-                }
-                NSLog("ELEMENT: }")
+                //NSLog("ELEMENT: {")
+                //for val in values {
+                //        NSLog("Element: " + val.toString(withType: true))
+                //}
+                //NSLog("ELEMENT: }")
                 guard values.count > 0 else {
-                        NSLog("SKIP")
+                        //NSLog("SKIP")
                         return .success((.boolean, [])) // empty array
                 }
 
