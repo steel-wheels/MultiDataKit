@@ -18,12 +18,12 @@ extension FileManager
                 }
         }}
 
-        public var applicationSupportDirectory: URL? { get {
-                let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        public var cacheDirectory: URL? { get {
+                let urls = self.urls(for: .cachesDirectory, in: .userDomainMask)
                 if let url = urls.first {
                         return url
                 } else {
-                        NSLog("[Error] Can not find application support directory path")
+                        NSLog("[Error] Can not find cache directory path")
                         return nil
                 }
         }}
@@ -40,8 +40,8 @@ extension FileManager
 
         public func createCacheFile(source src: URL) -> Result<URL, NSError> {
                 let filename = src.lastPathComponent
-                guard let appdir = applicationSupportDirectory else {
-                        let err = MIError.error(errorCode: .fileError, message: "Application support directory is not found", atFile: #file, function: #function)
+                guard let appdir = cacheDirectory else {
+                        let err = MIError.error(errorCode: .fileError, message: "cache directory is not found", atFile: #file, function: #function)
                         return .failure(err)
                 }
                 let cachefile = appdir.appending(path: filename)
