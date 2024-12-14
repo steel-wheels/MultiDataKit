@@ -255,7 +255,7 @@ public struct MIValue {
                 }
         }}
 
-        public var interfaceyValue: (Dictionary<String, MIValue>)? { get {
+        public var interfaceValue: (Dictionary<String, MIValue>)? { get {
                 switch self.value {
                 case .interface(let val):       return val
                 default:                        return nil
