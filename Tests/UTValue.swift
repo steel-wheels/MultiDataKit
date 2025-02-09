@@ -12,6 +12,36 @@ public func printValue(name nm: String, value val: MIValue){
         print(nm + " : " + val.toString(withType: true))
 }
 
+public func testToString() -> Bool
+{
+        let val0 = MIValue(type: .int, value: .int(10))
+        let val1 = MIValue(type: .int, value: .string("str"))
+        let val2 = MIValue(type: .interface(nil, [
+                "a": val0.type,
+                "b": val1.type
+        ]), value: .interface([
+                "a": val0,
+                "b": val1
+        ]))
+        print("testToString 1 -> " + val2.toString(withType: true))
+
+        let val3 = MIValue(type: .array(val2.type), value: .array([
+                val2, val2
+        ]))
+        print("testToString 2 -> " + val3.toString(withType: true))
+
+        let text3 = MIJsonEncoder.encode(value: val3)
+        print("testToString 3 -> " + text3.toString())
+
+        let val4 = MIValue(type: .dictionary(val0.type), value: .dictionary([
+                "c": val0,
+                "d": val0
+        ]))
+        print("testToString 4 -> " + val4.toString(withType: false))
+
+        return true
+}
+
 public func testValue() -> Bool
 {
         var values0: Array<MIValue> = []

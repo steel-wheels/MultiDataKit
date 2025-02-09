@@ -8,140 +8,174 @@
 import Foundation
 
 public enum MITextType {
-        case word
         case line
-        case lines
+        case paragraph
+}
+
+public struct MILineString {
+        var indent:     Int
+        var line:       String
+
+        public init(indent: Int, line: String) {
+                self.indent = indent
+                self.line = line
+        }
+
+        public func append(string str: String) -> MILineString {
+                return MILineString(indent: self.indent, line: self.line + str)
+        }
 }
 
 public protocol MIText
 {
         var type: MITextType { get }
-        func toString() -> String
+        func append(text txt: MIText)
+        func append(string str: String)
+        func prepend(string str: String)
+        func toLineStrings(indent idt: Int) -> Array<MILineString>
 }
 
-public extension MIText {
-        func generate(from texts: Array<MIText>) -> MIText {
-                var words: Array<KSWord> = []
-                var lines: Array<KSLine> = []
-                let result: KSLines = KSLines()
-
-                for text in texts {
-                        switch text.type {
-                        case .word:
-                                if let word = text as? KSWord {
-                                        words.append(word)
-                                } else {
-                                        NSLog("Can not happen: word")
-                                }
-                        case .line:
-                                if let line = flush(words: words) {
-                                        lines.append(line) ; words = []
-                                }
-                                if let line = text as? KSLine {
-                                        lines.append(line)
-                                } else {
-                                        NSLog("Can not happen: line")
-                                }
-                        case .lines:
-                                if let line = flush(words: words) {
-                                        lines.append(line) ; words = []
-                                }
-                                for line in lines {
-                                        result.append(line: line)
-                                }
-                        }
-                }
-                if let line = flush(words: words) {
-                        lines.append(line) ; words = []
-                }
-                for line in lines {
-                        result.append(line: line)
+public extension MIText
+{
+        func indentString(indent idt: Int) -> String {
+                let space: String = "\t"
+                var result = ""
+                for _ in 0..<idt {
+                        result += space
                 }
                 return result
         }
 
-        private func flush(words: Array<KSWord>) -> KSLine? {
-                if words.count > 0 {
-                        return KSLine(words: words)
-                } else {
-                        return nil
+        func toString() -> String {
+                let lines = self.toLineStrings(indent: 0)
+                var result: String = ""
+                for line in lines {
+                        let newstr = indentString(indent: line.indent)
+                                   + line.line + "\n"
+                        result += newstr
                 }
+                return result
         }
 }
 
-public class KSWord: MIText
+public class MILine: MIText
 {
-        private var mString: String
-
-        public var type: MITextType { get { return .word }}
-
-        public init(word: String) {
-                mString = word
-        }
-
-        public func toString() -> String {
-                return mString
-        }
-}
-
-public class KSLine: MIText
-{
-        private var mWords: Array<KSWord>
+        private var mLine: String
 
         public var type: MITextType { get { return .line }}
 
         public init() {
-                mWords = []
+                mLine = ""
         }
 
-        public init(words: Array<KSWord>){
-                mWords = words
+        public init(line str: String){
+                mLine = str
         }
 
-        public func append(word: KSWord) {
-                mWords.append(word)
-        }
-
-        public func toString() -> String {
-                var result: String = ""
-                var is1st = true
-                for word in mWords {
-                        if is1st { is1st = false } else { result += " "}
-                        result += word.toString()
+        public func append(text txt: MIText) {
+                if let line = txt as? MILine {
+                        mLine = mLine + line.mLine
+                } else {
+                        NSLog("[Error] Failed to add \(#function)")
                 }
-                return result
+        }
+
+        public func append(string str: String) {
+                mLine = mLine + str
+        }
+
+        public func prepend(string str: String) {
+                mLine = str + mLine
+        }
+
+        public func append(word: MILine) {
+                mLine.append(word.mLine)
+        }
+
+        public func toLineStrings(indent idt: Int) -> Array<MILineString> {
+                return [ MILineString(indent: idt, line: mLine) ]
         }
 }
 
-public class KSLines: MIText
+public class MIParagraph: MIText
 {
-        private var mLines: Array<KSLine>
+        private var mLines:   Array<MIText>
 
-        public var type: MITextType { get { return .lines }}
+        public var prefix:  String?
+        public var postfix: String?
+        public var divider: String?
+
+        public var type: MITextType { get { return .paragraph }}
 
         public init(){
-                mLines = []
+                mLines  = []
+                prefix  = nil
+                postfix = nil
+                divider = nil
         }
 
-        public init(lines: Array<KSLine>){
+        public init(lines: Array<MILine>){
                 mLines = lines
         }
 
-        public func append(line: KSLine) {
-                mLines.append(line)
+        public func append(text txt: MIText) {
+                mLines.append(txt)
         }
 
-        public func append(lines: KSLines) {
-                mLines.append(contentsOf: lines.mLines)
-        }
-
-        public func toString() -> String {
-                var result: String = ""
-                var is1st = true
-                for line in mLines {
-                        if is1st { is1st = false } else { result += "\n" }
-                        result += line.toString()
+        public func append(string str: String) {
+                if mLines.count > 0 {
+                        mLines[mLines.count - 1].append(string: str)
+                } else {
+                        mLines.append(MILine(line: str))
                 }
+        }
+
+        public func prepend(string str: String) {
+                if let pstr = self.prefix {
+                        self.prefix = str + pstr
+                } else {
+                        if mLines.count > 0 {
+                                mLines[0].prepend(string: str)
+                        } else {
+                                mLines.append(MILine(line: str))
+                        }
+                }
+        }
+
+        public func add(text txt: MIText) {
+                mLines.append(txt)
+        }
+
+        public func toLineStrings(indent idt: Int) -> Array<MILineString> {
+                let childidt: Int
+                if self.prefix == nil && self.postfix == nil {
+                        childidt = idt
+                } else {
+                        childidt = idt + 1
+                }
+
+                var result: Array<MILineString> = []
+                if let pstr = self.prefix {
+                        result.append(MILineString(indent: idt, line: pstr))
+                }
+
+                for idx in 0..<mLines.count {
+                        let line = mLines[idx]
+                        var sublines = line.toLineStrings(indent: childidt)
+                        /* append '"," to the if the lines */
+                        if let delim = self.divider {
+                                if idx < mLines.count - 1 && sublines.count > 0 {
+                                        let lastline = sublines[sublines.count - 1]
+                                        sublines[sublines.count - 1] = lastline.append(string: delim)
+                                }
+                        }
+                        result.append(contentsOf: sublines)
+                }
+
+                if let pstr = self.postfix {
+                        result.append(MILineString(indent: idt, line: pstr))
+                }
+
                 return result
         }
 }

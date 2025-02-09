@@ -231,41 +231,44 @@ public class MIJsonEncoder
                 let result: MIText
                 switch val.value {
                 case .boolean(_), .uint(_), .int(_), .float(_):
-                        result = KSWord(word: val.toString(withType: false))
+                        result = MILine(line: val.toString(withType: false))
                 case .string(let value):
-                        result = KSWord(word: "\"" + value + "\"")
+                        result = MILine(line: "\"" + value + "\"")
                 case .array(let values):
-                        var texts: Array<MIText> = []
-                        texts.append(KSWord(word: "["))
+                        let para = MIParagraph()
+                        para.prefix = "[" ; para.postfix = "]" ; para.divider = ","
                         for value in values {
-                                texts.append(encode(value: value))
+                                para.add(text: encode(value: value))
                         }
-                        texts.append(KSWord(word: "]"))
-                        return texts[0].generate(from: texts)
+                        result = para
                 case .dictionary(let values):
-                        var texts: Array<MIText> = []
-                        texts.append(KSWord(word: "{"))
-                        for (key, value) in values {
-                                texts.append(KSWord(word: key))
-                                texts.append(KSWord(word: ":"))
-                                texts.append(encode(value: value))
+                        let para = MIParagraph()
+                        para.prefix = "[" ; para.postfix = "]" ; para.divider = ","
+                        let idents = values.keys.sorted()
+                        for ident in idents {
+                                if let value = values[ident] {
+                                        let txt = encode(value:value)
+                                        txt.prepend(string: ident + ": ")
+                                        para.add(text: txt)
+                                } else {
+                                        NSLog("[Error] can not happend at \(#function)")
+                                }
                         }
-                        texts.append(KSWord(word: "}"))
-                        return texts[0].generate(from: texts)
+                        result = para
                 case .interface(let values):
-                        var texts: Array<MIText> = []
-                        if let ifname = val.type.interfaceName {
-                                texts.append(KSWord(word: "\(ifname): {"))
-                        } else {
-                                texts.append(KSWord(word: "{"))
+                        let para = MIParagraph()
+                        para.prefix = "{" ; para.postfix = "}" ; para.divider = ","
+                        let idents = values.keys.sorted()
+                        for ident in idents {
+                                if let value = values[ident] {
+                                        let txt = encode(value:value)
+                                        txt.prepend(string: ident + ": ")
+                                        para.add(text: txt)
+                                } else {
+                                        NSLog("[Error] can not happend at \(#function)")
+                                }
                         }
-                        for (key, value) in values {
-                                texts.append(KSWord(word: key))
-                                texts.append(KSWord(word: ":"))
-                                texts.append(encode(value: value))
-                        }
-                        texts.append(KSWord(word: "}"))
-                        return texts[0].generate(from: texts)
+                        result = para
                 }
                 return result
         }

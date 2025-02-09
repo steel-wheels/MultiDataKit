@@ -10,9 +10,11 @@ import Foundation
 print("Hello, World!")
 
 let result0 = testValue()
-let result1 = testJsonFile()
+let result1 = testToString()
+let result2 = testJsonFile()
+let result3 = testJsonEncode()
 
-let summary = result0 && result1
+let summary = result0 && result1 && result2
 
 if summary {
         print("SUMMARY: OK")
