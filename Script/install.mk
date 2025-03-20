@@ -36,7 +36,7 @@ install_ios: dummy
 	xcodebuild build \
 	  -scheme $(PROJECT_NAME)_iOS \
 	  -project $(PROJECT_NAME).xcodeproj \
-	  -destination="generic/platform=iO" \
+	  -destination="generic/platform=iOS" \
 	  -configuration Release \
 	  -derivedDataPath $(DERIVED_BASE)/$(PROJECT_NAME)_iOS \
 	  -sdk iphoneos \

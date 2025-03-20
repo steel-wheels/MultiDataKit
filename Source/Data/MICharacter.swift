@@ -17,8 +17,20 @@ public extension Character
         static let null: Character              = "\0"
         static let carriageReturn: Character    = "\r"
 
-        var isFirstIdentifier: Bool { get {
-                return self.isLetter || (self == "_")
+        /* Reference: http://jkorpela.fi/chars/c0.html */
+        static let ETX          = Character("\u{03}")
+        static let EOT          = Character("\u{04}")
+        static let BEL          = Character("\u{07}")
+        static let BS           = Character("\u{08}")
+        static let TAB          = Character("\u{09}")
+        static let LF           = Character("\u{0a}")
+        static let VT           = Character("\u{0b}")
+        static let CR           = Character("\u{0d}")
+        static let ESC          = Character("\u{1b}")
+        static let DEL          = Character("\u{7f}")
+
+       var isFirstIdentifier: Bool { get {
+               return self.isLetter || (self == "_")
         }}
 
         var isMiddleIdentifier: Bool { get {
