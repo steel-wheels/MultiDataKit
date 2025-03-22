@@ -27,6 +27,8 @@
 		054850322CE762B30060AEA0 /* MIFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054850302CE762B30060AEA0 /* MIFileManager.swift */; };
 		054850342CE764AB0060AEA0 /* MIJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054850332CE764AB0060AEA0 /* MIJsonFile.swift */; };
 		054850352CE764AB0060AEA0 /* MIJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054850332CE764AB0060AEA0 /* MIJsonFile.swift */; };
+		057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
+		057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,7 @@
 		0544BDB12CE09B0B00A31D7A /* install.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = install.mk; sourceTree = "<group>"; };
 		054850302CE762B30060AEA0 /* MIFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileManager.swift; sourceTree = "<group>"; };
 		054850332CE764AB0060AEA0 /* MIJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIJsonFile.swift; sourceTree = "<group>"; };
+		057223802D8F6A5A00DFD98C /* MIAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIAttributedString.swift; sourceTree = "<group>"; };
 		05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -174,6 +177,7 @@
 		0543D36A2CE096C000B492FE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				057223802D8F6A5A00DFD98C /* MIAttributedString.swift */,
 				0543D3722CE0985B00B492FE /* MICharacter.swift */,
 				0543D3732CE0985B00B492FE /* MIError.swift */,
 				0543D3742CE0985B00B492FE /* MIStringStream.swift */,
@@ -461,6 +465,7 @@
 				0543D37E2CE0985B00B492FE /* MICharacter.swift in Sources */,
 				0543D37F2CE0985B00B492FE /* MIText.swift in Sources */,
 				0543D3802CE0985B00B492FE /* MIValue.swift in Sources */,
+				057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,
 				054850352CE764AB0060AEA0 /* MIJsonFile.swift in Sources */,
 				0543D36E2CE097F000B492FE /* MIToken.swift in Sources */,
 				0543D36F2CE097F000B492FE /* MIJson.swift in Sources */,
@@ -477,6 +482,7 @@
 				0543D3792CE0985B00B492FE /* MICharacter.swift in Sources */,
 				0543D37A2CE0985B00B492FE /* MIText.swift in Sources */,
 				0543D37B2CE0985B00B492FE /* MIValue.swift in Sources */,
+				057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,
 				054850342CE764AB0060AEA0 /* MIJsonFile.swift in Sources */,
 				0543D3702CE097F000B492FE /* MIToken.swift in Sources */,
 				0543D3712CE097F000B492FE /* MIJson.swift in Sources */,

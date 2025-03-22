@@ -13,8 +13,9 @@ let result0 = testValue()
 let result1 = testToString()
 let result2 = testJsonFile()
 let result3 = testJsonEncode()
+let result4 = testAttributedString()
 
-let summary = result0 && result1 && result2
+let summary = result0 && result1 && result2 && result3 && result4
 
 if summary {
         print("SUMMARY: OK")
