@@ -44,4 +44,19 @@ public extension NSAttributedString
                 }
                 return nil
         }
+
+        func adjustLength(width maxwidth: Int, attribute attr: Dictionary<NSAttributedString.Key, Any>) -> NSAttributedString {
+                if self.length > maxwidth {
+                        let range = NSRange(location: 0, length: maxwidth)
+                        return self.attributedSubstring(from: range)
+                } else if self.length < maxwidth {
+                        let result  = NSMutableAttributedString(attributedString: self)
+                        let spaces  = String(repeating: " ", count: maxwidth - self.length)
+                        let aspaces = NSMutableAttributedString(string: spaces, attributes: attr)
+                        result.append(aspaces)
+                        return result
+                } else {
+                        return self
+                }
+        }
 }
