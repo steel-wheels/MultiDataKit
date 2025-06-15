@@ -51,19 +51,19 @@ public class MIJsonDecoder
                         let err = MIError.parseError(message: "Unexpected identifier \"\(ident)\"", line: line)
                         return .failure(err)
                 case .bool(let value):
-                        result = MIValue.booleanValue(value)
+                        result = MIValue(booleanValue: value)
                 case .uint(let value):
-                        result = MIValue.uintValue(value)
+                        result = MIValue(unsignedIntValue: value)
                 case .int(let value):
-                        result = MIValue.intValue(value)
+                        result = MIValue(signedIntValue: value)
                 case .float(let value):
-                        result = MIValue.floatValue(value)
+                        result = MIValue(floatValue: value)
                 case .string(let value):
-                        result = MIValue.stringValue(value)
+                        result = MIValue(stringValue: value)
                 case .text(let value):
-                        result = MIValue.stringValue(value)
+                        result = MIValue(stringValue: value)
                 case .comment(let value):
-                        result = MIValue.stringValue(value)
+                        result = MIValue(stringValue: value)
                 }
                 index += 1
                 return .success(result)
@@ -117,7 +117,7 @@ public class MIJsonDecoder
                                 }
                         }
                 }
-                return .success(.interfaceValue(name: nil, values: members))
+                return .success(MIValue(dictionaryValue: members))
         }
 
         public static func parseArray(index: inout Int, tokens: Array<MIToken>) -> Result<MIValue, NSError> {
@@ -151,8 +151,8 @@ public class MIJsonDecoder
                 }
 
                 switch MIValue.adjustValueTypes(values: result) {
-                case .success(let (restype, resvals)):
-                        return .success(MIValue.arrayValue(elementType: restype, values: resvals))
+                case .success(let (_, resvals)):
+                        return .success(MIValue(arrayValue: resvals))
                 case .failure(let err):
                         return .failure(err)
                 }
@@ -230,34 +230,26 @@ public class MIJsonEncoder
         public static func encode(value val: MIValue) -> MIText {
                 let result: MIText
                 switch val.value {
-                case .boolean(_), .uint(_), .int(_), .float(_):
-                        result = MILine(line: val.toString(withType: false))
-                case .string(let value):
-                        result = MILine(line: "\"" + value + "\"")
-                case .array(let values):
+                case .booleanValue(let val):
+                        result = MILine(line: "\(val)")
+                case .unsignedIntValue(let val):
+                        result = MILine(line: "\(val)")
+                case .signedIntValue(let val):
+                        result = MILine(line: "\(val)")
+                case .floatValue(let val):
+                        result = MILine(line: "\(val)")
+                case .stringValue(let val):
+                        result = MILine(line: "\"\(val)\"")
+                case .arrayValue(let values):
                         let para = MIParagraph()
                         para.prefix = "[" ; para.postfix = "]" ; para.divider = ","
                         for value in values {
                                 para.add(text: encode(value: value))
                         }
                         result = para
-                case .dictionary(let values):
+                case .dictionaryValue(let values):
                         let para = MIParagraph()
                         para.prefix = "[" ; para.postfix = "]" ; para.divider = ","
-                        let idents = values.keys.sorted()
-                        for ident in idents {
-                                if let value = values[ident] {
-                                        let txt = encode(value:value)
-                                        txt.prepend(string: ident + ": ")
-                                        para.add(text: txt)
-                                } else {
-                                        NSLog("[Error] can not happend at \(#function)")
-                                }
-                        }
-                        result = para
-                case .interface(let values):
-                        let para = MIParagraph()
-                        para.prefix = "{" ; para.postfix = "}" ; para.divider = ","
                         let idents = values.keys.sorted()
                         for ident in idents {
                                 if let value = values[ident] {

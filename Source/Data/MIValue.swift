@@ -2,489 +2,311 @@
  * @file MIValue.swift
  * @description Define MIValue data structure
  * @par Copyright
- *   Copyright (C) 2024 Steel Wheels Project
+ *   Copyright (C) 2025 Steel Wheels Project
  */
 
 import Foundation
 
-public indirect enum MIValueType {
-        case boolean
-        case uint
-        case int
-        case float
-        case string
-        case array(MIValueType)
-        case dictionary(MIValueType) // key is string
-        case interface(String?, Dictionary<String, MIValueType>)
+public enum MIValueType: Int
+{
+        case nilType            = 0
+        case booleanType        = 1
+        case signedIntType      = 2 // 32bit int
+        case unsignedIntType    = 3 // 32bit unsigned int
+        case floatType          = 4 // double
+        case stringType         = 5 // NSString
+        case arrayType          = 6
+        case dictionaryType     = 7
 
-        public var elementType: MIValueType? { get {
+        public func name() -> String {
+                var result: String
                 switch self {
-                case .array(let elmtype):       return elmtype
-                case .dictionary(let elmtype):  return elmtype
-                default:                        return nil
-                }
-        }}
-
-        public var interfaceName: String? { get {
-                switch self {
-                case .interface(let name, _):   return name
-                default:                        return nil
-                }
-        }}
-
-        public func toString() -> String {
-                let result: String
-                switch self {
-                case .boolean:          result = "boolean"
-                case .uint:             result = "uint"
-                case .int:              result = "int"
-                case .float:            result = "float"
-                case .string:           result = "string"
-                case .array(let etype):
-                        result = etype.toString() + "[]"
-                case .dictionary(let etype):
-                        result = "{ [key: string]: " + etype.toString() + "}"
-                case .interface(let name, _):
-                        let intf = name ?? "null"
-                        result = "{ interface:\(intf) }"
+                case .nilType:          result = "nil"
+                case .booleanType:      result = "bool"
+                case .unsignedIntType:  result = "uint"
+                case .signedIntType:    result = "int"
+                case .floatType:        result = "float"
+                case .stringType:       result = "string"
+                case .arrayType:        result = "array"
+                case .dictionaryType:   result = "dictionary"
                 }
                 return result
         }
 
-        public static func isSame(type0 t0: MIValueType, type1 t1: MIValueType) -> Bool {
-                var result: Bool = false
-                switch t0 {
-                case boolean:
-                        switch t1 {
-                        case boolean:   result = true
-                        default:        break
-                        }
-                case uint:
-                        switch t1 {
-                        case uint:      result = true
-                        default:        break
-                        }
-                case int:
-                        switch t1 {
-                        case int:       result = true
-                        default:        break
-                        }
-                case float:
-                        switch t1 {
-                        case float:     result = true
-                        default:        break
-                        }
-                case string:
-                        switch t1 {
-                        case string:    result = true
-                        default:        break
-                        }
-                case .array(let e0):
-                        switch t1 {
-                        case .array(let e1):    result = MIValueType.isSame(type0: e0, type1: e1)
-                        default:                break
-                        }
-                case .dictionary(let e0):
-                        switch t1 {
-                        case .dictionary(let e1):    result = MIValueType.isSame(type0: e0, type1: e1)
-                        default:                break
-                        }
-                case .interface(let name0, let dict0):
-                        switch t1 {
-                        case .interface(let name1, let dict1):
-                                if name0 == nil && name1 == nil {
-                                        result = true
-                                } else if let n0 = name0, let n1 = name1 {
-                                        if n0 == n1 {
-                                                result = isSame(types0: dict0, types1: dict1)
-                                        }
-                                }
-                        default:                break
-                        }
-                }
-                return result
-        }
-
-        private static func isSame(types0 t0: Array<MIValueType>, types1 t1: Array<MIValueType>) -> Bool {
-                var result = false
-                let num0 = t0.count ; let num1 = t1.count
-                if num0 == num1 {
+        static func isNumberType(_ type: MIValueType) -> Bool {
+                let result: Bool
+                switch type {
+                case signedIntType, unsignedIntType, floatType:
                         result = true
-                        for i in 0..<num0 {
-                                if !isSame(type0: t0[i], type1: t1[i]) {
-                                        result = false
-                                        break
-                                }
-                        }
+                case nilType, booleanType, stringType, arrayType, dictionaryType:
+                        result = false
                 }
                 return result
         }
 
-        private static func isSame(types0 t0: Dictionary<String, MIValueType>, types1 t1: Dictionary<String, MIValueType>) -> Bool {
-                guard t0.count == t1.count else {
-                        return false
-                }
-                for (key0, type0) in t0 {
-                        if let type1 = t1[key0] {
-                                if !isSame(type0: type0, type1: type1) {
-                                    return false
-                                }
+        static func union(src0: MIValueType, src1: MIValueType) -> MIValueType? {
+                if(src0 == src1){
+                        return src0
+                } else if MIValueType.isNumberType(src0) && MIValueType.isNumberType(src1) {
+                        if src0.rawValue >= src1.rawValue {
+                                return src0
                         } else {
-                                return false
+                                return src1
                         }
                 }
-                return true
-        }
-
-        public static func union(type0 t0: MIValueType, type1 t1: MIValueType) -> MIValueType? {
-                if isSame(type0: t0, type1: t1) {
-                        return t0
-                }
-                var result: MIValueType? = nil
-                switch t0 {
-                case .uint:
-                        switch t1 {
-                        case .uint:     result = .uint
-                        case .int:      result = .int
-                        case .float:    result = .float
-                        default:
-                                break
-                        }
-                case .int:
-                        switch t1 {
-                        case .uint:     result = .int
-                        case .int:      result = .int
-                        case .float:    result = .float
-                        default:
-                                break
-                        }
-                case .float:
-                        switch t1 {
-                        case .uint:     result = .float
-                        case .int:      result = .float
-                        case .float:    result = .float
-                        default:
-                                break
-                        }
-                case .interface(let name0, _):
-                        switch t1 {
-                        case .interface(let name1, _):
-                                if name0 == nil && name1 == nil {
-                                        result = t0
-                                } else if let n0 = name0, let n1 = name1 {
-                                        if n0 == n1 {
-                                                result = t0
-                                        }
-                                }
-                        default:
-                                break
-                        }
-                default:
-                        break
-                }
-                return result
+                return nil
         }
 }
 
-public indirect enum MIValueBody {
-        case boolean(Bool)
-        case uint(UInt)
-        case int(Int)
-        case float(Double)
-        case string(String)
-        case array(Array<MIValue>)
-        case dictionary(Dictionary<String, MIValue>) // key is string
-        case interface(Dictionary<String, MIValue>)
+public enum MIValueData
+{
+        case booleanValue(Bool)
+        case signedIntValue(Int)
+        case unsignedIntValue(UInt)
+        case floatValue(Double)
+        case stringValue(String)
+        case arrayValue(Array<MIValue>)
+        case dictionaryValue(Dictionary<String, MIValue>)
 }
 
-public struct MIValue {
-        public var      type:  MIValueType
-        public var      value: MIValueBody
+public struct MIValue
+{
+        public var type        : MIValueType
+        public var value       : MIValueData
 
-        public init(type: MIValueType, value: MIValueBody) {
-                self.type = type
-                self.value = value
+        public init(booleanValue bval: Bool){
+                self.type       = .booleanType
+                self.value      = .booleanValue(bval)
+        }
+
+        public init(signedIntValue val: Int){
+                self.type       = .signedIntType
+                self.value      = .signedIntValue(val)
+        }
+
+        public init(unsignedIntValue val: UInt){
+                self.type       = .unsignedIntType
+                self.value      = .unsignedIntValue(val)
+        }
+
+        public init(floatValue val: Double){
+                self.type       = .floatType
+                self.value      = .floatValue(val)
+        }
+
+        public init(stringValue val: String){
+                self.type       = .stringType
+                self.value      = .stringValue(val)
+        }
+
+        public init(arrayValue val: Array<MIValue>){
+                self.type       = .arrayType
+                self.value      = .arrayValue(val)
+        }
+
+        public init(dictionaryValue val: Dictionary<String, MIValue>){
+                self.type       = .dictionaryType
+                self.value      = .dictionaryValue(val)
         }
 
         public var booleanValue: Bool? { get {
-                switch self.value {
-                case .boolean(let val): return val
-                default:                return nil
+                switch(self.value){
+                case .booleanValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
-        public var uintValue: UInt? { get {
-                switch self.value {
-                case .uint(let val):    return val
-                default:                return nil
+        public var signedIntValue: Int? { get {
+                switch(self.value){
+                case .signedIntValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
-        public var intValue: Int? { get {
-                switch self.value {
-                case .int(let val):     return val
-                default:                return nil
+        public var unsignedIntValue: UInt? { get {
+                switch(self.value){
+                case .unsignedIntValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
         public var floatValue: Double? { get {
-                switch self.value {
-                case .float(let val):   return val
-                default:                return nil
+                switch(self.value){
+                case .floatValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
         public var stringValue: String? { get {
-                switch self.value {
-                case .string(let val):  return val
-                default:                return nil
+                switch(self.value){
+                case .stringValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
         public var arrayValue: Array<MIValue>? { get {
-                switch self.value {
-                case .array(let val):   return val
-                default:                return nil
+                switch(self.value){
+                case .arrayValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
-        public var dictionaryValue: (Dictionary<String, MIValue>)? { get {
-                switch self.value {
-                case .dictionary(let val):      return val
-                default:                        return nil
+        public var dictionaryValue: Dictionary<String, MIValue>? { get {
+                switch(self.value){
+                case .dictionaryValue(let val):
+                        return val
+                default:
+                        return nil
                 }
         }}
 
-        public var interfaceValue: (Dictionary<String, MIValue>)? { get {
-                switch self.value {
-                case .interface(let val):       return val
-                default:                        return nil
+        public func toObject() -> NSObject {
+                var result: NSObject
+                switch(self.value){
+                case .booleanValue(let val):
+                        result = NSNumber(value: val)
+                case .signedIntValue(let val):
+                        result = NSNumber(value: val)
+                case .unsignedIntValue(let val):
+                        result = NSNumber(value: val)
+                case .floatValue(let val):
+                        result = NSNumber(value: val)
+                case .stringValue(let val):
+                        result = val as NSString
+                case .arrayValue(let arr):
+                        let newarray = NSMutableArray(capacity: 16)
+                        for val in arr {
+                                newarray.add(val.toObject())
+                        }
+                        result = newarray
+                case .dictionaryValue(let dict):
+                        let newdict = NSMutableDictionary(capacity: 16)
+                        for (key, val) in dict {
+                                newdict.setObject(val.toObject(), forKey: key as NSString)
+                        }
+                        result = newdict
                 }
-        }}
+                return result
+        }
 
-        public func cast(to dsttype: MIValueType) -> MIValue? {
+        public func cast(to target: MIValueType) -> MIValue? {
+                if self.type == target {
+                        return self
+                }
                 let result: MIValue?
                 switch self.value {
-                case .boolean(let value):
-                        switch dsttype {
-                        case .boolean:  result = self
-                        case .uint:     result = MIValue.uintValue(value ? 1 : 0)
-                        case .int:      result = MIValue.intValue(value ? 1 : 0)
-                        default:        result = nil
-                        }
-                case .uint(let value):
-                        switch dsttype {
-                        case .boolean:  result = MIValue.booleanValue(value != 0)
-                        case .uint:     result = self
-                        case .int:      result = MIValue.intValue(Int(value))
-                        case .float:    result = MIValue.floatValue(Double(value))
-                        default:        result = nil
-                        }
-                case .int(let value):
-                        switch dsttype {
-                        case .boolean:  result = MIValue.booleanValue(value != 0)
-                        case .uint:     result = MIValue.uintValue(UInt(value))
-                        case .int:      result = self
-                        case .float:    result = MIValue.floatValue(Double(value))
-                        default:        result = nil
-                        }
-                case .float(let value):
-                        switch dsttype {
-                        case .boolean:  result = MIValue.booleanValue(value != 0.0)
-                        case .uint:     result = MIValue.uintValue(UInt(value))
-                        case .int:      result = MIValue.intValue(Int(value))
-                        case .float:    result = self
-                        default:        result = nil
-                        }
-                case .string(_):
-                        switch dsttype {
-                        case .string:   result = self
-                        default:        result = nil
-                        }
-                case .array(let values):
-                        if let srcelm = self.type.elementType {
-                                switch dsttype {
-                                case .array(let dstelm):
-                                        if MIValueType.isSame(type0: srcelm, type1: dstelm) {
-                                                result = self
-                                        } else {
-                                                var dstvals: Array<MIValue> = []
-                                                for srcval in values {
-                                                        if let dstval = srcval.cast(to: dstelm) {
-                                                                dstvals.append(dstval)
-                                                        } else {
-                                                                NSLog("[Error] Failed to cast")
-                                                        }
-                                                }
-                                                result = MIValue.arrayValue(elementType: dstelm, values: dstvals)
-                                        }
-                                default: result = nil
-                                }
-                        } else {
-                                NSLog("[Error] Failed to get element type")
-                                result = nil
-                        }
-                case .dictionary(let values):
-                        if let srcelm = self.type.elementType {
-                                switch dsttype {
-                                case .dictionary(let dstelm):
-                                        if MIValueType.isSame(type0: srcelm, type1: dstelm) {
-                                                result = self
-                                        } else {
-                                                var dstvals: Dictionary<String, MIValue> = [:]
-                                                for (srckey, srcval) in values {
-                                                        if let dstval = srcval.cast(to: dstelm) {
-                                                                dstvals[srckey] = dstval
-                                                        } else {
-                                                                NSLog("[Error] Failed to cast")
-                                                        }
-                                                }
-                                                result = MIValue.dictionaryValue(elementType: dstelm, values: dstvals)
-                                        }
-                                default: result = nil
-                                }
-                        } else {
-                                NSLog("[Error] Failed to get element type")
-                                result = nil
-                        }
-                case .interface(_):
-                        if MIValueType.isSame(type0: self.type, type1: dsttype) {
+                case .unsignedIntValue(let val):
+                        switch target {
+                        case .unsignedIntType:
                                 result = self
-                        } else {
-                                NSLog("[Error] Can not cast interface value")
+                        case .signedIntType:
+                                result = MIValue(signedIntValue: Int(val))
+                        case .floatType:
+                                result = MIValue(floatValue: Double(val))
+                        default:
                                 result = nil
                         }
+                case .signedIntValue(let val):
+                        switch target {
+                        case .unsignedIntType:
+                                result = MIValue(unsignedIntValue: UInt(val))
+                        case .signedIntType:
+                                result = self
+                        case .floatType:
+                                result = MIValue(floatValue: Double(val))
+                        default:
+                                result = nil
+                        }
+                case .floatValue(let val):
+                        switch target {
+                        case .unsignedIntType:
+                                result = MIValue(unsignedIntValue: UInt(val))
+                        case .signedIntType:
+                                result = MIValue(signedIntValue: Int(val))
+                        case .floatType:
+                                result = MIValue(floatValue: val)
+                        default:
+                                result = nil
+                        }
+                default:
+                        result = nil
                 }
                 return result
         }
 
-        public func toString(withType wtype: Bool) -> String {
-                let valstr: String
+        public func toString() -> String {
+                var result: String
                 switch self.value {
-                case .boolean(let value):       valstr = "\(value)"
-                case .uint(let value):          valstr = "\(value)"
-                case .int(let value):           valstr = "\(value)"
-                case .float(let value):         valstr = "\(value)"
-                case .string(let value):        valstr = "\"" + value + "\""
-                case .array(let values):
-                        var is1st = true
-                        var str   = "["
-                        for value in values {
-                                if is1st {
-                                        is1st = false
-                                } else {
-                                        str += ", "
-                                }
-                                str += value.toString(withType: wtype)
+                case .booleanValue(let val):            result = "\(val)"
+                case .unsignedIntValue(let val):        result = "\(val)"
+                case .signedIntValue(let val):          result = "\(val)"
+                case .floatValue(let val):              result = "\(val)"
+                case .stringValue(let val):              result = "\"\(val)\""
+                case .arrayValue(let values):
+                        var str:   String = "["
+                        var is1st: Bool   = true
+                        for elm in values {
+                                if is1st { is1st = false } else { str += ", "}
+                                str += elm.toString()
                         }
                         str += "]"
-                        valstr = str
-                case .dictionary(let values):
-                        valstr = MIValue.toString(dictionary: values, withType: wtype)
-                case .interface(let values):
-                        valstr = MIValue.toString(dictionary: values, withType: wtype)
-                }
-
-                let result: String
-                if wtype {
-                        result = "(" + self.type.toString() + ") " + valstr
-                } else {
-                        result = valstr
+                        result = str
+                case .dictionaryValue(let dict):
+                        var str:   String = "{"
+                        var is1st: Bool   = true
+                        for (key, val) in dict {
+                                if is1st { is1st = false } else { str += ", "}
+                                str += key + ":" + val.toString()
+                        }
+                        str += "}"
+                        result = str
                 }
                 return result
-        }
-
-        private static func toString(dictionary dict: Dictionary<String, MIValue>, withType wtype: Bool) -> String {
-                var is1st = true
-                var str   = "{"
-                let keys =  dict.keys.sorted()
-                for key in keys {
-                        if is1st {
-                                is1st = false
-                        } else {
-                                str += ", "
-                        }
-                        str += key + ":"
-                        if let val = dict[key] {
-                                str += val.toString(withType: wtype)
-                        } else {
-                                str += "?"
-                        }
-                }
-                str += "}"
-                return str
         }
 
         public static func adjustValueTypes(values: Array<MIValue>) -> Result<(MIValueType, Array<MIValue>), NSError> {
-                //NSLog("ELEMENT: {")
-                //for val in values {
-                //        NSLog("Element: " + val.toString(withType: true))
-                //}
-                //NSLog("ELEMENT: }")
-                guard values.count > 0 else {
-                        //NSLog("SKIP")
-                        return .success((.boolean, [])) // empty array
+                if values.count == 0 {
+                        return .success((.nilType, []))
+                } else if values.count == 1 {
+                        let elm = values[0]
+                        return .success((elm.type, [elm]))
                 }
-
-                /* get unioned type */
-                var utype: MIValueType = values[0].type
+                // get unioned type of elements in array
+                // values.count >= 2
+                let elm         = values[0]
+                var utype       = elm.type
                 for i in 1..<values.count {
-                        if let type = MIValueType.union(type0: utype, type1: values[i].type) {
+                        if let type = MIValueType.union(src0: utype, src1: values[i].type) {
                                 utype = type
                         } else {
-                                let err = MIError.parseError(message: "Failed to get unioned type", line: 0)
+                                let name0 = utype.name()
+                                let name1 = values[i].type.name()
+                                let err = MIError.parseError(message: "Failed to get unioned type: \(name0) <-> \(name1)",line: 0)
                                 return .failure(err)
                         }
                 }
-
-                /* get unioned value */
-                var uvalues: Array<MIValue> = []
-                for i in 0..<values.count {
-                        if let val = values[i].cast(to: utype) {
-                                uvalues.append(val)
+                // cast all elements
+                var result: Array<MIValue> = []
+                for elm in values {
+                        if let newelm = elm.cast(to: utype) {
+                                result.append(newelm)
                         } else {
-                                let err = MIError.parseError(message: "Failed to cast to unioned data", line: 0)
+                                let err = MIError.parseError(message: "Failed to cast element", line: 0)
                                 return .failure(err)
                         }
                 }
-
-                return .success((utype, uvalues))
-        }
-
-        public static func booleanValue(_ value: Bool) -> MIValue {
-                return MIValue(type: .boolean, value: .boolean(value))
-        }
-
-        public static func uintValue(_ value: UInt) -> MIValue {
-                return MIValue(type: .uint, value: .uint(value))
-        }
-
-        public static func intValue(_ value: Int) -> MIValue {
-                return MIValue(type: .int, value: .int(value))
-        }
-
-        public static func floatValue(_ value: Double) -> MIValue {
-                return MIValue(type: .float, value: .float(value))
-        }
-
-        public static func stringValue(_ value: String) -> MIValue {
-                return MIValue(type: .string, value: .string(value))
-        }
-
-        public static func arrayValue(elementType: MIValueType, values: Array<MIValue>) -> MIValue {
-                return MIValue(type: .array(elementType), value: .array(values))
-        }
-
-        public static func dictionaryValue(elementType: MIValueType, values: Dictionary<String, MIValue>) -> MIValue {
-                return MIValue(type: .dictionary(elementType), value: .dictionary(values))
-        }
-
-        public static func interfaceValue(name: String?, values: Dictionary<String, MIValue>) -> MIValue {
-                var valtypes: Dictionary<String, MIValueType> = [:]
-                for (ident, value) in values {
-                        valtypes[ident] = value.type
-                }
-                let iftype: MIValueType = .interface(name, valtypes)
-                return MIValue(type: iftype, value: .interface(values))
+                return .success((utype, result))
         }
 }

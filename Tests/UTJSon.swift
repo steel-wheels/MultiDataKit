@@ -12,9 +12,9 @@ private func testJsonString(string str: String) -> Bool
 {
         switch MIJsonFile.load(string: str) {
         case .success(let val):
-                let res1 = val.toString(withType: false)
+                let res1 = val.toString()
                 NSLog("json file: \(res1)")
-                let res2 = val.toString(withType: true)
+                let res2 = val.toString()
                 NSLog("typed file: \(res2)")
                 return true
         case .failure(let err):
@@ -54,36 +54,15 @@ private func printText(label lab: String, value val: MIValue)
 
 public func testJsonEncode() -> Bool
 {
-        let val0 = MIValue(type: .int, value: .int(10))
-        let val1 = MIValue(type: .int, value: .string("str"))
-        let val2 = MIValue(type: .interface(nil, [
-                "a": val0.type,
-                "b": val1.type
-        ]), value: .interface([
-                "a": val0,
-                "b": val1
-        ]))
+        let val0 = MIValue(signedIntValue: 10)
+        let val1 = MIValue(stringValue: "str")
+        let val2 = MIValue(arrayValue: [val0, val1])
         printText(label: "testJsonEncode 1", value: val2)
 
-        let val3 = MIValue(type: .array(val2.type), value: .array([
-                val2, val2
-        ]))
-        printText(label: "testJsonEncode 2", value: val3)
-
-        let val4 = MIValue(type: .dictionary(val0.type), value: .dictionary([
-                "c": val0,
-                "d": val0
-        ]))
+        let val4 = MIValue(dictionaryValue: [
+                "a": val0, "b": val1
+        ])
         printText(label: "testJsonEncode 3", value: val4)
-
-        let val5 = MIValue(type: .interface(nil, [
-                "e": val3.type,
-                "f": val4.type
-        ]), value: .interface([
-                "e": val3,
-                "f": val4
-        ]))
-        printText(label: "testJsonEncode 4", value: val5)
 
         return true
 }
