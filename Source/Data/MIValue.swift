@@ -18,7 +18,7 @@ public enum MIValueType: Int
         case arrayType          = 6
         case dictionaryType     = 7
 
-        public func name() -> String {
+        public var name: String { get {
                 var result: String
                 switch self {
                 case .nilType:          result = "nil"
@@ -31,7 +31,7 @@ public enum MIValueType: Int
                 case .dictionaryType:   result = "dictionary"
                 }
                 return result
-        }
+        }}
 
         static func isNumberType(_ type: MIValueType) -> Bool {
                 let result: Bool
@@ -60,6 +60,7 @@ public enum MIValueType: Int
 
 public enum MIValueData
 {
+        case nilValue
         case booleanValue(Bool)
         case signedIntValue(Int)
         case unsignedIntValue(UInt)
@@ -74,6 +75,10 @@ public struct MIValue
         public var type        : MIValueType
         public var value       : MIValueData
 
+        public init() {
+                self.type       = .nilType
+                self.value      = .nilValue
+        }
         public init(booleanValue bval: Bool){
                 self.type       = .booleanType
                 self.value      = .booleanValue(bval)
@@ -175,6 +180,8 @@ public struct MIValue
         public func toObject() -> NSObject {
                 var result: NSObject
                 switch(self.value){
+                case .nilValue:
+                        result = NSNull()
                 case .booleanValue(let val):
                         result = NSNumber(value: val)
                 case .signedIntValue(let val):
@@ -249,6 +256,7 @@ public struct MIValue
         public func toString() -> String {
                 var result: String
                 switch self.value {
+                case .nilValue:                         result = "nil"
                 case .booleanValue(let val):            result = "\(val)"
                 case .unsignedIntValue(let val):        result = "\(val)"
                 case .signedIntValue(let val):          result = "\(val)"
@@ -291,8 +299,8 @@ public struct MIValue
                         if let type = MIValueType.union(src0: utype, src1: values[i].type) {
                                 utype = type
                         } else {
-                                let name0 = utype.name()
-                                let name1 = values[i].type.name()
+                                let name0 = utype.name
+                                let name1 = values[i].type.name
                                 let err = MIError.parseError(message: "Failed to get unioned type: \(name0) <-> \(name1)",line: 0)
                                 return .failure(err)
                         }
@@ -309,4 +317,49 @@ public struct MIValue
                 }
                 return .success((utype, result))
         }
+
+        public static func fromNumber(number num: NSNumber) -> MIValue {
+                let result: MIValue
+                let ecode = String(cString: num.objCType)
+                switch ecode {
+                case "c":       result = MIValue(signedIntValue: Int(num.int8Value))       // cchar
+                case "i":       result = MIValue(signedIntValue: Int(num.int32Value))      // int
+                case "s":       result = MIValue(signedIntValue: Int(num.int16Value))      // short
+                case "l":       result = MIValue(signedIntValue: Int(num.int64Value))      // long
+                case "q":       result = MIValue(signedIntValue: Int(num.int64Value))      // long
+                case "I":       result = MIValue(unsignedIntValue: UInt(num.int32Value))   // int
+                case "S":       result = MIValue(unsignedIntValue: UInt(num.int16Value))   // short
+                case "L":       result = MIValue(unsignedIntValue: UInt(num.int64Value))   // long
+                case "Q":       result = MIValue(unsignedIntValue: UInt(num.int64Value))   // long
+                case "f":       result = MIValue(floatValue: Double(num.floatValue))       // float
+                case "d":       result = MIValue(floatValue: num.doubleValue)              // doyble
+                case "b":       result = MIValue(booleanValue: num.boolValue)              // doyble
+                default:
+                        NSLog("[Error] Failed to get value from number at \(#function)")
+                        result = MIValue(floatValue: Double(num.floatValue))
+                }
+                return result
+        }
+}
+
+public extension NSNumber
+{
+        var valueType: MIValueType { get {
+                let result: MIValueType
+                let ecode = String(cString: self.objCType)
+                switch ecode {
+                case "c", "i", "s", "l", "q":
+                        result = .signedIntType
+                case "C", "I", "S", "L", "Q":
+                        result = .unsignedIntType
+                case "f", "d":
+                        result = .floatType
+                case "b":
+                        result = .booleanType
+                default:
+                        NSLog("[Error] Unknown type of NSNUmber")
+                        result = .floatType
+                }
+                return result
+        }}
 }

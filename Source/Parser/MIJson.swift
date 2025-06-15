@@ -230,6 +230,8 @@ public class MIJsonEncoder
         public static func encode(value val: MIValue) -> MIText {
                 let result: MIText
                 switch val.value {
+                case .nilValue:
+                        result = MILine(line: "null")
                 case .booleanValue(let val):
                         result = MILine(line: "\(val)")
                 case .unsignedIntValue(let val):
