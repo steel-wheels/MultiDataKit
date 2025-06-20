@@ -18,6 +18,20 @@ extension FileManager
                 }
         }}
 
+        public func resourceDirectory(forClass fclass: AnyClass?) -> URL? {
+                let bundle: Bundle
+                if let cls = fclass {
+                        bundle = Bundle(for: cls)
+                } else {
+                        bundle = Bundle.main
+                }
+                if let url = bundle.resourceURL {
+                        return url
+                } else {
+                        return nil
+                }
+        }
+
         public var cacheDirectory: URL? { get {
                 let urls = self.urls(for: .cachesDirectory, in: .userDomainMask)
                 if let url = urls.first {
