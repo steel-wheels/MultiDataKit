@@ -71,7 +71,7 @@ public struct MIToken
 
 public class MITokenizer
 {
-        public static func tokenize(stream strm: KSInputStream) -> Result<Array<MIToken>, NSError> {
+        public static func tokenize(stream strm: MIInputStream) -> Result<Array<MIToken>, NSError> {
                 var result: Array<MIToken> = []
                 var line:   Int = 0
                 loop: while true {
@@ -89,7 +89,7 @@ public class MITokenizer
                 return .success(replaceTokens(tokens: result))
         }
 
-        private static func parseToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = skipSpaces(stream: strm, lineNo: &line) else {
                         return .success(nil)
                 }
@@ -110,7 +110,7 @@ public class MITokenizer
                 }
         }
 
-        private static func skipSpaces(stream strm: KSInputStream, lineNo line: inout Int) -> Character? {
+        private static func skipSpaces(stream strm: MIInputStream, lineNo line: inout Int) -> Character? {
                 var result: Character? = nil
                 while let c = strm.getc() {
                         if c.isNewline {
@@ -123,7 +123,7 @@ public class MITokenizer
                 return result
         }
 
-        private static func parseHexToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseHexToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
                         return .success(MIToken(.uint(0), at: line))
                 }
@@ -153,7 +153,7 @@ public class MITokenizer
                 return result
         }
 
-        private static func parseDecToken(firstChar fval: UInt, stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseDecToken(firstChar fval: UInt, stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: UInt = fval
                 while let c = strm.getc() {
                         if let v = c.wholeNumberValue {
@@ -166,7 +166,7 @@ public class MITokenizer
                 return .success(MIToken(.uint(result), at: line))
         }
 
-        private static func parseIdentifierToken(firstChar fc: Character, stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseIdentifierToken(firstChar fc: Character, stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: String = String(fc)
                 while let c = strm.getc() {
                         if c.isMiddleIdentifier {
@@ -179,7 +179,7 @@ public class MITokenizer
                 return .success(MIToken(.string(result), at: line))
         }
 
-        private static func parseStringToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseStringToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 var result: String = ""
                 var closed = false
                 loop: while let c = strm.getc() {
@@ -207,7 +207,7 @@ public class MITokenizer
         }
 
         // called after "/"
-        private static func parseCommentToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseCommentToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
                         return .success(MIToken(.symbol("/"), at: line))
                 }
@@ -228,7 +228,7 @@ public class MITokenizer
         }
 
         // called after "%"
-        private static func parseTextToken(stream strm: KSInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
+        private static func parseTextToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
                 guard let c = strm.getc() else {
                         return .success(MIToken(.symbol("%"), at: line))
                 }
@@ -257,7 +257,7 @@ public class MITokenizer
                 return .success(MIToken(.text(text), at: line))
         }
 
-        private static func escapedString(stream strm: KSInputStream, lineNo line: inout Int) -> Result<String, NSError> {
+        private static func escapedString(stream strm: MIInputStream, lineNo line: inout Int) -> Result<String, NSError> {
                 if let c = strm.getc() {
                         let result: Character?
                         switch c {

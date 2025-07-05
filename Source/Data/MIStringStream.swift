@@ -7,13 +7,13 @@
 
 import Foundation
 
-public protocol KSInputStream
+public protocol MIInputStream
 {
         func getc() -> Character?
         func ungetc() -> Character?
 }
 
-public class MIStringStream: KSInputStream
+public class MIStringStream: MIInputStream
 {
         private var mString:    String
         private var mIndex:     String.Index
