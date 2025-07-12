@@ -88,13 +88,18 @@ public class MIJsonDecoder
                                 }
                         }
 
-                        /* get string */
+                        /* get identifier or string */
                         let ident: String
-                        switch requireString(index: &index, tokens: tokens){
+                        switch requireIdentifier(index: &index, tokens: tokens) {
                         case .success(let str):
                                 ident = str
-                        case .failure(let err):
-                                return .failure(err)
+                        case .failure(_):
+                                switch requireString(index: &index, tokens: tokens){
+                                case .success(let str):
+                                        ident = str
+                                case .failure(let err):
+                                        return .failure(err)
+                                }
                         }
 
                         /* get symbol */
