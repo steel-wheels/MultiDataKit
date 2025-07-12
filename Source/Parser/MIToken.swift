@@ -29,6 +29,15 @@ public struct MIToken
                 self.lineNo = lineNo
         }
 
+        public func toIdentifier() -> String? {
+                switch self.value {
+                case .identifier(let ident):
+                        return ident
+                default:
+                        return nil
+                }
+        }
+
         public func isSymbol(c: Character) -> Bool {
                 switch self.value {
                 case .symbol(let sym):
@@ -176,7 +185,7 @@ public class MITokenizer
                                 break
                         }
                 }
-                return .success(MIToken(.string(result), at: line))
+                return .success(MIToken(.identifier(result), at: line))
         }
 
         private static func parseStringToken(stream strm: MIInputStream, lineNo line: inout Int) -> Result<MIToken?, NSError> {
