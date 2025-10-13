@@ -42,12 +42,17 @@ extension FileManager
                 }
         }}
 
-        public func copyFile(from furl: URL, to turl: URL) -> NSError? {
+        public func copyFile(from fromurl: URL, to tourl: URL) -> NSError? {
                 do {
-                        try self.copyItem(at: furl, to: turl)
+                        /* remmove destinarion file */
+                        if self.fileExists(atPath: tourl.path) {
+                                try self.removeItem(at: tourl)
+                        }
+                        /* copy directories */
+                        try self.copyItem(at: fromurl, to: tourl)
                         return nil
                 } catch {
-                        let err = MIError.error(errorCode: .fileError, message: "Failed to copy file from \(furl.absoluteString) to \(turl.absoluteString)")
+                        let err = MIError.error(errorCode: .fileError, message: "Failed to copy file from \(fromurl.absoluteString) to \(tourl.absoluteString)")
                         return err
                 }
         }
@@ -69,6 +74,16 @@ extension FileManager
                         return .failure(err)
                 }
                 return .success(appdir.appending(path: filename))
+        }
+
+        public func createDirectory(at dir: URL) -> NSError? {
+                do {
+                        try self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
+                        return nil
+                } catch {
+                        let err = MIError.error(errorCode: .fileError, message: "Failed to create \(dir.path) directory", atFile: #file, function: #function)
+                        return err
+                }
         }
 
         public func createCacheFile(source src: URL) -> Result<URL, NSError> {
