@@ -208,6 +208,111 @@ public struct MIValue
                 return result
         }
 
+        public func compare(_ src: MIValue) -> Int? {
+                guard self.type == src.type else {
+                        return nil
+                }
+                var result: Int? = nil
+                switch src.type {
+                case .nilType:
+                        result = 0
+                case .booleanType:
+                        let selfv = self.booleanValue! ? 1 : 0
+                        let srcv  = src.booleanValue!  ? 1 : 0
+                        result = selfv - srcv
+                case .signedIntType:
+                        let selfv = self.signedIntValue!
+                        let srcv  = self.signedIntValue!
+                        if selfv > srcv {
+                                result = 1
+                        } else if selfv < srcv {
+                                result = -1
+                        } else {
+                                result = 0
+                        }
+                case .unsignedIntType:
+                        let selfv = self.unsignedIntValue!
+                        let srcv  = self.unsignedIntValue!
+                        if selfv > srcv {
+                                result = 1
+                        } else if selfv < srcv {
+                                result = -1
+                        } else {
+                                result = 0
+                        }
+                case .floatType:
+                        let selfv = self.floatValue!
+                        let srcv  = self.floatValue!
+                        if selfv > srcv {
+                                result = 1
+                        } else if selfv < srcv {
+                                result = -1
+                        } else {
+                                result = 0
+                        }
+                case .stringType:
+                        let selfv = self.stringValue!
+                        let srcv  = self.stringValue!
+                        if selfv > srcv {
+                                result = 1
+                        } else if selfv < srcv {
+                                result = -1
+                        } else {
+                                result = 0
+                        }
+                case .arrayType:
+                        let selfv = self.arrayValue!
+                        let srcv  = self.arrayValue!
+
+                        let selfc = selfv.count
+                        let srcc  = selfv.count
+                        if selfc != srcc {
+                                return selfc - srcc
+                        }
+
+                        result = 0
+                        for i in 0..<selfc {
+                                if let res = selfv[i].compare(srcv[i]) {
+                                        if res != 0 {
+                                                result = res
+                                                break
+                                        }
+                                } else {
+                                        result = nil
+                                        break
+                                }
+                        }
+                case .dictionaryType:
+                        let selfv = self.dictionaryValue!
+                        let srcv  = self.dictionaryValue!
+
+                        let selfc = selfv.count
+                        let srcc  = selfv.count
+                        if selfc != srcc {
+                                return selfc - srcc
+                        }
+
+                        result = 0
+                        for (key, elmv) in selfv {
+                                if let elms = srcv[key] {
+                                        if let res = elmv.compare(elms) {
+                                                if res != 0 {
+                                                        result = res
+                                                        break
+                                                }
+                                        } else {
+                                                result = nil
+                                                break
+                                        }
+                                } else {
+                                        result = nil
+                                        break
+                                }
+                        }
+                }
+                return result
+        }
+
         public func cast(to target: MIValueType) -> MIValue? {
                 if self.type == target {
                         return self
@@ -337,6 +442,42 @@ public struct MIValue
                 default:
                         NSLog("[Error] Failed to get value from number at \(#function)")
                         result = MIValue(floatValue: Double(num.floatValue))
+                }
+                return result
+        }
+
+        public static func fromObject(object obj: NSObject) -> MIValue {
+                let result: MIValue
+                if let _ = obj as? NSNull {
+                        result = MIValue()
+                } else if let num = obj as? NSNumber {
+                        result = MIValue.fromNumber(number: num)
+                } else if let str = obj as? NSString {
+                        result = MIValue(stringValue: str as String)
+                } else if let arr = obj as? NSArray {
+                        var dst: Array<MIValue> = []
+                        let count = arr.count
+                        for i in 0..<count {
+                                if let elm = arr.object(at: i) as? NSObject {
+                                        dst.append(MIValue.fromObject(object: elm))
+                                } else {
+                                        NSLog("[Error] Failed to convert array element at \(#file)")
+                                }
+                        }
+                        result = MIValue(arrayValue: dst)
+                } else if let dict = obj as? NSDictionary {
+                        var dst: Dictionary<String, MIValue> = [:]
+                        for (key, elmp) in dict {
+                                if let key = key as? String, let elm = elmp as? NSObject {
+                                        dst[key] = MIValue.fromObject(object: elm)
+                                } else {
+                                        NSLog("[Error] Failed to convert dictionary element at \(#file)")
+                                }
+                        }
+                        result = MIValue(dictionaryValue: dst)
+                } else {
+                        NSLog("[Error] Unknown data type at \(#file)")
+                        result = MIValue()
                 }
                 return result
         }

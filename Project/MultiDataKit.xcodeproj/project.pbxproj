@@ -41,12 +41,12 @@
 			remoteGlobalIDString = 0544BDAC2CE09AC100A31D7A;
 			remoteInfo = Install;
 		};
-		051CF6BF2CE0A859000B690D /* PBXContainerItemProxy */ = {
+		05E717892F051B7A0097516E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 05BE2E612CE095110081DA89 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 051CF6952CE0A6D7000B690D;
-			remoteInfo = Bundle;
+			remoteGlobalIDString = 0544BDAC2CE09AC100A31D7A;
+			remoteInfo = Install;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -312,7 +312,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				051CF6C02CE0A859000B690D /* PBXTargetDependency */,
+				05E7178A2F051B7A0097516E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				051CF6B92CE0A84C000B690D /* Tests */,
@@ -503,10 +503,10 @@
 			target = 0544BDAC2CE09AC100A31D7A /* Install */;
 			targetProxy = 051CF69F2CE0A6F9000B690D /* PBXContainerItemProxy */;
 		};
-		051CF6C02CE0A859000B690D /* PBXTargetDependency */ = {
+		05E7178A2F051B7A0097516E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 051CF6952CE0A6D7000B690D /* MultiDataKit */;
-			targetProxy = 051CF6BF2CE0A859000B690D /* PBXContainerItemProxy */;
+			target = 0544BDAC2CE09AC100A31D7A /* Install */;
+			targetProxy = 05E717892F051B7A0097516E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

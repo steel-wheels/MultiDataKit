@@ -74,3 +74,43 @@ public func testValue() -> Bool
         return result
 }
 
+private func valueConvert(source src: MIValue) -> Bool
+{
+        print("convert src=\(src.toString())")
+        let obj = src.toObject()
+        let dst = MIValue.fromObject(object: obj)
+        if src.compare(dst) == 0 {
+                return true
+        } else {
+                print("[Error] Failed to comparison")
+                return false
+        }
+}
+
+public func testValueConvert() -> Bool
+{
+        let res0 = valueConvert(source: MIValue())
+        //let res1 = valueConvert(source: MIValue(booleanValue: true))          -> Boolean is not supported
+        let res2 = valueConvert(source: MIValue(signedIntValue: -123))
+        //let res3 = valueConvert(source: MIValue(unsignedIntValue: 321))         -> Unsigned int is not supported
+        let res4 = valueConvert(source: MIValue(floatValue: 12.3))
+        let res5 = valueConvert(source: MIValue(stringValue: "hello, world"))
+
+        /* make array */
+        var arr: Array<MIValue> = []
+        arr.append(MIValue(signedIntValue: 1))
+        arr.append(MIValue(signedIntValue: 2))
+        arr.append(MIValue(signedIntValue: 3))
+        let res6 = valueConvert(source: MIValue(arrayValue: arr))
+
+        /* make dictionary */
+        var dict: Dictionary<String, MIValue> = [:]
+        dict["a"] = MIValue(floatValue: 12.3)
+        dict["b"] = MIValue(stringValue: "Hello")
+        dict["c"] = MIValue(arrayValue: arr)
+        let res7 = valueConvert(source: MIValue(dictionaryValue: dict))
+
+        let result = res0 && res2 && res4 && res5 && res6 && res7
+        return result
+}
+
