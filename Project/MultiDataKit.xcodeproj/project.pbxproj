@@ -31,6 +31,8 @@
 		05595C912EA30E060048C8F5 /* MIURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05595C8F2EA30E060048C8F5 /* MIURL.swift */; };
 		057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
 		057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
+		059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059217522F1C436E00161EFA /* MIEscapeCode.swift */; };
+		059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059217522F1C436E00161EFA /* MIEscapeCode.swift */; };
 		05A3FFEE2F0BA2F300BE3836 /* MIObserverDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */; };
 		05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +83,7 @@
 		054850332CE764AB0060AEA0 /* MIJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIJsonFile.swift; sourceTree = "<group>"; };
 		05595C8F2EA30E060048C8F5 /* MIURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIURL.swift; sourceTree = "<group>"; };
 		057223802D8F6A5A00DFD98C /* MIAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIAttributedString.swift; sourceTree = "<group>"; };
+		059217522F1C436E00161EFA /* MIEscapeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIEscapeCode.swift; sourceTree = "<group>"; };
 		05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIObserverDictionary.swift; sourceTree = "<group>"; };
 		05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -186,6 +189,7 @@
 				057223802D8F6A5A00DFD98C /* MIAttributedString.swift */,
 				0543D3722CE0985B00B492FE /* MICharacter.swift */,
 				0543D3732CE0985B00B492FE /* MIError.swift */,
+				059217522F1C436E00161EFA /* MIEscapeCode.swift */,
 				05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */,
 				0543D3742CE0985B00B492FE /* MIStringStream.swift */,
 				0543D3752CE0985B00B492FE /* MIText.swift */,
@@ -472,6 +476,7 @@
 				0543D37D2CE0985B00B492FE /* MIStringStream.swift in Sources */,
 				05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */,
 				0543D37E2CE0985B00B492FE /* MICharacter.swift in Sources */,
+				059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37F2CE0985B00B492FE /* MIText.swift in Sources */,
 				0543D3802CE0985B00B492FE /* MIValue.swift in Sources */,
 				05595C902EA30E060048C8F5 /* MIURL.swift in Sources */,
@@ -491,6 +496,7 @@
 				05A3FFEE2F0BA2F300BE3836 /* MIObserverDictionary.swift in Sources */,
 				0543D3782CE0985B00B492FE /* MIStringStream.swift in Sources */,
 				0543D3792CE0985B00B492FE /* MICharacter.swift in Sources */,
+				059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37A2CE0985B00B492FE /* MIText.swift in Sources */,
 				0543D37B2CE0985B00B492FE /* MIValue.swift in Sources */,
 				05595C912EA30E060048C8F5 /* MIURL.swift in Sources */,

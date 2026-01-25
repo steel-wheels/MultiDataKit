@@ -16,8 +16,9 @@ let result3 = testValueConvert()
 let result4 = testJsonFile()
 let result5 = testJsonEncode()
 let result6 = testAttributedString()
+let result7 = testEscapeSequence()
 
-let summary = result0 && result1 && result2 && result3 && result4 && result5 && result6
+let summary = result0 && result1 && result2 && result3 && result4 && result5 && result6 && result7
 
 if summary {
         print("SUMMARY: OK")
