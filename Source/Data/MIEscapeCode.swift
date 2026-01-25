@@ -310,8 +310,8 @@ public enum MIEscapeCode
                 case .moveCursorToColumn(let c):                result = "moveCursorToColumn(\(c))"
                 case .requestCursorPosition:                    result = "requestCursorPosition"
                 case .moveCursor1LineUp:                        result = "moveCursor1LineUp"
-                case .saveCursorPosition(let k):                result = "saveCursorPosition(\(k==0 ? "DEC": "SCO")"
-                case .restoreCursorPosition(let k):             result = "restoreCursorPosition(\(k==0 ? "DEC": "SCO")"
+                case .saveCursorPosition(let k):                result = "saveCursorPosition(\(k==0 ? "DEC": "SCO"))"
+                case .restoreCursorPosition(let k):             result = "restoreCursorPosition(\(k==0 ? "DEC": "SCO"))"
 
                 case .eraceFromCursotUntilEndOfScreen:          result = "eraceFromCursotUntilEndOfScreen"
                 case .eraceFromToBeginningOfScreen:             result = "eraceFromToBeginningOfScreen"
