@@ -144,8 +144,9 @@ private func testEscapeCode() -> Bool
                 .eraceFromCusorToEndOfLine,
                 .eraceStartOfLineToCursor,
                 .eraceEntireLine,
-                .setCharacterAttribute([.blink(true), .bold(false)]) //,
-                //.resetAllCharacterAttributes
+                .setCharacterAttribute([.blink(true), .bold(false)]),
+                .resetAllCharacterAttributes,
+                .setColor(.blue(false))
         ]
         var result = true
         for code in codes {
