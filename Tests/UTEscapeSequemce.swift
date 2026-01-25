@@ -143,8 +143,8 @@ private func testEscapeCode() -> Bool
                 .eraceSavedLines,
                 .eraceFromCusorToEndOfLine,
                 .eraceStartOfLineToCursor,
-                .eraceEntireLine //,
-                //.setCharacterAttribute([.blink(true), .bold(false)]),
+                .eraceEntireLine,
+                .setCharacterAttribute([.blink(true), .bold(false)]) //,
                 //.resetAllCharacterAttributes
         ]
         var result = true
@@ -172,7 +172,8 @@ private func testEscapeSequence(source src: MIEscapeCode) -> Bool {
                                 result = false
                         }
                 } else {
-                        NSLog("[Error] Unexpected code num: \(codes.count )")
+                        let codes = codes.map { $0.encode() }
+                        NSLog("[Error] Unexpected code num: \(codes.count):\(codes)")
                         result = false
                 }
         case .failure(let err):

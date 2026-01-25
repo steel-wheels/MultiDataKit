@@ -359,7 +359,7 @@ public enum MIEscapeCode
 
                 case .setCharacterAttribute(let attrs):
                         let params = attrs.map{ "\($0.encode())" }
-                        result = "\(ESC)[1;34;" + params.joined(separator: ";") + "m"
+                        result = "\(ESC)[" + params.joined(separator: ";") + "m"
                 case .resetAllCharacterAttributes:              result = "\(ESC)[0m"
                 case .setColor(let color):
                         let params = color.encode().map{ "\($0)" }
@@ -568,6 +568,7 @@ private class MIEscapeCodeDecoder
                 }
                 switch str[idx] {
                 case "m":
+                        idx = str.index(after: idx)
                         switch decodeColorAndAttribute(codes: ivals) {
                         case .success(let code):
                                 mResult.append(code)
