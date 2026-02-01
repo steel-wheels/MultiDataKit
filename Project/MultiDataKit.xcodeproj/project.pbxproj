@@ -37,6 +37,8 @@
 		059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059217522F1C436E00161EFA /* MIEscapeCode.swift */; };
 		05A3FFEE2F0BA2F300BE3836 /* MIObserverDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */; };
 		05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */; };
+		05E7F3E82F2F60710079A2DE /* MITextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E7F3E72F2F60710079A2DE /* MITextColor.swift */; };
+		05E7F3E92F2F60710079A2DE /* MITextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E7F3E72F2F60710079A2DE /* MITextColor.swift */; };
 		05F7A3E92F264D3C0057AD80 /* MIFileInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */; };
 		05F7A3EA2F264D3C0057AD80 /* MIFileInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */; };
 /* End PBXBuildFile section */
@@ -91,6 +93,7 @@
 		059217522F1C436E00161EFA /* MIEscapeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIEscapeCode.swift; sourceTree = "<group>"; };
 		05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIObserverDictionary.swift; sourceTree = "<group>"; };
 		05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		05E7F3E72F2F60710079A2DE /* MITextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MITextColor.swift; sourceTree = "<group>"; };
 		05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,6 +202,7 @@
 				05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */,
 				0543D3742CE0985B00B492FE /* MIStringStream.swift */,
 				0543D3752CE0985B00B492FE /* MIText.swift */,
+				05E7F3E72F2F60710079A2DE /* MITextColor.swift */,
 				0543D3762CE0985B00B492FE /* MIValue.swift */,
 			);
 			path = Data;
@@ -487,6 +491,7 @@
 				05F7A3EA2F264D3C0057AD80 /* MIFileInterface.swift in Sources */,
 				059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37F2CE0985B00B492FE /* MIText.swift in Sources */,
+				05E7F3E92F2F60710079A2DE /* MITextColor.swift in Sources */,
 				0543D3802CE0985B00B492FE /* MIValue.swift in Sources */,
 				05595C902EA30E060048C8F5 /* MIURL.swift in Sources */,
 				057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,
@@ -509,6 +514,7 @@
 				05F7A3E92F264D3C0057AD80 /* MIFileInterface.swift in Sources */,
 				059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37A2CE0985B00B492FE /* MIText.swift in Sources */,
+				05E7F3E82F2F60710079A2DE /* MITextColor.swift in Sources */,
 				0543D37B2CE0985B00B492FE /* MIValue.swift in Sources */,
 				05595C912EA30E060048C8F5 /* MIURL.swift in Sources */,
 				057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,

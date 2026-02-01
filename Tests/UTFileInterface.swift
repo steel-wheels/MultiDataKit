@@ -23,9 +23,9 @@ public func testFileInterface() -> Bool
                 (str: String) -> Void in
                 NSLog("Error: \(str)")
         })
-        fileif.write(input: "INPUT")
-        fileif.write(output: "OUTPUT")
-        fileif.write(error: "ERROR")
+        fileif.inputWriteHandle.write(string: "INPUT")
+        fileif.outputWriteHandle.write(string: "OUTPUT")
+        fileif.errorWriteHandle.write(string: "ERROR")
 
         sleep(1)
 
