@@ -65,7 +65,7 @@ private func testColorCode() -> Bool
 {
         NSLog("test: escapce color")
 
-        let codes: Array<MIEscapeColorCode> = [
+        let codes: Array<MITextColor> = [
                 .black(true),
                 .red(false),
                 .green(true),
@@ -74,18 +74,6 @@ private func testColorCode() -> Bool
                 .magenta(false),
                 .cyan(true),
                 .white(false),
-                .defaultColor(true),
-                .reset,
-                .brightBlack(false),
-                .brightRed(true),
-                .brightGreen(false),
-                .brightYellow(true),
-                .brightBlue(false),
-                .brightMagenta(true),
-                .brightCyan(false),
-                .brightWhite(true),
-                .rgb256(false, 12),
-                .rgbFull(true, 34, 45, 56)
         ]
         var result = true
         for code in codes {
@@ -96,15 +84,15 @@ private func testColorCode() -> Bool
         return result
 }
 
-private func testColorCode(source src: MIEscapeColorCode) -> Bool
+private func testColorCode(source src: MITextColor) -> Bool
 {
-        let srcstr = src.description()
+        let srcstr = src.name
         NSLog("source: " + srcstr)
 
         let result: Bool
         let srccodes = src.encode()
-        if let dst = MIEscapeColorCode.decode(codes: srccodes) {
-                let dststr = dst.description()
+        if let dst = MITextColor.decode(colorCodes: srccodes) {
+                let dststr = dst.name
                 if srcstr == dststr {
                         result = true
                 } else {
@@ -128,8 +116,8 @@ private func testEscapeCode() -> Bool
                 .moveCursorTo(12, 34),
                 .moveCursorUp(56),
                 .moveCursorDown(78),
-                .moveCursorRight(89),
-                .moveCursorLeft(90),
+                .moveCursorForward(89),
+                .moveCursorBackward(90),
                 .moveCursorToBeggingOfNextLine(1),
                 .moveCursorToBeggingOfPrevLine(2),
                 .moveCursorToColumn(3),
@@ -137,7 +125,11 @@ private func testEscapeCode() -> Bool
                 .moveCursor1LineUp,
                 .saveCursorPosition(4),
                 .restoreCursorPosition(1),
-                .eraceFromCursotUntilEndOfScreen,
+                .makeCursorVisible(true),
+                .makeCursorVisible(false),
+                .saveScreen,
+                .restoreScreen,
+                .eraceFromCursorUntilEndOfScreen,
                 .eraceFromToBeginningOfScreen,
                 .eraceEntireScreen,
                 .eraceSavedLines,

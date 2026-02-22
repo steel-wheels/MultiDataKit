@@ -91,6 +91,12 @@ public enum MIEscapeCode
         case moveCursor1LineUp
         case saveCursorPosition(Int)                    // 0:DEC, 1:SCO
         case restoreCursorPosition(Int)                 // 0:DEC, 1:SCO
+        case makeCursorVisible(Bool)
+
+        /* screen */
+        case restoreScreen
+        case saveScreen
+        case enableAlternativeBuffer(Bool)
 
         /* Erace operation */
         case eraceFromCursorWithLength(Int)             // (length)
@@ -126,6 +132,10 @@ public enum MIEscapeCode
                 case .moveCursor1LineUp:                        result = "moveCursor1LineUp"
                 case .saveCursorPosition(let k):                result = "saveCursorPosition(\(k==0 ? "DEC": "SCO"))"
                 case .restoreCursorPosition(let k):             result = "restoreCursorPosition(\(k==0 ? "DEC": "SCO"))"
+                case .makeCursorVisible(let f):                 result = "makeCursorVisible(\(f))"
+                case .restoreScreen:                            result = "restoreScreen"
+                case .saveScreen:                               result = "saveScreen"
+                case .enableAlternativeBuffer(let f):           result = "enableAlternativeBuffer(\(f))"
 
                 case .eraceFromCursorWithLength(let l):         result = "eraceFromCorsorWithLength(\(l))"
                 case .eraceFromCursorUntilEndOfScreen:          result = "eraceFromCursotUntilEndOfScreen"
@@ -163,7 +173,10 @@ public enum MIEscapeCode
                 case .moveCursor1LineUp:                        result = "\(ESC)M"
                 case .saveCursorPosition(let k):                result = k == 0 ? "\(ESC)7" : "\(ESC)[s"
                 case .restoreCursorPosition(let k):             result = k == 0 ? "\(ESC)8" : "\(ESC)[u"
-
+                case .makeCursorVisible(let f):                 result = f ? "\(ESC)[?25h" : "\(ESC)[?25l"
+                case .restoreScreen:                            result = "\(ESC)[?47l"
+                case .saveScreen:                               result = "\(ESC)[?47h"
+                case .enableAlternativeBuffer(let f):           result = "\(ESC)[?1049\(f ? "h":"l")"
                 case .eraceFromCursorWithLength(let l):         result = "\(ESC)[\(l)P"
                 case .eraceFromCursorUntilEndOfScreen:          result = "\(ESC)[0J"
                 case .eraceFromToBeginningOfScreen:             result = "\(ESC)[1J"
@@ -281,6 +294,15 @@ private class MIEscapeCodeDecoder
                 case "u":
                         idx = str.index(after: idx)
                         mResult.append(.restoreCursorPosition(1))
+                case "?":
+                        idx = str.index(after: idx)
+                        if let ivals = decodeInts(string: str, index: &idx) {
+                                if let err = decodeESCBracketQuestionInt(string: str, index: &idx, intValues: ivals) {
+                                        return err
+                                }
+                        } else {
+                                return unexpectedEndOfString(code: "<ESC>[?")
+                        }
                 default:
                         if let ivals = decodeInts(string: str, index: &idx) {
                                 if let err = decodeESCBracketInt(string: str, index: &idx, intValues: ivals) {
@@ -400,8 +422,45 @@ private class MIEscapeCodeDecoder
                 return nil
         }
 
+        private func decodeESCBracketQuestionInt(string str: String, index idx: inout String.Index, intValues ivals: Array<Int>) -> NSError? {
+                guard idx < str.endIndex else {
+                        let code = "<ESC>[?" + ivals.map { "\($0)" }.joined(separator: ";")
+                        return unexpectedEndOfString(code: code)
+                }
+                guard ivals.count == 1 else {
+                        return tooManyIntParameters(code: "<ESC>[?")
+                }
+                var result: NSError? = nil
+                switch ivals[0] {
+                case 25:
+                        switch str[idx] {
+                        case "h":       mResult.append(.makeCursorVisible(true))
+                        case "l":       mResult.append(.makeCursorVisible(false))
+                        default:        result = unknownSequenceError(code: "<ESC>[?25", value: String(str[idx]))
+                        }
+                        idx = str.index(after: idx)
+                case 47:
+                        switch str[idx] {
+                        case "h":       mResult.append(.saveScreen)
+                        case "l":       mResult.append(.restoreScreen)
+                        default:        result = unknownSequenceError(code: "<ESC>[?47", value: String(str[idx]))
+                        }
+                        idx = str.index(after: idx)
+                case 1049:
+                        switch str[idx] {
+                        case "h":       mResult.append(.enableAlternativeBuffer(true))
+                        case "l":       mResult.append(.enableAlternativeBuffer(false))
+                        default:        result = unknownSequenceError(code: "<ESC>[?1049", value: String(str[idx]))
+                        }
+                        idx = str.index(after: idx)
+                default:
+                        result = unknownSequenceError(code: "<ESC>[?", value: String(ivals[0]))
+                }
+                return result
+        }
+
         private func decodeColorAndAttribute(codes: Array<Int>) -> Result<MIEscapeCode, NSError> {
-                if let color = MITextColor.decode(escapeCodes: codes) {
+                if let color = MITextColor.decode(colorCodes: codes) {
                         return .success(.setColor(color))
                 }
                 var attrs: Array<MICharacterAttribute> = []
@@ -467,6 +526,11 @@ private class MIEscapeCodeDecoder
 
         private func unexpectedEndOfString(code: String) -> NSError {
                 let msg = "Unexpected end of string after \"\(code)\""
+                return MIError.parseError(message: msg, line: 0)
+        }
+
+        private func tooManyIntParameters(code: String) -> NSError {
+                let msg = "Too mamy parameters after \"\(code)\""
                 return MIError.parseError(message: msg, line: 0)
         }
 }
