@@ -127,6 +127,8 @@ private func testEscapeCode() -> Bool
                 .restoreCursorPosition(1),
                 .makeCursorVisible(true),
                 .makeCursorVisible(false),
+                .blinkCursor(true),
+                .blinkCursor(false),
                 .saveScreen,
                 .restoreScreen,
                 .eraceFromCursorUntilEndOfScreen,

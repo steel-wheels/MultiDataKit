@@ -92,6 +92,7 @@ public enum MIEscapeCode
         case saveCursorPosition(Int)                    // 0:DEC, 1:SCO
         case restoreCursorPosition(Int)                 // 0:DEC, 1:SCO
         case makeCursorVisible(Bool)
+        case blinkCursor(Bool)                          // Custom defined
 
         /* screen */
         case restoreScreen
@@ -133,6 +134,7 @@ public enum MIEscapeCode
                 case .saveCursorPosition(let k):                result = "saveCursorPosition(\(k==0 ? "DEC": "SCO"))"
                 case .restoreCursorPosition(let k):             result = "restoreCursorPosition(\(k==0 ? "DEC": "SCO"))"
                 case .makeCursorVisible(let f):                 result = "makeCursorVisible(\(f))"
+                case .blinkCursor(let f):                       result = "blinkCursor(\(f))"
                 case .restoreScreen:                            result = "restoreScreen"
                 case .saveScreen:                               result = "saveScreen"
                 case .enableAlternativeBuffer(let f):           result = "enableAlternativeBuffer(\(f))"
@@ -174,6 +176,7 @@ public enum MIEscapeCode
                 case .saveCursorPosition(let k):                result = k == 0 ? "\(ESC)7" : "\(ESC)[s"
                 case .restoreCursorPosition(let k):             result = k == 0 ? "\(ESC)8" : "\(ESC)[u"
                 case .makeCursorVisible(let f):                 result = f ? "\(ESC)[?25h" : "\(ESC)[?25l"
+                case .blinkCursor(let f):                       result = f ? "\(ESC)[?25t" : "\(ESC)[?25f"
                 case .restoreScreen:                            result = "\(ESC)[?47l"
                 case .saveScreen:                               result = "\(ESC)[?47h"
                 case .enableAlternativeBuffer(let f):           result = "\(ESC)[?1049\(f ? "h":"l")"
@@ -436,6 +439,8 @@ private class MIEscapeCodeDecoder
                         switch str[idx] {
                         case "h":       mResult.append(.makeCursorVisible(true))
                         case "l":       mResult.append(.makeCursorVisible(false))
+                        case "f":       mResult.append(.blinkCursor(false))
+                        case "t":       mResult.append(.blinkCursor(true))
                         default:        result = unknownSequenceError(code: "<ESC>[?25", value: String(str[idx]))
                         }
                         idx = str.index(after: idx)
