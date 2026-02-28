@@ -84,8 +84,8 @@ public enum MIEscapeCode
         case moveCursorDown(Int)                        // (lines)
         case moveCursorForward(Int)                     // (columns)
         case moveCursorBackward(Int)                    // (columns)
-        case moveCursorToBeggingOfNextLine(Int)         // (lines)
-        case moveCursorToBeggingOfPrevLine(Int)         // (lines)
+        case moveCursorToBeginingOfNextLine(Int)         // (lines)
+        case moveCursorToBeginingOfPrevLine(Int)         // (lines)
         case moveCursorToColumn(Int)                    // (column)
         case requestCursorPosition
         case moveCursor1LineUp
@@ -126,8 +126,8 @@ public enum MIEscapeCode
                 case .moveCursorDown(let l):                    result = "moveCursorDown(\(l))"
                 case .moveCursorForward(let c):                 result = "moveCursorForward(\(c))"
                 case .moveCursorBackward(let c):                result = "moveCursorBackward(\(c))"
-                case .moveCursorToBeggingOfNextLine(let l):     result = "moveCursorToBeggingOfNextLine(\(l))"
-                case .moveCursorToBeggingOfPrevLine(let l):     result = "moveCursorToBeggingOfPrevLine(\(l))"
+                case .moveCursorToBeginingOfNextLine(let l):    result = "moveCursorToBegningOfNextLine(\(l))"
+                case .moveCursorToBeginingOfPrevLine(let l):    result = "moveCursorToBegningOfPrevLine(\(l))"
                 case .moveCursorToColumn(let c):                result = "moveCursorToColumn(\(c))"
                 case .requestCursorPosition:                    result = "requestCursorPosition"
                 case .moveCursor1LineUp:                        result = "moveCursor1LineUp"
@@ -168,8 +168,8 @@ public enum MIEscapeCode
                 case .moveCursorDown(let l):                    result = "\(ESC)[\(l)B"
                 case .moveCursorForward(let c):                 result = "\(ESC)[\(c)C"
                 case .moveCursorBackward(let c):                result = "\(ESC)[\(c)D"
-                case .moveCursorToBeggingOfNextLine(let l):     result = "\(ESC)[\(l)E"
-                case .moveCursorToBeggingOfPrevLine(let l):     result = "\(ESC)[\(l)F"
+                case .moveCursorToBeginingOfNextLine(let l):    result = "\(ESC)[\(l)E"
+                case .moveCursorToBeginingOfPrevLine(let l):    result = "\(ESC)[\(l)F"
                 case .moveCursorToColumn(let c):                result = "\(ESC)[\(c)G"
                 case .requestCursorPosition:                    result = "\(ESC)[6n"
                 case .moveCursor1LineUp:                        result = "\(ESC)M"
@@ -341,10 +341,10 @@ private class MIEscapeCodeDecoder
                                 mResult.append(.moveCursorBackward(val0))
                         case "E":
                                 idx = str.index(after: idx)
-                                mResult.append(.moveCursorToBeggingOfNextLine(val0))
+                                mResult.append(.moveCursorToBeginingOfNextLine(val0))
                         case "F":
                                 idx = str.index(after: idx)
-                                mResult.append(.moveCursorToBeggingOfPrevLine(val0))
+                                mResult.append(.moveCursorToBeginingOfPrevLine(val0))
                         case "G":
                                 idx = str.index(after: idx)
                                 mResult.append(.moveCursorToColumn(val0))
