@@ -69,6 +69,35 @@ public enum MICharacterAttribute
         }
 }
 
+public enum MIArrowKeyType {
+        case up
+        case down
+        case right
+        case left
+
+        public var code: Character { get {
+                let result: Character
+                switch self {
+                case .up:       result = "A"
+                case .down:     result = "B"
+                case .right:    result = "C"
+                case .left:     result = "D"
+                }
+                return result
+        }}
+
+        public var description: String { get {
+                let result: String
+                switch self {
+                case .left:     result = "left"
+                case .right:    result = "right"
+                case .up:       result = "up"
+                case .down:     result = "down"
+                }
+                return result
+        }}
+}
+
 /* Reference:
  *  - https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b
  */
@@ -77,8 +106,23 @@ public enum MIEscapeCode
         /* Text edit */
         case insertString(String)
 
+        /* Key */
+        case backspaceKey
+        case carriageReturnKey
+        case deleteKey
+        case arrowKey(MIArrowKeyType)
+        //case enterKey                         -> merged with newline
+        case functionKey(Int)
+        case formFeedKey
+        case helpKey
+        case homeKey
+        case menuKey
+        case newlineKey
+        case pageUpKey
+        case pageDownKey
+        case tabKey
+
         /* Cursor Controls */
-        case moveCursorToHome
         case moveCursorTo(Int, Int)                     // (line, column)
         case moveCursorUp(Int)                          // (lines)
         case moveCursorDown(Int)                        // (lines)
@@ -120,7 +164,19 @@ public enum MIEscapeCode
                 let result: String
                 switch self {
                 case .insertString(let str):                    result = "insertString(\(str))"
-                case .moveCursorToHome:                         result = "moveCursorToHome"
+                case .backspaceKey:                             result = "BS"
+                case .carriageReturnKey:                        result = "CR"
+                case .deleteKey:                                result = "DEL"
+                case .arrowKey(let atype):                      result = "arrow(\(atype.description))"
+                case .functionKey(let num):                     result = "functionKey(\(num))"
+                case .formFeedKey:                              result = "FF"
+                case .helpKey:                                  result = "helpKey"
+                case .homeKey:                                  result = "homeKey"
+                case .menuKey:                                  result = "menuKey"
+                case .newlineKey:                               result = "newlineKey"
+                case .pageUpKey:                                result = "pageUpKey"
+                case .pageDownKey:                              result = "pageDownKey"
+                case .tabKey:                                   result = "tabKey"
                 case .moveCursorTo(let l, let c):               result = "moveCursorTo(\(l), \(c))"
                 case .moveCursorUp(let l):                      result = "moveCursorUp(\(l))"
                 case .moveCursorDown(let l):                    result = "moveCursorDown(\(l))"
@@ -159,10 +215,23 @@ public enum MIEscapeCode
 
         public func encode() -> String {
                 let ESC = Character.ESC
+
                 let result: String
                 switch self {
                 case .insertString(let str):                    result = str
-                case .moveCursorToHome:                         result = "\(ESC)[H"
+                case .backspaceKey:                             result = String(Character.BS)
+                case .carriageReturnKey:                        result = String(Character.CR)
+                case .deleteKey:                                result = String(Character.DEL)
+                case .arrowKey(let atype):                      result = "\(ESC)[\(atype.code)"
+                case .functionKey(let fid):                     result = encodeForFunctionKey(functionId: fid)
+                case .formFeedKey:                              result = String(Character.FF)
+                case .helpKey:                                  result = "\(ESC)[28~"
+                case .homeKey:                                  result = "\(ESC)[H"
+                case .menuKey:                                  result = "\(ESC)[29~"
+                case .newlineKey:                               result = String(Character.LF)
+                case .pageUpKey:                                result = "\(ESC)[5~"
+                case .pageDownKey:                              result = "\(ESC)[6~"
+                case .tabKey:                                   result = String(Character.TAB)
                 case .moveCursorTo(let l, let c):               result = "\(ESC)[\(l);\(c)H"
                 case .moveCursorUp(let l):                      result = "\(ESC)[\(l)A"
                 case .moveCursorDown(let l):                    result = "\(ESC)[\(l)B"
@@ -196,6 +265,38 @@ public enum MIEscapeCode
                 case .setColor(let color):
                         let params = color.encode().map{ "\($0)" }
                         result = "\(ESC)[" + params.joined(separator: ";") + "m"
+                }
+                return result
+        }
+
+        private func encodeForFunctionKey(functionId fid: Int) -> String {
+                let result: String
+                let ESC = Character.ESC
+                if 1 <= fid && fid <= 4 {
+                        switch fid {
+                        case 1:  result = "\(ESC)0P"
+                        case 2:  result = "\(ESC)0Q"
+                        case 3:  result = "\(ESC)0R"
+                        case 4:  result = "\(ESC)0S"
+                        default: result = "\(ESC)0P" // can not happen
+                        }
+                } else if 5 <= fid && fid <= 12 {
+                        let code: Int
+                        switch fid {
+                        case  5: code = 15
+                        case  6: code = 17
+                        case  7: code = 18
+                        case  8: code = 19
+                        case  9: code = 20
+                        case 10: code = 21
+                        case 11: code = 23
+                        case 12: code = 24
+                        default: code = 15 // can not happen
+                        }
+                        result = "\(ESC)[\(code)~"
+                } else {
+                        NSLog("[Error] Illegal function id \(fid) at \(#file)")
+                        result = "\(ESC)0P"
                 }
                 return result
         }
@@ -236,6 +337,24 @@ private class MIEscapeCodeDecoder
                                 if let err = decodeESC(string: str, index: &idx) {
                                         return err
                                 }
+                        case Character.BS:
+                                mResult.append(.backspaceKey)
+                                idx = str.index(after: idx)
+                        case Character.CR:
+                                mResult.append(.carriageReturnKey)
+                                idx = str.index(after: idx)
+                        case Character.DEL:
+                                mResult.append(.deleteKey)
+                                idx = str.index(after: idx)
+                        case Character.LF:
+                                mResult.append(.newlineKey)
+                                idx = str.index(after: idx)
+                        case Character.FF:
+                                mResult.append(.formFeedKey)
+                                idx = str.index(after: idx)
+                        case Character.TAB:
+                                mResult.append(.tabKey)
+                                idx = str.index(after: idx)
                         default:
                                 mBuffer.append(str[idx])
                                 idx = str.index(after: idx)
@@ -257,6 +376,21 @@ private class MIEscapeCodeDecoder
                         return unexpectedEndOfString(code: "<ESC>")
                 }
                 switch str[idx] {
+                case "0":
+                        idx = str.index(after: idx)
+                        if idx < str.endIndex {
+                                switch str[idx] {
+                                case "P": mResult.append(.functionKey(1))
+                                case "Q": mResult.append(.functionKey(2))
+                                case "R": mResult.append(.functionKey(3))
+                                case "S": mResult.append(.functionKey(4))
+                                default:
+                                        return unknownSequenceError(code: "<ESC>0", value: String(str[idx]))
+                                }
+                                idx = str.index(after: idx)
+                        } else {
+                                return unexpectedEndOfString(code: "<ESC>0")
+                        }
                 case "7":
                         idx = str.index(after: idx)
                         mResult.append(.saveCursorPosition(0))
@@ -282,9 +416,15 @@ private class MIEscapeCodeDecoder
                         return unexpectedEndOfString(code: "<ESC>[")
                 }
                 switch str[idx] {
+                case MIArrowKeyType.left.code:
+                        idx = str.index(after: idx)
+                        mResult.append(.arrowKey(.left))
+                case MIArrowKeyType.right.code:
+                        idx = str.index(after: idx)
+                        mResult.append(.arrowKey(.right))
                 case "H":
                         idx = str.index(after: idx)
-                        mResult.append(.moveCursorToHome)
+                        mResult.append(.homeKey)
                 case "J":
                         idx = str.index(after: idx)
                         mResult.append(.eraceFromCursorUntilEndOfScreen)
@@ -388,6 +528,24 @@ private class MIEscapeCodeDecoder
                                 }
                                 idx = str.index(after: idx)
                                 mResult.append(.requestCursorPosition)
+                        case "~":
+                                idx = str.index(after: idx)
+                                switch val0 {
+                                case  5: mResult.append(.pageUpKey)
+                                case  6: mResult.append(.pageDownKey)
+                                case 15: mResult.append(.functionKey( 5))
+                                case 17: mResult.append(.functionKey( 6))
+                                case 18: mResult.append(.functionKey( 7))
+                                case 19: mResult.append(.functionKey( 8))
+                                case 20: mResult.append(.functionKey( 9))
+                                case 21: mResult.append(.functionKey(10))
+                                case 23: mResult.append(.functionKey(11))
+                                case 24: mResult.append(.functionKey(12))
+                                case 28: mResult.append(.helpKey)
+                                case 29: mResult.append(.menuKey)
+                                default:
+                                        return unknownSequenceError(code: "<ESC>[~", value: String(str[idx]))
+                                }
                         default:
                                 docont = true
                         }
