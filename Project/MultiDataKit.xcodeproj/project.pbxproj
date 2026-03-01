@@ -29,6 +29,8 @@
 		054850352CE764AB0060AEA0 /* MIJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054850332CE764AB0060AEA0 /* MIJsonFile.swift */; };
 		05595C902EA30E060048C8F5 /* MIURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05595C8F2EA30E060048C8F5 /* MIURL.swift */; };
 		05595C912EA30E060048C8F5 /* MIURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05595C8F2EA30E060048C8F5 /* MIURL.swift */; };
+		056AB6642F53A69A00AD1FEE /* MIKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056AB6632F53A69A00AD1FEE /* MIKeyCode.swift */; };
+		056AB6652F53A69A00AD1FEE /* MIKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056AB6632F53A69A00AD1FEE /* MIKeyCode.swift */; };
 		057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
 		057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
 		0585E5B82F2D5A180064D9A1 /* MIFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */; };
@@ -88,6 +90,7 @@
 		054850302CE762B30060AEA0 /* MIFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileManager.swift; sourceTree = "<group>"; };
 		054850332CE764AB0060AEA0 /* MIJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIJsonFile.swift; sourceTree = "<group>"; };
 		05595C8F2EA30E060048C8F5 /* MIURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIURL.swift; sourceTree = "<group>"; };
+		056AB6632F53A69A00AD1FEE /* MIKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIKeyCode.swift; sourceTree = "<group>"; };
 		057223802D8F6A5A00DFD98C /* MIAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIAttributedString.swift; sourceTree = "<group>"; };
 		0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileHandle.swift; sourceTree = "<group>"; };
 		059217522F1C436E00161EFA /* MIEscapeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIEscapeCode.swift; sourceTree = "<group>"; };
@@ -199,6 +202,7 @@
 				0543D3722CE0985B00B492FE /* MICharacter.swift */,
 				0543D3732CE0985B00B492FE /* MIError.swift */,
 				059217522F1C436E00161EFA /* MIEscapeCode.swift */,
+				056AB6632F53A69A00AD1FEE /* MIKeyCode.swift */,
 				05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */,
 				0543D3742CE0985B00B492FE /* MIStringStream.swift */,
 				0543D3752CE0985B00B492FE /* MIText.swift */,
@@ -398,7 +402,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					051CF6952CE0A6D7000B690D = {
 						CreatedOnToolsVersion = 16.1;
@@ -496,6 +500,7 @@
 				05595C902EA30E060048C8F5 /* MIURL.swift in Sources */,
 				057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,
 				054850352CE764AB0060AEA0 /* MIJsonFile.swift in Sources */,
+				056AB6652F53A69A00AD1FEE /* MIKeyCode.swift in Sources */,
 				0543D36E2CE097F000B492FE /* MIToken.swift in Sources */,
 				0543D36F2CE097F000B492FE /* MIJson.swift in Sources */,
 				0585E5B92F2D5A180064D9A1 /* MIFileHandle.swift in Sources */,
@@ -519,6 +524,7 @@
 				05595C912EA30E060048C8F5 /* MIURL.swift in Sources */,
 				057223812D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */,
 				054850342CE764AB0060AEA0 /* MIJsonFile.swift in Sources */,
+				056AB6642F53A69A00AD1FEE /* MIKeyCode.swift in Sources */,
 				0543D3702CE097F000B492FE /* MIToken.swift in Sources */,
 				0543D3712CE097F000B492FE /* MIJson.swift in Sources */,
 				0585E5B82F2D5A180064D9A1 /* MIFileHandle.swift in Sources */,
@@ -547,7 +553,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
@@ -567,7 +572,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
@@ -585,10 +589,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/MultiDataKit.bundle/Contents/Frameworks/";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -598,10 +602,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/MultiDataKit.bundle/Contents/Frameworks/";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -615,7 +619,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_iOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -655,7 +658,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_iOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -692,9 +694,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_CFLAGS = "";
@@ -707,8 +709,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -723,8 +725,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_macOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -762,8 +764,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_macOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -829,6 +831,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -852,6 +855,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -895,6 +899,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -911,6 +916,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
