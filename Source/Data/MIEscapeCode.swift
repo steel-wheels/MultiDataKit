@@ -450,6 +450,12 @@ private class MIEscapeCodeDecoder
                 case MIArrowKeyType.right.code:
                         idx = str.index(after: idx)
                         mResult.append(.arrowKey(.right))
+                case MIArrowKeyType.up.code:
+                        idx = str.index(after: idx)
+                        mResult.append(.arrowKey(.up))
+                case MIArrowKeyType.down.code:
+                        idx = str.index(after: idx)
+                        mResult.append(.arrowKey(.down))
                 case "H":
                         idx = str.index(after: idx)
                         mResult.append(.homeKey)
