@@ -51,7 +51,7 @@ public extension MIEscapeCode
                 case .deleteCharacter:          result = nil
                 case .deleteForward:            result = nil
                 case .deleteLine:               result = nil
-                case .downArrow:                result = .arrowKey(.up)
+                case .downArrow:                result = .arrowKey(.down)
                 case .end:                      result = nil
                 case .enter:                    result = .newlineKey    // enter == newline
                 case .newline:                  result = .newlineKey
