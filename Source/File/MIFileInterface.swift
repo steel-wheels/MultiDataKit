@@ -7,42 +7,59 @@
 
 import Foundation
 
-public class MIFileInterface
+public class MIPipeInterface
 {
-        public typealias ReadFunction = @Sendable (_ str: String) -> Void
+        private var mMasterToSlaveSPipe:        Pipe    // master:write, slace:read
+        private var mSlaveToMaster2MPipe:       Pipe    // master:read,  slave:write
 
-        private var mInputPipe:          Pipe
-        private var mOutputPipe:         Pipe
-        private var mErrorPipe:          Pipe
+        public var masterToSlavePipe: Pipe { get { return mMasterToSlaveSPipe  }}
+        public var slaveToMasterPipe: Pipe { get { return mSlaveToMaster2MPipe }}
 
         public init() {
-                mInputPipe       = Pipe()
-                mOutputPipe      = Pipe()
-                mErrorPipe       = Pipe()
+                mMasterToSlaveSPipe      = Pipe()
+                mSlaveToMaster2MPipe     = Pipe()
+        }
+}
+
+public class MIFileInterface
+{
+        public typealias ReaderFunc = @Sendable (_ str: String) -> Void
+
+        private var mPipeInterface:     MIPipeInterface
+        private var mInputFileHandle:   FileHandle
+        private var mOutputFileHandle:  FileHandle
+
+        public init(asMaster master: MIPipeInterface) {
+                mPipeInterface          = master
+                mInputFileHandle        = master.slaveToMasterPipe.fileHandleForReading
+                mOutputFileHandle       = master.masterToSlavePipe.fileHandleForWriting
         }
 
-        public var inputWriteHandle: FileHandle { get {
-                return mInputPipe.fileHandleForWriting
-        }}
-
-        public var outputWriteHandle: FileHandle { get {
-                return mOutputPipe.fileHandleForWriting
-        }}
-        public var errorWriteHandle: FileHandle { get {
-                return mErrorPipe.fileHandleForWriting
-        }}
-
-        public func setInputReader(readFunctionn readf: @escaping ReadFunction) {
-                set(handler: mInputPipe.fileHandleForReading, readFunction: readf)
+        public init(asSlave slave: MIPipeInterface) {
+                mPipeInterface          = slave
+                mInputFileHandle        = slave.masterToSlavePipe.fileHandleForReading
+                mOutputFileHandle       = slave.slaveToMasterPipe.fileHandleForWriting
         }
 
-        public func setOutputReader(readFunctionn readf: @escaping ReadFunction) {
-                set(handler: mOutputPipe.fileHandleForReading, readFunction: readf)
+        public func write(string str: String) {
+                mOutputFileHandle.write(string: str)
         }
 
-        public func setErrorReader(readFunctionn readf: @escaping ReadFunction) {
-                set(handler: mErrorPipe.fileHandleForReading, readFunction: readf)
+        public func setReader(reader readfunc: @escaping ReaderFunc) {
+                mInputFileHandle.readabilityHandler = { (handle: FileHandle) in
+                        let data = handle.availableData
+                        if !data.isEmpty {
+                                if let str = String(data: data, encoding: .utf8) {
+                                        readfunc(str)
+                                } else {
+                                        NSLog("[Error] Failed to decode at \(#file)")
+                                }
+                        }
+                }
         }
+}
+
+/*
 
         private func set(handler hdl: FileHandle, readFunction readf: @escaping ReadFunction) {
                 hdl.readabilityHandler = { (handler: FileHandle) in
@@ -57,5 +74,6 @@ public class MIFileInterface
                                 }
                         }
                 }
-        }
 }
+*/
+
