@@ -25,24 +25,38 @@ public class MIFileInterface
 {
         public typealias ReaderFunc = @Sendable (_ str: String) -> Void
 
-        private var mPipeInterface:     MIPipeInterface
+        private var mPipeInterface:     MIPipeInterface?
         private var mInputFileHandle:   FileHandle
         private var mOutputFileHandle:  FileHandle
+        private var mErrorFileHandle:   FileHandle
 
         public init(asMaster master: MIPipeInterface) {
                 mPipeInterface          = master
                 mInputFileHandle        = master.slaveToMasterPipe.fileHandleForReading
                 mOutputFileHandle       = master.masterToSlavePipe.fileHandleForWriting
+                mErrorFileHandle        = mOutputFileHandle
         }
 
         public init(asSlave slave: MIPipeInterface) {
                 mPipeInterface          = slave
                 mInputFileHandle        = slave.masterToSlavePipe.fileHandleForReading
                 mOutputFileHandle       = slave.slaveToMasterPipe.fileHandleForWriting
+                mErrorFileHandle        = mOutputFileHandle
+        }
+
+        public init(input infile: FileHandle, output outfile: FileHandle, error errfile: FileHandle) {
+                mPipeInterface          = nil
+                mInputFileHandle        = infile
+                mOutputFileHandle       = outfile
+                mErrorFileHandle        = errfile
         }
 
         public func write(string str: String) {
                 mOutputFileHandle.write(string: str)
+        }
+
+        public func error(string str: String) {
+                mErrorFileHandle.write(string: str)
         }
 
         public func setReader(reader readfunc: @escaping ReaderFunc) {
@@ -59,21 +73,4 @@ public class MIFileInterface
         }
 }
 
-/*
-
-        private func set(handler hdl: FileHandle, readFunction readf: @escaping ReadFunction) {
-                hdl.readabilityHandler = { (handler: FileHandle) in
-                        let data = handler.availableData
-                        if data.isEmpty {
-                                handler.readabilityHandler = nil
-                        } else {
-                                if let str = String(data: data, encoding: .utf8){
-                                        readf(str)
-                                } else {
-                                        NSLog("[Error] Failed to read at \(#file)")
-                                }
-                        }
-                }
-}
-*/
 
