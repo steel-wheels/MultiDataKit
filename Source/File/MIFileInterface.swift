@@ -51,6 +51,18 @@ public class MIFileInterface
                 mErrorFileHandle        = errfile
         }
 
+        public var inputFileHandle: FileHandle { get {
+                return mInputFileHandle
+        }}
+
+        public var outputFileHandle: FileHandle { get {
+                return mOutputFileHandle
+        }}
+
+        public var errorFileHandle: FileHandle { get {
+                return mErrorFileHandle
+        }}
+
         public func write(string str: String) {
                 mOutputFileHandle.write(string: str)
         }
