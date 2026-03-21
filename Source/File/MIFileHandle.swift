@@ -20,4 +20,33 @@ public extension FileHandle
                         NSLog("[Error] Exception occured at \(#file)")
                 }
         }
+
+        /* reference: Listening to stdin in Swift at
+         * https://stackoverflow.com/questions/49748507/listening-to-stdin-in-swift
+         */
+
+        // see https://stackoverflow.com/a/24335355/669586
+        private static func initStruct<S>() -> S {
+                let struct_pointer = UnsafeMutablePointer<S>.allocate(capacity: 1)
+                let struct_memory = struct_pointer.pointee
+                struct_pointer.deallocate()
+                return struct_memory
+        }
+
+        func enableRawMode() -> termios {
+                var raw: termios = FileHandle.initStruct()
+                tcgetattr(self.fileDescriptor, &raw)
+
+                let original = raw
+
+                raw.c_lflag &= ~(UInt(ECHO | ICANON))
+                tcsetattr(self.fileDescriptor, TCSAFLUSH, &raw);
+
+                return original
+        }
+
+        func restoreRawMode(originalTerm: termios) {
+                var term = originalTerm
+                tcsetattr(self.fileDescriptor, TCSAFLUSH, &term);
+        }
 }
