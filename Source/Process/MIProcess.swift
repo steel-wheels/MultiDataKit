@@ -30,12 +30,14 @@ public extension Process
                 }
         }
 
-        static func allocate(fileInterface fintf: MIFileInterface, commandPath path: URL, arguments args: Array<String>) -> Process {
+        static func allocate(fileInterface fintf: MIFileInterface, commandPath path: URL, arguments args: Array<String>, environment env: MIEnvironment) -> Process {
                 let newproc = Process()
                 newproc.executableURL   = path
                 newproc.arguments       = args
                 newproc.fileInterface   = fintf
-
+                if let path = env.currentDirectory {
+                        newproc.currentDirectoryURL = path
+                }
                 return newproc
         }
 }

@@ -13,9 +13,10 @@ public func testProcess() -> Bool
         let fileif = MIFileInterface(input:  FileHandle.standardInput,
                                      output: FileHandle.standardOutput,
                                      error:  FileHandle.standardError)
+        let env     = MIEnvironment()
         let command = URL(fileURLWithPath: "/bin/ls")
         let args: Array<String> = [ "-l" ]
-        let newproc = Process.allocate(fileInterface: fileif, commandPath: command, arguments: args)
+        let newproc = Process.allocate(fileInterface: fileif, commandPath: command, arguments: args, environment: env)
 
         NSLog("execute \(command)")
         var result = true
