@@ -23,7 +23,7 @@ public class MIPipeInterface
 
 public class MIFileInterface
 {
-        public typealias ReaderFunc = @Sendable (_ str: String) -> Void
+        public typealias ReaderFunc = FileHandle.ReaderFunc
 
         private var mPipeInterface:     MIPipeInterface?
         private var mInputFileHandle:   FileHandle
@@ -72,16 +72,7 @@ public class MIFileInterface
         }
 
         public func setReader(reader readfunc: @escaping ReaderFunc) {
-                mInputFileHandle.readabilityHandler = { (handle: FileHandle) in
-                        let data = handle.availableData
-                        if !data.isEmpty {
-                                if let str = String(data: data, encoding: .utf8) {
-                                        readfunc(str)
-                                } else {
-                                        NSLog("[Error] Failed to decode at \(#file)")
-                                }
-                        }
-                }
+                mInputFileHandle.setReader(reader: readfunc)
         }
 }
 

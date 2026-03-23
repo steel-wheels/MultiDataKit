@@ -9,6 +9,21 @@ import Foundation
 
 public extension FileHandle
 {
+        typealias ReaderFunc = @Sendable (_ str: String) -> Void
+
+        func setReader(reader readfunc: @escaping ReaderFunc) {
+                self.readabilityHandler = { (handle: FileHandle) in
+                        let data = handle.availableData
+                        if !data.isEmpty {
+                                if let str = String(data: data, encoding: .utf8) {
+                                        readfunc(str)
+                                } else {
+                                        NSLog("[Error] Failed to decode at \(#file)")
+                                }
+                        }
+                }
+        }
+
         func write(string src: String) {
                 do {
                         if let data = src.data(using: .utf8) {
