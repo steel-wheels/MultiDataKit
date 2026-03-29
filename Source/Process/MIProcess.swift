@@ -11,34 +11,33 @@ import Foundation
 
 public extension Process
 {
-        var fileInterface: MIFileInterface? {
+        convenience init(environment env: MIEnvironment) {
+                self.init()
+                self.set(environment: env)
+        }
+
+        var fileInterface: MIFileInterface {
                 get {
-                        if let infile  = self.standardInput  as? FileHandle,
-                           let outfile = self.standardOutput as? FileHandle,
-                           let errfile = self.standardError  as? FileHandle {
-                                return MIFileInterface(input: infile, output: outfile, error: errfile)
-                        } else {
-                                return nil
-                        }
+                        let infile  = self.standardInput  as? FileHandle ?? FileHandle.standardInput
+                        let outfile = self.standardOutput as? FileHandle ?? FileHandle.standardOutput
+                        let errfile = self.standardError  as? FileHandle ?? FileHandle.standardError
+                        return MIFileInterface(input: infile, output: outfile, error: errfile)
                 }
-                set(fileifp) {
-                        if let fileif = fileifp {
-                                self.standardInput      = fileif.inputFileHandle
-                                self.standardOutput     = fileif.outputFileHandle
-                                self.standardError      = fileif.errorFileHandle
-                        }
+                set(fileif) {
+                        self.standardInput      = fileif.inputFileHandle
+                        self.standardOutput     = fileif.outputFileHandle
+                        self.standardError      = fileif.errorFileHandle
                 }
         }
 
-        static func allocate(fileInterface fintf: MIFileInterface, commandPath path: URL, arguments args: Array<String>, environment env: MIEnvironment) -> Process {
-                let newproc = Process()
-                newproc.executableURL   = path
-                newproc.arguments       = args
-                newproc.fileInterface   = fintf
-                if let path = env.currentDirectory {
-                        newproc.currentDirectoryURL = path
+        func set(environment env: MIEnvironment) {
+                var newenv: [String:String] = [:]
+                for name in env.allNames {
+                        if let val = env.get(name: name as String) {
+                                newenv[name as String] = val as String
+                        }
                 }
-                return newproc
+                self.environment = newenv
         }
 }
 
