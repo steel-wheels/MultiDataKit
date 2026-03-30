@@ -19,6 +19,7 @@ public class MIError
         public enum ErrorCode: Int {
                 case parseError         = 1
                 case fileError          = 2
+                case processError       = 3
         }
 
         public static func error(errorCode ecode: ErrorCode, message msg: String) -> NSError {
@@ -33,6 +34,14 @@ public class MIError
 
         public static func parseError(message msg: String, line ln: Int) -> NSError {
                 return error(errorCode: ErrorCode.parseError, message: msg + " at line \(ln)")
+        }
+
+        public static func fileError(message msg: String) -> NSError {
+                return error(errorCode: ErrorCode.fileError, message: msg)
+        }
+
+        public static func processError(message msg: String) -> NSError {
+                return error(errorCode: ErrorCode.processError, message: msg)
         }
 
         public static func errorToString(error err: NSError) -> String {

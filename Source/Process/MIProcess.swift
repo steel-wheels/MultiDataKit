@@ -6,6 +6,7 @@
  */
 
 import Foundation
+import System
 
 #if os(OSX)
 
@@ -38,6 +39,15 @@ public extension Process
                         }
                 }
                 self.environment = newenv
+        }
+
+        func runAndCheckError() -> Int32 {
+                do {
+                        try self.run()
+                        return 0
+                } catch {
+                        return Errno.noSuchProcess.rawValue
+                }
         }
 }
 
