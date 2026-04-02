@@ -41,12 +41,12 @@ public extension Process
                 self.environment = newenv
         }
 
-        func runAndCheckError() -> Int32 {
+        func tryRun() -> Int32 {
                 do {
                         try self.run()
-                        return 0
+                        return self.processIdentifier
                 } catch {
-                        return Errno.noSuchProcess.rawValue
+                        return -1
                 }
         }
 }
