@@ -17,20 +17,6 @@ public extension Process
                 self.set(environment: env)
         }
 
-        var fileInterface: MIFileInterface {
-                get {
-                        let infile  = self.standardInput  as? FileHandle ?? FileHandle.standardInput
-                        let outfile = self.standardOutput as? FileHandle ?? FileHandle.standardOutput
-                        let errfile = self.standardError  as? FileHandle ?? FileHandle.standardError
-                        return MIFileInterface(input: infile, output: outfile, error: errfile)
-                }
-                set(fileif) {
-                        self.standardInput      = fileif.inputFileHandle
-                        self.standardOutput     = fileif.outputFileHandle
-                        self.standardError      = fileif.errorFileHandle
-                }
-        }
-
         func set(environment env: MIEnvironment) {
                 var newenv: [String:String] = [:]
                 for name in env.allNames {

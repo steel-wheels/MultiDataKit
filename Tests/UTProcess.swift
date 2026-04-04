@@ -10,16 +10,15 @@ import Foundation
 
 public func testProcess() -> Bool
 {
-        let fileif = MIFileInterface(input:  FileHandle.standardInput,
-                                     output: FileHandle.standardOutput,
-                                     error:  FileHandle.standardError)
         let env     = MIEnvironment()
         let command = URL(fileURLWithPath: "/bin/ls")
         let args: Array<String> = [ "-l" ]
 
         let newproc = Process(environment: env)
-        newproc.fileInterface = fileif
-        newproc.executableURL = command
+        newproc.standardInput  = FileHandle.standardInput
+        newproc.standardOutput = FileHandle.standardOutput
+        newproc.standardError  = FileHandle.standardError
+        newproc.executableURL  = command
         newproc.arguments = args
 
         NSLog("execute \(command)")

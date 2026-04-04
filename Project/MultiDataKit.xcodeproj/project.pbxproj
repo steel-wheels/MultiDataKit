@@ -45,8 +45,6 @@
 		05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */; };
 		05E7F3E82F2F60710079A2DE /* MITextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E7F3E72F2F60710079A2DE /* MITextColor.swift */; };
 		05E7F3E92F2F60710079A2DE /* MITextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E7F3E72F2F60710079A2DE /* MITextColor.swift */; };
-		05F7A3E92F264D3C0057AD80 /* MIFileInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */; };
-		05F7A3EA2F264D3C0057AD80 /* MIFileInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,7 +101,6 @@
 		05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIObserverDictionary.swift; sourceTree = "<group>"; };
 		05BE2E6A2CE095110081DA89 /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05E7F3E72F2F60710079A2DE /* MITextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MITextColor.swift; sourceTree = "<group>"; };
-		05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -240,7 +237,6 @@
 		0548502F2CE756890060AEA0 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				05F7A3E82F264D3C0057AD80 /* MIFileInterface.swift */,
 				0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */,
 				054850302CE762B30060AEA0 /* MIFileManager.swift */,
 				054850332CE764AB0060AEA0 /* MIJsonFile.swift */,
@@ -509,7 +505,6 @@
 				057D53292F6F645000ED1DCB /* MIEnvironment.swift in Sources */,
 				05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */,
 				0543D37E2CE0985B00B492FE /* MICharacter.swift in Sources */,
-				05F7A3EA2F264D3C0057AD80 /* MIFileInterface.swift in Sources */,
 				059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37F2CE0985B00B492FE /* MIText.swift in Sources */,
 				05E7F3E92F2F60710079A2DE /* MITextColor.swift in Sources */,
@@ -535,7 +530,6 @@
 				057D532A2F6F645000ED1DCB /* MIEnvironment.swift in Sources */,
 				0543D3782CE0985B00B492FE /* MIStringStream.swift in Sources */,
 				0543D3792CE0985B00B492FE /* MICharacter.swift in Sources */,
-				05F7A3E92F264D3C0057AD80 /* MIFileInterface.swift in Sources */,
 				059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
 				0543D37A2CE0985B00B492FE /* MIText.swift in Sources */,
 				05E7F3E82F2F60710079A2DE /* MITextColor.swift in Sources */,
@@ -636,9 +630,11 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME)_iOS.profdata";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_iOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -660,6 +656,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.iOS";
 				PRODUCT_NAME = MultiDataKit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -678,9 +675,11 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME)_iOS.profdata";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_iOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -702,6 +701,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.iOS";
 				PRODUCT_NAME = MultiDataKit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -748,11 +748,14 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME)_macOS.profdata";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_macOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -774,6 +777,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.macOS";
 				PRODUCT_NAME = MultiDataKit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -787,11 +791,14 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_OPTIMIZATION_PROFILE_FILE = "$(SRCROOT)/OptimizationProfiles/$(PROJECT_NAME)_macOS.profdata";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = TR2DNF3P93;
 				DSTROOT = "/tmp/$(PROJECT_NAME)_macOS.dst";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -813,6 +820,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.steel-wheels.MultiDataKit.macOS";
 				PRODUCT_NAME = MultiDataKit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
