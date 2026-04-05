@@ -10,7 +10,7 @@ import Foundation
 
 public func testProcess() -> Bool
 {
-        let env     = MIEnvironment()
+        let env     = MIEnvVariables(parent: nil)
         let command = URL(fileURLWithPath: "/bin/ls")
         let args: Array<String> = [ "-l" ]
 

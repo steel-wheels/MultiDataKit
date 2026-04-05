@@ -12,19 +12,13 @@ import System
 
 public extension Process
 {
-        convenience init(environment env: MIEnvironment) {
+        convenience init(environment env: MIEnvVariables) {
                 self.init()
                 self.set(environment: env)
         }
 
-        func set(environment env: MIEnvironment) {
-                var newenv: [String:String] = [:]
-                for name in env.allNames {
-                        if let val = env.get(name: name as String) {
-                                newenv[name as String] = val as String
-                        }
-                }
-                self.environment = newenv
+        func set(environment env: MIEnvVariables) {
+                self.environment = env.encode()
         }
 
         func tryRun() -> Int32 {

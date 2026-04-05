@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		051CF69C2CE0A6EE000B690D /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */; };
 		051CF6C72CE0A964000B690D /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */; };
+		0540C2AB2F81466200334F4A /* MIEnvVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0540C2AA2F81466200334F4A /* MIEnvVariable.swift */; };
+		0540C2AC2F81466200334F4A /* MIEnvVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0540C2AA2F81466200334F4A /* MIEnvVariable.swift */; };
 		0543D36E2CE097F000B492FE /* MIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0543D36D2CE097F000B492FE /* MIToken.swift */; };
 		0543D36F2CE097F000B492FE /* MIJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0543D36C2CE097F000B492FE /* MIJson.swift */; };
 		0543D3702CE097F000B492FE /* MIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0543D36D2CE097F000B492FE /* MIToken.swift */; };
@@ -35,8 +37,6 @@
 		057223822D8F6A5A00DFD98C /* MIAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057223802D8F6A5A00DFD98C /* MIAttributedString.swift */; };
 		057D53222F6EE4E900ED1DCB /* MIProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057D53212F6EE4E900ED1DCB /* MIProcess.swift */; };
 		057D53232F6EE4E900ED1DCB /* MIProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057D53212F6EE4E900ED1DCB /* MIProcess.swift */; };
-		057D53292F6F645000ED1DCB /* MIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057D53282F6F645000ED1DCB /* MIEnvironment.swift */; };
-		057D532A2F6F645000ED1DCB /* MIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057D53282F6F645000ED1DCB /* MIEnvironment.swift */; };
 		0585E5B82F2D5A180064D9A1 /* MIFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */; };
 		0585E5B92F2D5A180064D9A1 /* MIFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */; };
 		059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059217522F1C436E00161EFA /* MIEscapeCode.swift */; };
@@ -80,6 +80,7 @@
 		051CF6962CE0A6D7000B690D /* MultiDataKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiDataKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		051CF6B82CE0A84C000B690D /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0540C2AA2F81466200334F4A /* MIEnvVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MIEnvVariable.swift; path = ../Data/MIEnvVariable.swift; sourceTree = "<group>"; };
 		0543D35F2CE0963400B492FE /* MultiDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MultiDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0543D36C2CE097F000B492FE /* MIJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIJson.swift; sourceTree = "<group>"; };
 		0543D36D2CE097F000B492FE /* MIToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIToken.swift; sourceTree = "<group>"; };
@@ -95,7 +96,6 @@
 		056AB6632F53A69A00AD1FEE /* MIKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIKeyCode.swift; sourceTree = "<group>"; };
 		057223802D8F6A5A00DFD98C /* MIAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIAttributedString.swift; sourceTree = "<group>"; };
 		057D53212F6EE4E900ED1DCB /* MIProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIProcess.swift; sourceTree = "<group>"; };
-		057D53282F6F645000ED1DCB /* MIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIEnvironment.swift; sourceTree = "<group>"; };
 		0585E5B72F2D5A180064D9A1 /* MIFileHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIFileHandle.swift; sourceTree = "<group>"; };
 		059217522F1C436E00161EFA /* MIEscapeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIEscapeCode.swift; sourceTree = "<group>"; };
 		05A3FFED2F0BA2F300BE3836 /* MIObserverDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIObserverDictionary.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				057D53212F6EE4E900ED1DCB /* MIProcess.swift */,
-				057D53282F6F645000ED1DCB /* MIEnvironment.swift */,
+				0540C2AA2F81466200334F4A /* MIEnvVariable.swift */,
 			);
 			path = Process;
 			sourceTree = "<group>";
@@ -414,7 +414,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					051CF6952CE0A6D7000B690D = {
 						CreatedOnToolsVersion = 16.1;
@@ -502,7 +502,7 @@
 				054850312CE762B30060AEA0 /* MIFileManager.swift in Sources */,
 				0543D37C2CE0985B00B492FE /* MIError.swift in Sources */,
 				0543D37D2CE0985B00B492FE /* MIStringStream.swift in Sources */,
-				057D53292F6F645000ED1DCB /* MIEnvironment.swift in Sources */,
+				0540C2AC2F81466200334F4A /* MIEnvVariable.swift in Sources */,
 				05A3FFEF2F0BA2F400BE3836 /* MIObserverDictionary.swift in Sources */,
 				0543D37E2CE0985B00B492FE /* MICharacter.swift in Sources */,
 				059217542F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
@@ -527,7 +527,7 @@
 				054850322CE762B30060AEA0 /* MIFileManager.swift in Sources */,
 				0543D3772CE0985B00B492FE /* MIError.swift in Sources */,
 				05A3FFEE2F0BA2F300BE3836 /* MIObserverDictionary.swift in Sources */,
-				057D532A2F6F645000ED1DCB /* MIEnvironment.swift in Sources */,
+				0540C2AB2F81466200334F4A /* MIEnvVariable.swift in Sources */,
 				0543D3782CE0985B00B492FE /* MIStringStream.swift in Sources */,
 				0543D3792CE0985B00B492FE /* MICharacter.swift in Sources */,
 				059217532F1C436E00161EFA /* MIEscapeCode.swift in Sources */,
@@ -567,6 +567,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
@@ -586,6 +587,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = "";
@@ -603,6 +605,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/MultiDataKit.bundle/Contents/Frameworks/";
@@ -616,6 +619,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/MultiDataKit.bundle/Contents/Frameworks/";
@@ -864,6 +868,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -932,6 +937,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TR2DNF3P93;
 				ENABLE_NS_ASSERTIONS = NO;
