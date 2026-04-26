@@ -270,7 +270,7 @@ public class MITokenizer
                 if let c = strm.getc() {
                         let result: Character?
                         switch c {
-                        case "n":       result = Character.newline
+                        case "n":       result = Character.LF
                         case "'":       result = Character.singleQuotation
                         case "\"":      result = Character.quotation
                         case "\\":      result = Character.backslash

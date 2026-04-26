@@ -51,7 +51,7 @@ private func testEscapeSequence(attribute src: MICharacterAttribute) -> Bool {
                 if srcstr == dststr {
                         result = true
                 } else {
-                        NSLog("[Error] Unexpected decode result: \(dststr)")
+                        NSLog("[Error] Unexpected decode result (attr): \(dststr)")
                         result = false
                 }
         } else {
@@ -96,7 +96,7 @@ private func testColorCode(source src: MITextColor) -> Bool
                 if srcstr == dststr {
                         result = true
                 } else {
-                        NSLog("[Error] Unexpected decode result: \(dststr)")
+                        NSLog("[Error] Unexpected decode result (color): \(dststr)")
                         result = false
                 }
         } else {
@@ -124,7 +124,7 @@ private func testEscapeCode() -> Bool
                 .key(.home),
                 .key(.insert),
                 .key(.menu),
-                .key(.newline),
+                .key(.lineFeed),
                 .key(.pageUp),
                 .key(.pageDown),
                 .key(.tab),
@@ -179,7 +179,7 @@ private func testEscapeSequence(source src: MIEscapeCode) -> Bool {
                         if srcstr == codestr {
                                 result = true
                         } else {
-                                NSLog("[Error] Unexpected decode result: \(codestr)")
+                                NSLog("[Error] Unexpected decode result (ecode): \(codestr)")
                                 result = false
                         }
                 } else {

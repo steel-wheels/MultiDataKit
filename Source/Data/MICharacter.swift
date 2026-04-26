@@ -9,7 +9,6 @@ import Foundation
 
 public extension Character
 {
-        static let newline: Character           = "\n"
         static let singleQuotation: Character   = "`"
         static let quotation: Character         = "\""
         static let backslash: Character         = "\\"
@@ -36,6 +35,15 @@ public extension Character
 
         var isMiddleIdentifier: Bool { get {
                 return self.isLetter || (self == "_") || self.isNumber
+        }}
+
+        var isNewline: Bool { get {
+                let result: Bool
+                switch self {
+                case .CR, .LF:  result = true
+                default:        result = false
+                }
+                return result
         }}
 
         /* reference: http://www.asciitable.com */

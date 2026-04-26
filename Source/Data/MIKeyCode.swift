@@ -52,7 +52,7 @@ public extension MIEscapeCode
                 case .downArrow:                result = .arrow(.down)
                 case .end:                      result = nil
                 case .enter:                    result = .enter    // enter == newline
-                case .newline:                  result = .newline
+                case .newline:                  result = .lineFeed
                 case .execute:                  result = nil
                 case .f1:                       result = .function(1)
                 case .f2:                       result = .function(2)

@@ -104,7 +104,6 @@ public enum MIEscapeKeyCode
         case    carriageReturn
         case    lineFeed
         case    enter
-        case    newline
         case    delete
         case    arrow(MIArrowKeyType)
         case    function(Int)
@@ -127,7 +126,6 @@ public enum MIEscapeKeyCode
                 case .carriageReturn:   result = String(Character.CR)
                 case .lineFeed:         result = String(Character.LF)
                 case .enter:            result = String(Character.LF)
-                case .newline:          result = String("\n")
                 case .delete:           result = String(Character.DEL)
                 case .arrow(let atype):
                         switch atype {
@@ -175,7 +173,6 @@ public enum MIEscapeKeyCode
                 case .carriageReturn:   result = "CR"
                 case .lineFeed:         result = "LF"
                 case .enter:            result = "ENT"
-                case .newline:          result = "NL"
                 case .delete:           result = "DEL"
                 case .arrow(let type):  result = "arrow(\(type.description))"
                 case .function(let f):  result = "func(\(f))"
@@ -358,6 +355,12 @@ private class MIEscapeCodeDecoder
                 let endidx = str.endIndex
                 while idx < endidx {
                         switch str[idx] {
+                        case Character.LF:
+                                mResult.append(.key(.lineFeed))
+                                idx = str.index(after: idx)
+                        case Character.CR:
+                                mResult.append(.key(.carriageReturn))
+                                idx = str.index(after: idx)
                         case Character.ESC:
                                 flushBuffer()
                                 idx = str.index(after: idx)
@@ -369,12 +372,6 @@ private class MIEscapeCodeDecoder
                                 idx = str.index(after: idx)
                         case Character.BS:
                                 mResult.append(.key(.backspace))
-                                idx = str.index(after: idx)
-                        case Character.CR:
-                                mResult.append(.key(.carriageReturn))
-                                idx = str.index(after: idx)
-                        case Character.LF:
-                                mResult.append(.key(.lineFeed))
                                 idx = str.index(after: idx)
                         case Character.FF:
                                 mResult.append(.key(.formFeed))
