@@ -13,7 +13,8 @@ public func testEscapeSequence() -> Bool
         let res0 = testCharacterArrtibute()
         let res1 = testColorCode()
         let res2 = testEscapeCode()
-        return res0 && res1 && res2
+        let res3 = testEscapeCodePipe()
+        return res0 && res1 && res2 && res3
 }
 
 private func testCharacterArrtibute() -> Bool
@@ -192,4 +193,49 @@ private func testEscapeSequence(source src: MIEscapeCode) -> Bool {
                 result = false
         }
         return result
+}
+
+var alreadyRead: Bool = false
+var gresult0 = false
+
+private func testEscapeCodePipe() -> Bool
+{
+        NSLog("PIPE TEST")
+
+        let pipe = Pipe()
+        let _ = pipe.fileHandleForReading.enableRawMode()
+        let _ = pipe.fileHandleForWriting.enableRawMode()
+
+        let writehdl = pipe.fileHandleForWriting
+        let readhdl  = pipe.fileHandleForReading
+
+        readhdl.setReader(reader: {
+                (_ str: String) -> Void in
+                NSLog("receive: \(str)")
+                switch MIEscapeCode.decode(string: str) {
+                case .success(let ecodes):
+                        for ecode in ecodes {
+                                NSLog("ecode: " + ecode.description())
+                        }
+                        gresult0 = true
+                case .failure(let err):
+                        NSLog("[Error] " + MIError.errorToString(error: err) + "\n")
+                        gresult0 = false
+                }
+                alreadyRead = true
+        })
+
+        let ecodes: Array<MIEscapeCode> = [
+                .string("Hello, world\n")
+        ]
+        var encstr: String = ""
+        for ecode in ecodes {
+                encstr += ecode.encode()
+        }
+        writehdl.write(string: encstr)
+
+        while(!alreadyRead) {
+        }
+
+        return gresult0
 }

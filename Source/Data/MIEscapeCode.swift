@@ -356,9 +356,11 @@ private class MIEscapeCodeDecoder
                 while idx < endidx {
                         switch str[idx] {
                         case Character.LF:
+                                flushBuffer()
                                 mResult.append(.key(.lineFeed))
                                 idx = str.index(after: idx)
                         case Character.CR:
+                                flushBuffer()
                                 mResult.append(.key(.carriageReturn))
                                 idx = str.index(after: idx)
                         case Character.ESC:
@@ -368,15 +370,19 @@ private class MIEscapeCodeDecoder
                                         return err
                                 }
                         case Character.DEL:
+                                flushBuffer()
                                 mResult.append(.key(.delete))
                                 idx = str.index(after: idx)
                         case Character.BS:
+                                flushBuffer()
                                 mResult.append(.key(.backspace))
                                 idx = str.index(after: idx)
                         case Character.FF:
+                                flushBuffer()
                                 mResult.append(.key(.formFeed))
                                 idx = str.index(after: idx)
                         case Character.TAB:
+                                flushBuffer()
                                 mResult.append(.key(.tab))
                                 idx = str.index(after: idx)
                         default:
