@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		051519A82FA2315100124CE9 /* MIProcessFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051519A72FA2315100124CE9 /* MIProcessFileHandle.swift */; };
+		051519A92FA2315100124CE9 /* MIProcessFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051519A72FA2315100124CE9 /* MIProcessFileHandle.swift */; };
 		051CF69C2CE0A6EE000B690D /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */; };
 		051CF6C72CE0A964000B690D /* MultiDataKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */; };
 		0540C2AB2F81466200334F4A /* MIEnvVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0540C2AA2F81466200334F4A /* MIEnvVariable.swift */; };
@@ -77,6 +79,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		051519A72FA2315100124CE9 /* MIProcessFileHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIProcessFileHandle.swift; sourceTree = "<group>"; };
 		051CF6962CE0A6D7000B690D /* MultiDataKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiDataKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		051CF69B2CE0A6EE000B690D /* MultiDataKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MultiDataKit.xcframework; path = ../../../Library/Frameworks/MultiDataKit.xcframework; sourceTree = "<group>"; };
 		051CF6B82CE0A84C000B690D /* UnitTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				057D53212F6EE4E900ED1DCB /* MIProcess.swift */,
+				051519A72FA2315100124CE9 /* MIProcessFileHandle.swift */,
 				0540C2AA2F81466200334F4A /* MIEnvVariable.swift */,
 			);
 			path = Process;
@@ -516,6 +520,7 @@
 				056AB6652F53A69A00AD1FEE /* MIKeyCode.swift in Sources */,
 				0543D36E2CE097F000B492FE /* MIToken.swift in Sources */,
 				0543D36F2CE097F000B492FE /* MIJson.swift in Sources */,
+				051519A82FA2315100124CE9 /* MIProcessFileHandle.swift in Sources */,
 				0585E5B92F2D5A180064D9A1 /* MIFileHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +545,7 @@
 				057D53232F6EE4E900ED1DCB /* MIProcess.swift in Sources */,
 				056AB6642F53A69A00AD1FEE /* MIKeyCode.swift in Sources */,
 				0543D3702CE097F000B492FE /* MIToken.swift in Sources */,
+				051519A92FA2315100124CE9 /* MIProcessFileHandle.swift in Sources */,
 				0543D3712CE097F000B492FE /* MIJson.swift in Sources */,
 				0585E5B82F2D5A180064D9A1 /* MIFileHandle.swift in Sources */,
 			);
