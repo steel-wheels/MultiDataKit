@@ -26,7 +26,20 @@ public extension Process
                         try self.run()
                         return self.processIdentifier
                 } catch {
+                        if let url = self.executableURL {
+                                errorLog(string: "Failed to launch: \(url.path)\n")
+                        } else {
+                                errorLog(string: "No executable URL\n")
+                        }
                         return -1
+                }
+        }
+
+        func errorLog(string str: String) {
+                if let hdl = self.standardError as? FileHandle {
+                        hdl.write(string: str)
+                } else {
+                        NSLog("[Error] \(str)")
                 }
         }
 }
