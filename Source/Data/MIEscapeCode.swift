@@ -215,6 +215,7 @@ public enum MIEscapeCode
         case moveCursor1LineUp
         case saveCursorPosition(Int)                    // 0:DEC, 1:SCO
         case restoreCursorPosition(Int)                 // 0:DEC, 1:SCO
+        case returnCursorPosition(Int, Int)             // (row, col)
         case makeCursorVisible(Bool)
         case blinkCursor(Bool)                          // Custom defined
 
@@ -257,6 +258,7 @@ public enum MIEscapeCode
                 case .moveCursor1LineUp:                        result = "moveCursor1LineUp"
                 case .saveCursorPosition(let k):                result = "saveCursorPosition(\(k==0 ? "DEC": "SCO"))"
                 case .restoreCursorPosition(let k):             result = "restoreCursorPosition(\(k==0 ? "DEC": "SCO"))"
+                case .returnCursorPosition(let row, let col):   result = "returnCursorPosition(\(row), \(col))"
                 case .makeCursorVisible(let f):                 result = "makeCursorVisible(\(f))"
                 case .blinkCursor(let f):                       result = "blinkCursor(\(f))"
                 case .restoreScreen:                            result = "restoreScreen"
@@ -300,6 +302,7 @@ public enum MIEscapeCode
                 case .moveCursor1LineUp:                        result = "\(ESC)M"
                 case .saveCursorPosition(let k):                result = k == 0 ? "\(ESC)7" : "\(ESC)[s"
                 case .restoreCursorPosition(let k):             result = k == 0 ? "\(ESC)8" : "\(ESC)[u"
+                case .returnCursorPosition(let row, let col):   result = "\(ESC)[\(row);\(col)R"
                 case .makeCursorVisible(let f):                 result = f ? "\(ESC)[?25h" : "\(ESC)[?25l"
                 case .blinkCursor(let f):                       result = f ? "\(ESC)[?25t" : "\(ESC)[?25f"
                 case .restoreScreen:                            result = "\(ESC)[?47l"
@@ -617,6 +620,9 @@ private class MIEscapeCodeDecoder
                         case "H", "f":
                                 idx = str.index(after: idx)
                                 mResult.append(.moveCursorTo(val0, val1))
+                        case "R":
+                                idx = str.index(after: idx)
+                                mResult.append(.returnCursorPosition(val0, val1))
                         default:
                                 docont = true
                         }

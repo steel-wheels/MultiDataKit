@@ -139,6 +139,7 @@ private func testEscapeCode() -> Bool
                 .moveCursorToBeginingOfPrevLine(2),
                 .moveCursorToColumn(3),
                 .requestCursorPosition,
+                .returnCursorPosition(123, 456),
                 .moveCursor1LineUp,
                 .saveCursorPosition(4),
                 .restoreCursorPosition(1),
