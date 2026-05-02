@@ -12,19 +12,30 @@ import  UIKit
 #endif  // os(OSX)
 import Foundation
 
-public enum MIColorEnvName: String
-{
-        case terminalForeground    = "TFCOLOR"
-        case terminalBackground    = "TBCOLOR"
-}
-
 public class MIEnvVariables
 {
-        private var mDictionary:                NSMutableDictionary
+        public static let terminalRowNumber          = "LINES"
+        public static let terminalColumnNumber       = "COLUMNS"
+
+        public enum EnvValue {
+                case string(String)
+                case number(NSNumber)
+
+                public func encode() -> String {
+                        let result: String
+                        switch self {
+                        case .string(let str):     result = str
+                        case .number(let val):     result = "\(val)"
+                        }
+                        return result
+                }
+        }
+
+        private var mDictionary:                Dictionary<String, EnvValue>    // env-name, env-value
         private var mParentEnvVariable:         MIEnvVariables?
 
         public init(parent par: MIEnvVariables?) {
-                mDictionary             = NSMutableDictionary(capacity: 32)
+                mDictionary             = [:]
                 mParentEnvVariable      = par
         }
 
@@ -35,27 +46,9 @@ public class MIEnvVariables
                 } else {
                         result = []
                 }
-                if let keys = mDictionary.allKeys as? Array<String> {
-                        result = result.union(keys)
-                }
+                result = result.union(mDictionary.keys)
                 return result
         }}
-
-        public func object(forKey key: String) -> NSObject? {
-                if let obj = mDictionary.value(forKey: key) as? NSObject {
-                        return obj
-                } else {
-                        if let parent = mParentEnvVariable {
-                                return parent.object(forKey: key)
-                        } else {
-                                return nil
-                        }
-                }
-        }
-
-        public func set(object obj: NSObject, forKey key: String) {
-                mDictionary.setObject(obj, forKey: key as NSCopying)
-        }
 
         public func encode() -> [String:String] {
                 var result: [String:String] = [:]
@@ -69,30 +62,22 @@ public class MIEnvVariables
                 return result
         }
 
+        /* native value */
+        public func value(for key: String) -> EnvValue? {
+                return mDictionary[key]
+        }
+
+        public func set(value val: EnvValue, for key: String) {
+                mDictionary[key] = val
+        }
+
         /* String */
         public func string(forKey key: String) -> String? {
-                if let str = object(forKey: key) as? String {
-                        return str
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(string str: String, forKey key: String) {
-                mDictionary.setObject(str, forKey: key as NSCopying)
-        }
-
-        /* Array<Int> */
-        public func intArray(forKey key: String) -> Array<Int>? {
-                if let arr = object(forKey: key) as? NSArray {
-                        var result: Array<Int> = []
-                        for i in 0..<arr.count {
-                                if let elm = arr.object(at: i) as? NSNumber {
-                                        result.append(elm.intValue)
-                                } else {
-                                        NSLog("[Error] Failed to convert to number at \(#file)")
-                                        return nil
-                                }
+                if let val = mDictionary[key] {
+                        let result: String?
+                        switch val {
+                        case .string(let str):  result = str
+                        default:                result = nil
                         }
                         return result
                 } else {
@@ -100,38 +85,25 @@ public class MIEnvVariables
                 }
         }
 
-        public func set(intArray vals: Array<Int>, forKey key: String) {
-                let arr = NSMutableArray(capacity: vals.count)
-                for val in vals {
-                        arr.add(NSNumber(value: val))
-                }
-                set(object: arr, forKey: key)
+        public func set(string str: String, forKey key: String) {
+                mDictionary[key] = .string(str)
         }
 
         /* Number */
         public func number(forKey key: String) -> NSNumber? {
-                if let num = object(forKey: key) as? NSNumber {
-                        return num
+                if let val = mDictionary[key] {
+                        let result: NSNumber?
+                        switch val {
+                        case .number(let num):     result = num
+                        default:                result = nil
+                        }
+                        return result
                 } else {
                         return nil
                 }
         }
 
         public func set(number num: NSNumber, forKey key: String) {
-                mDictionary.setObject(num, forKey: key as NSCopying)
-        }
-
-        /* text color */
-        public func color(forKey key: MIColorEnvName) -> MITextColor? {
-                if let val = intArray(forKey: key.rawValue) {
-                        if let col = MITextColor.decode(colorCodes: val) {
-                                return col
-                        }
-                }
-                return nil
-        }
-
-        public func set(color col: MITextColor, forKey key: MIColorEnvName) {
-                set(intArray: col.encode(), forKey: key.rawValue)
+                mDictionary[key] = .number(num)
         }
 }

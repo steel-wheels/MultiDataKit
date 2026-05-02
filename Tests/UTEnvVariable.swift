@@ -16,17 +16,27 @@ public func testEnvVariable() -> Bool
 
         var result: Bool = true
 
-        let srccol: MITextColor = .blue(true)
-        envvar.set(color: srccol, forKey: .terminalForeground)
-        if let dstcol = envvar.color(forKey: .terminalForeground) {
-                if srccol.name == dstcol.name {
-                        NSLog("Expected col: \(srccol.name) == \(dstcol.name)")
-                } else {
-                        NSLog("[Error] Unexpected col: \(srccol.name) != \(dstcol.name)")
+        let NUMKEY = "NUMBER"
+        envvar.set(number: NSNumber(value: 123), forKey: NUMKEY)
+        if let num = envvar.number(forKey: NUMKEY) {
+                if num.intValue != 123 {
+                        NSLog("[Error] Unexpexted number: \(num.intValue)")
                         result = false
                 }
         } else {
-                NSLog("[Error] Failed to get color")
+                NSLog("[Error] Failed to set number")
+                result = false
+        }
+
+        let STRKEY = "STR"
+        envvar.set(string: "Hello", forKey: STRKEY)
+        if let str = envvar.string(forKey: STRKEY) {
+                if str != "Hello" {
+                        NSLog("[Error] Unexpexted string: \(str)")
+                        result = false
+                }
+        } else {
+                NSLog("[Error] Failed to set string")
                 result = false
         }
         return result
