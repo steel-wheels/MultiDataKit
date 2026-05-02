@@ -9,19 +9,21 @@ import Foundation
 
 print("Hello, World!")
 
-let result0 = testNumber()
-let result1 = testValue()
-let result2 = testToString()
-let result3 = testValueConvert()
-let result4 = testEnvVariable()
-let result5 = testJsonFile()
-let result6 = testJsonEncode()
-let result7 = testAttributedString()
-let result8 = testEscapeSequence()
-let result9 = testProcess()
+let result0  = testNumber()
+let result1  = testValue()
+let result2  = testToString()
+let result3  = testValueConvert()
+let result4  = testEnvVariable()
+let result5  = testJsonFile()
+let result6  = testJsonEncode()
+let result7  = testAttributedString()
+let result8  = testEscapeSequence()
+let result9  = testProcess()
+let result10 = testThread()
 
 let summary = result0 && result1 && result2 && result3 && result4
         && result5 && result6 && result7 && result8 && result9
+        && result10
 
 if summary {
         print("SUMMARY: OK")
