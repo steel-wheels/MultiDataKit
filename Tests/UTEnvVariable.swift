@@ -53,7 +53,14 @@ public func testEnvVariable() -> Bool
                 NSLog("[Error] Failed to set strings")
                 result = false
         }
-
+        switch envvar.fileNameToExecutableCommandPath(fileName: "ls") {
+        case .success(let url):
+                NSLog("ls command: \(url.path)")
+        case .failure(let err):
+                let msg = MIError.errorToString(error: err)
+                NSLog("[Error] \(msg)")
+                result = false
+        }
 
         return result
 }

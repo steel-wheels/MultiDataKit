@@ -128,3 +128,30 @@ public class MIEnvVariables
                 mDictionary[key] = .number(num)
         }
 }
+
+extension MIEnvVariables
+{
+        public func fileNameToExecutableCommandPath(fileName fname: String) -> Result<URL, NSError> {
+                /* check the given path is absolute */
+                if let c = fname.first {
+                        if c == "/" {
+                                if FileManager.default.isExecutableFile(atPath: fname) {
+                                        return .success(URL(filePath: fname))
+                                }
+                        }
+                } else {
+                        return .failure(MIError.fileError(message: "No file name"))
+                }
+                if let paths = self.strings(forKey: MIEnvVariables.paths) {
+                        for pathstr in paths {
+                                let dirpath = URL(filePath: pathstr)
+                                let cmdpath = dirpath.appendingPathComponent(fname)
+                                if FileManager.default.isExecutableFile(atPath: cmdpath.path) {
+                                        return .success(cmdpath)
+                                }
+                        }
+                }
+                return .failure(MIError.fileError(message: "File named \"\(fname)\" is NOT executable"))
+        }
+}
+
