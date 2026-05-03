@@ -42,12 +42,16 @@ open class MIThread: Thread
         }}
 
         static public func wait(thread thd: MIThread) -> State {
-                var result = thd.state
-                while result == .executing {
-                        result = thd.state
-                        Thread.sleep(forTimeInterval: 0.001)
+                var didfinished = false
+                while !didfinished {
+                        let state = thd.state
+                        if state == .finished {
+                                didfinished = true
+                        } else {
+                                Thread.sleep(forTimeInterval: 0.001)
+                        }
                 }
-                return result
+                return thd.state
         }
 }
 

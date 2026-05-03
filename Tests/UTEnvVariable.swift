@@ -39,6 +39,22 @@ public func testEnvVariable() -> Bool
                 NSLog("[Error] Failed to set string")
                 result = false
         }
+
+        let paths: Array<String> = [
+                "/bin", " /usr/bin"
+        ]
+        envvar.set(strings: paths, forKey: MIEnvVariables.paths)
+        if let p = envvar.strings(forKey: MIEnvVariables.paths) {
+                if p.count != 2 {
+                        NSLog("[Error] Unexpexted array element num: \(p.count)")
+                        result = false
+                }
+        } else {
+                NSLog("[Error] Failed to set strings")
+                result = false
+        }
+
+
         return result
 }
 

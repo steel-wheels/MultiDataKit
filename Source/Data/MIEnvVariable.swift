@@ -14,18 +14,21 @@ import Foundation
 
 public class MIEnvVariables
 {
-        public static let terminalRowNumber          = "LINES"
-        public static let terminalColumnNumber       = "COLUMNS"
+        public static let paths                 = "PATH"
+        public static let terminalRowNumber     = "LINES"
+        public static let terminalColumnNumber  = "COLUMNS"
 
         public enum EnvValue {
                 case string(String)
+                case strings(Array<String>)
                 case number(NSNumber)
 
                 public func encode() -> String {
                         let result: String
                         switch self {
-                        case .string(let str):     result = str
-                        case .number(let val):     result = "\(val)"
+                        case .string(let str):          result = str
+                        case .strings(let strs):        result = strs.joined(separator: ":")
+                        case .number(let val):          result = "\(val)"
                         }
                         return result
                 }
@@ -87,6 +90,24 @@ public class MIEnvVariables
 
         public func set(string str: String, forKey key: String) {
                 mDictionary[key] = .string(str)
+        }
+
+        /* Strings */
+        public func strings(forKey key: String) -> Array<String>? {
+                if let val = mDictionary[key] {
+                        let result: Array<String>?
+                        switch val {
+                        case .strings(let strs):        result = strs
+                        default:                        result = nil
+                        }
+                        return result
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(strings str: Array<String>, forKey key: String) {
+                mDictionary[key] = .strings(str)
         }
 
         /* Number */
