@@ -42,25 +42,10 @@ public class MIEnvVariables
                 mParentEnvVariable      = par
         }
 
-        public var allNames: Set<String> { get {
-                var result: Set<String>
-                if let parent = mParentEnvVariable {
-                        result = parent.allNames
-                } else {
-                        result = []
-                }
-                result = result.union(mDictionary.keys)
-                return result
-        }}
-
         public func encode() -> [String:String] {
                 var result: [String:String] = [:]
-                for name in self.allNames {
-                        if let str = self.string(forKey: name) {
-                                result[name] = str
-                        } else {
-                                NSLog("[Warning] Igore envvar name: \(name)")
-                        }
+                for (key, val) in mDictionary {
+                        result[key] = val.encode()
                 }
                 return result
         }
