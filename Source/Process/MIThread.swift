@@ -19,14 +19,13 @@ open class MIThread: Thread
         public var standardInput:       FileHandle
         public var standardOutput:      FileHandle
         public var standardError:       FileHandle
-
         public var environment:         MIEnvVariables
 
-        public init(environment env: MIEnvVariables) {
+        public override init() {
+                self.environment        = MIEnvVariables(parent: nil)
                 self.standardInput      = FileHandle.standardInput
                 self.standardOutput     = FileHandle.standardOutput
                 self.standardError      = FileHandle.standardError
-                self.environment        = env
         }
 
         public var state: State { get {
