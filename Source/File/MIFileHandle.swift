@@ -36,6 +36,14 @@ public extension FileHandle
                 }
         }
 
+        func flush() {
+                do {
+                        try self.synchronize()
+                } catch {
+                        NSLog("[Error] Failed to flush at \(#file)")
+                }
+        }
+
         /* reference: Listening to stdin in Swift at
          * https://stackoverflow.com/questions/49748507/listening-to-stdin-in-swift
          */

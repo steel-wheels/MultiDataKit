@@ -8,27 +8,15 @@
 import Foundation
 import System
 
-open class MIThread: Thread
+public extension Thread
 {
-        public enum State {
+        enum State {
                 case executing
                 case cancelled
                 case finished
         }
 
-        public var standardInput:       FileHandle
-        public var standardOutput:      FileHandle
-        public var standardError:       FileHandle
-        public var environment:         MIEnvVariables
-
-        public override init() {
-                self.environment        = MIEnvVariables(parent: nil)
-                self.standardInput      = FileHandle.standardInput
-                self.standardOutput     = FileHandle.standardOutput
-                self.standardError      = FileHandle.standardError
-        }
-
-        public var state: State { get {
+        var state: State { get {
                 let result: State
                 if self.isFinished {
                         result = .finished
@@ -40,17 +28,16 @@ open class MIThread: Thread
                 return result
         }}
 
-        static public func wait(thread thd: MIThread) -> State {
+        static func wait(thread thd: Thread) -> State {
                 var didfinished = false
                 while !didfinished {
-                        let state = thd.state
-                        if state == .finished {
+                        switch thd.state {
+                        case .executing:
+                                break
+                        case .finished, .cancelled:
                                 didfinished = true
-                        } else {
-                                Thread.sleep(forTimeInterval: 0.001)
                         }
                 }
                 return thd.state
         }
 }
-
