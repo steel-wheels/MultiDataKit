@@ -23,7 +23,7 @@ public extension Thread
                 } else if self.isCancelled {
                         result = .cancelled
                 } else {
-                        result = .finished
+                        result = .executing
                 }
                 return result
         }}

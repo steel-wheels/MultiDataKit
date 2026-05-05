@@ -14,11 +14,16 @@ import Foundation
 
 public class MIEnvVariables
 {
+        public static let debugMode             = "DEBUG"
         public static let paths                 = "PATH"
         public static let terminalRowNumber     = "LINES"
         public static let terminalColumnNumber  = "COLUMNS"
 
+        public static let TrueValue             = "true"
+        public static let FalseValue            = "false"
+
         public enum EnvValue {
+                case bool(Bool)
                 case string(String)
                 case strings(Array<String>)
                 case number(NSNumber)
@@ -26,6 +31,7 @@ public class MIEnvVariables
                 public func encode() -> String {
                         let result: String
                         switch self {
+                        case .bool(let flag):           result = flag ? TrueValue : FalseValue
                         case .string(let str):          result = str
                         case .strings(let strs):        result = strs.joined(separator: ":")
                         case .number(let val):          result = "\(val)"
@@ -57,6 +63,24 @@ public class MIEnvVariables
 
         public func set(value val: EnvValue, for key: String) {
                 mDictionary[key] = val
+        }
+
+        /* Boolean */
+        public func bool(forKey key: String) -> Bool? {
+                if let val = mDictionary[key] {
+                        let result: Bool?
+                        switch val {
+                        case .bool(let flag):   result = flag
+                        default:                result = nil
+                        }
+                        return result
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(bool flag: Bool, forKey key: String) {
+                mDictionary[key] = .bool(flag)
         }
 
         /* String */
@@ -116,6 +140,18 @@ public class MIEnvVariables
 
 extension MIEnvVariables
 {
+        public func setDebugMode(_ flag: Bool) {
+                set(bool: flag, forKey: MIEnvVariables.debugMode)
+        }
+
+        public func debugMode() -> Bool {
+                if let flag = self.bool(forKey: MIEnvVariables.debugMode) {
+                        return flag
+                } else {
+                        return false
+                }
+        }
+
         public func fileNameToExecutableCommandPath(fileName fname: String) -> Result<URL, NSError> {
                 /* check the given path is absolute */
                 if let c = fname.first {
