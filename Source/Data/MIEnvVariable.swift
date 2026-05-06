@@ -15,6 +15,7 @@ import Foundation
 public class MIEnvVariables
 {
         public static let debugMode             = "DEBUG"
+        public static let home                  = "HOME"
         public static let paths                 = "PATH"
         public static let terminalRowNumber     = "LINES"
         public static let terminalColumnNumber  = "COLUMNS"
@@ -26,6 +27,7 @@ public class MIEnvVariables
                 case bool(Bool)
                 case string(String)
                 case strings(Array<String>)
+                case url(URL)
                 case number(NSNumber)
 
                 public func encode() -> String {
@@ -34,6 +36,7 @@ public class MIEnvVariables
                         case .bool(let flag):           result = flag ? TrueValue : FalseValue
                         case .string(let str):          result = str
                         case .strings(let strs):        result = strs.joined(separator: ":")
+                        case .url(let url):             result = url.path
                         case .number(let val):          result = "\(val)"
                         }
                         return result
@@ -55,6 +58,10 @@ public class MIEnvVariables
                 }
                 return result
         }
+
+        public var allKeys: Array<String> { get {
+                return Array(mDictionary.keys.sorted())
+        }}
 
         /* native value */
         public func value(for key: String) -> EnvValue? {
@@ -135,6 +142,24 @@ public class MIEnvVariables
 
         public func set(number num: NSNumber, forKey key: String) {
                 mDictionary[key] = .number(num)
+        }
+
+        /* URL */
+        public func url(forKey key: String) -> URL? {
+                if let val = mDictionary[key] {
+                        let result: URL?
+                        switch val {
+                        case .url(let u):       result = u
+                        default:                result = nil
+                        }
+                        return result
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(url path: URL, forKey key: String) {
+                mDictionary[key] = .url(path)
         }
 }
 
