@@ -19,7 +19,7 @@ let result6  = testJsonEncode()
 let result7  = testAttributedString()
 let result8  = testEscapeSequence()
 let result9  = testProcess()
-let result10 = testThread()
+let result10 = testPseudoTerminal()
 
 let summary = result0 && result1 && result2 && result3 && result4
         && result5 && result6 && result7 && result8 && result9
