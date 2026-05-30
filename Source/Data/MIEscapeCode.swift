@@ -159,7 +159,7 @@ public enum MIEscapeKeyCode
                 case .menu:             result = ESC + "[29~"
                 case .pageUp:           result = ESC + "[5~"
                 case .pageDown:         result = ESC + "[6~"
-                case .tab:              result = String(Character.TAB)
+                case .tab:              result = String(Character.HT)
                 case .command(let c):   result = ESC + "^0\(c)"
                 case .control(let c):   result = ESC + "^1\(c)"
                 }
@@ -384,7 +384,7 @@ private class MIEscapeCodeDecoder
                                 flushBuffer()
                                 mResult.append(.key(.formFeed))
                                 idx = str.index(after: idx)
-                        case Character.TAB:
+                        case Character.HT:
                                 flushBuffer()
                                 mResult.append(.key(.tab))
                                 idx = str.index(after: idx)

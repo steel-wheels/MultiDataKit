@@ -276,7 +276,7 @@ public class MITokenizer
                         case "\\":      result = Character.backslash
                         case "t":       result = Character.tab
                         case "0":       result = Character.null
-                        case "r":       result = Character.carriageReturn
+                        case "r":       result = Character.CR
                         default:        result = nil
                         }
                         if let resc = result {

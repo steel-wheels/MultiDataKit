@@ -14,18 +14,17 @@ public extension Character
         static let backslash: Character         = "\\"
         static let tab: Character               = "\t"
         static let null: Character              = "\0"
-        static let carriageReturn: Character    = "\r"
 
         /* https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b */
         static let ETX          = Character("\u{03}")
         static let EOT          = Character("\u{04}")
         static let BEL          = Character("\u{07}")
-        static let BS           = Character("\u{08}")
-        static let TAB          = Character("\u{09}")
-        static let LF           = Character("\u{0a}")
+        static let BS           = Character(UnicodeScalar(0x08))
+        static let HT           = Character(UnicodeScalar(0x09))        // horizontal tab
+        static let LF           = Character(UnicodeScalar(0x0a))
         static let VT           = Character("\u{0b}")
         static let FF           = Character("\u{0c}")
-        static let CR           = Character("\u{0d}")
+        static let CR           = Character(UnicodeScalar(0xc))
         static let ESC          = Character("\u{1b}")
         static let DEL          = Character("\u{7f}")
 
