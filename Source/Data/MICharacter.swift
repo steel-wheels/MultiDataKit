@@ -12,7 +12,6 @@ public extension Character
         static let singleQuotation: Character   = "`"
         static let quotation: Character         = "\""
         static let backslash: Character         = "\\"
-        static let tab: Character               = "\t"
         static let null: Character              = "\0"
 
         /* https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b */

@@ -274,7 +274,7 @@ public class MITokenizer
                         case "'":       result = Character.singleQuotation
                         case "\"":      result = Character.quotation
                         case "\\":      result = Character.backslash
-                        case "t":       result = Character.tab
+                        case "t":       result = Character.HT
                         case "0":       result = Character.null
                         case "r":       result = Character.CR
                         default:        result = nil
