@@ -38,8 +38,13 @@ public extension Character
         var isNewline: Bool { get {
                 let result: Bool
                 switch self {
-                case .CR, .LF:  result = true
-                default:        result = false
+                case .LF, .CR:
+                        result = true
+                default:
+                        switch self.asciiValue {
+                        case 0xa, 0xd:  result = true
+                        default:        result = false
+                        }
                 }
                 return result
         }}
