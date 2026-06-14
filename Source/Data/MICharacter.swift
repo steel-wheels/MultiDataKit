@@ -23,7 +23,7 @@ public extension Character
         static let LF           = Character(UnicodeScalar(0x0a))
         static let VT           = Character("\u{0b}")
         static let FF           = Character("\u{0c}")
-        static let CR           = Character(UnicodeScalar(0xc))
+        static let CR           = Character(UnicodeScalar(0xd))
         static let ESC          = Character("\u{1b}")
         static let DEL          = Character("\u{7f}")
 
