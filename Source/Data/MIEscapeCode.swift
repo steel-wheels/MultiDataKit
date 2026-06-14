@@ -239,7 +239,8 @@ public enum MIEscapeCode
         case resetAllCharacterAttributes
 
         /* Character Color */
-        case setColor(MITextColor)
+        case setForegroundColor(MITextColor)
+        case setBackgroundColor(MITextColor)
 
         public func description() -> String {
                 let result: String
@@ -278,7 +279,8 @@ public enum MIEscapeCode
                         let desc = astr.joined(separator: ",")
                         result = "setCharacterAttribute(\(desc))"
                 case .resetAllCharacterAttributes:              result = "resetAllCharacterAttributes"
-                case .setColor(let color):                      result = "setColor(\(color.name)"
+                case .setForegroundColor(let color):            result = "setForegroundColor(\(color.name)"
+                case .setBackgroundColor(let color):            result = "setBackgroundColor(\(color.name)"
                 }
                 return result
         }
@@ -321,8 +323,11 @@ public enum MIEscapeCode
                         let params = attrs.map{ "\($0.encode())" }
                         result = "\(ESC)[" + params.joined(separator: ";") + "m"
                 case .resetAllCharacterAttributes:              result = "\(ESC)[0m"
-                case .setColor(let color):
-                        let params = color.encode().map{ "\($0)" }
+                case .setForegroundColor(let color):
+                        let params = color.encode(isForeground: true).map{ "\($0)" }
+                        result = "\(ESC)[" + params.joined(separator: ";") + "m"
+                case .setBackgroundColor(let color):
+                        let params = color.encode(isForeground: false).map{ "\($0)" }
                         result = "\(ESC)[" + params.joined(separator: ";") + "m"
                 }
                 return result
@@ -685,8 +690,12 @@ private class MIEscapeCodeDecoder
         }
 
         private func decodeColorAndAttribute(codes: Array<Int>) -> Result<MIEscapeCode, NSError> {
-                if let color = MITextColor.decode(colorCodes: codes) {
-                        return .success(.setColor(color))
+                if let (isfg, color) = MITextColor.decode(colorCodes: codes) {
+                        if isfg {
+                                return .success(.setForegroundColor(color))
+                        } else {
+                                return .success(.setBackgroundColor(color))
+                        }
                 }
                 var attrs: Array<MICharacterAttribute> = []
                 for code in codes {
