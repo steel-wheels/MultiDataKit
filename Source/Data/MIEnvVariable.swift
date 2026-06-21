@@ -29,6 +29,7 @@ public class MIEnvVariables
                 case strings(Array<String>)
                 case url(URL)
                 case number(NSNumber)
+                case textColor(MITextColor)
 
                 public func encode() -> String {
                         let result: String
@@ -38,6 +39,7 @@ public class MIEnvVariables
                         case .strings(let strs):        result = strs.joined(separator: ":")
                         case .url(let url):             result = url.path
                         case .number(let val):          result = "\(val)"
+                        case .textColor(let col):       result = "color(\(col.name))"
                         }
                         return result
                 }
@@ -161,10 +163,31 @@ public class MIEnvVariables
         public func set(url path: URL, forKey key: String) {
                 mDictionary[key] = .url(path)
         }
+
+        /* text color */
+        public func textColor(forKey key: String) -> MITextColor? {
+                if let val = mDictionary[key] {
+                        let result: MITextColor?
+                        switch val {
+                        case .textColor(let c): result = c
+                        default:                result = nil
+                        }
+                        return result
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(textColor col: MITextColor, forKey key: String) {
+                mDictionary[key] = .textColor(col)
+        }
 }
 
 extension MIEnvVariables
 {
+        public static let ForegroundColor               = "FGCOL"
+        public static let BackgroundColor               = "BGCOL"
+
         public func setDebugMode(_ flag: Bool) {
                 set(bool: flag, forKey: MIEnvVariables.debugMode)
         }
@@ -198,6 +221,22 @@ extension MIEnvVariables
                         }
                 }
                 return .failure(MIError.fileError(message: "File named \"\(fname)\" is NOT executable"))
+        }
+
+        public func foregroundTextColor() -> MITextColor? {
+                return self.textColor(forKey: MIEnvVariables.ForegroundColor)
+        }
+
+        public func setForegroundTextColor(color col: MITextColor) {
+                return self.set(textColor: col, forKey: MIEnvVariables.ForegroundColor)
+        }
+
+        public func backgroundTextColor() -> MITextColor? {
+                return self.textColor(forKey: MIEnvVariables.ForegroundColor)
+        }
+
+        public func setBackgroundTextColor(color col: MITextColor) {
+                return self.set(textColor: col, forKey: MIEnvVariables.ForegroundColor)
         }
 }
 

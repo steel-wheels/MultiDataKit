@@ -12,16 +12,16 @@ import  UIKit
 #endif  // os(OSX)
 import Foundation
 
-public enum MITextColor
+public enum MITextColor: Int
 {
-        case black
-        case red
-        case green
-        case yellow
-        case blue
-        case magenta
-        case cyan
-        case white
+        case black      = 0x0
+        case red        = 0x1
+        case green      = 0x2
+        case yellow     = 0x3
+        case blue       = 0x4
+        case magenta    = 0x5
+        case cyan       = 0x6
+        case white      = 0x7
 
         public var name: String { get {
                 let result: String
