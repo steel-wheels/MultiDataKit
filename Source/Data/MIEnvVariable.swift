@@ -146,6 +146,20 @@ public class MIEnvVariables
                 mDictionary[key] = .number(num)
         }
 
+        /* intValue */
+        public func intValue(forKey key: String) -> Int? {
+                if let num = number(forKey: key) {
+                        return num.intValue
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(intValue num: Int, forKey key: String) {
+                let obj = NSNumber(value: num)
+                set(number: obj, forKey: key)
+        }
+
         /* URL */
         public func url(forKey key: String) -> URL? {
                 if let val = mDictionary[key] {
