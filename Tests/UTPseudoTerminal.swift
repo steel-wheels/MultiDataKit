@@ -13,8 +13,11 @@ public func testPseudoTerminal() -> Bool
         NSLog("estPseudoTerminal")
         let term  = MIPseudoTerminal()
         let slave = term.slaveFile
-        return MIPseudoTerminal.setTerminalSize(fileDescriptor: slave.fileDescriptor,
-                                                rows: 80,
-                                                cols: 25)
+        if let ecode = MIPseudoTerminal.setTerminalSize(file: slave, rows: 80, cols: 25) {
+                NSLog("[Error] pseudo terminal error: \(ecode.description)")
+                return false
+        } else {
+                return true // no error
+        }
 }
 

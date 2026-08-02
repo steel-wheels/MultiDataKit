@@ -67,14 +67,14 @@ private func testColorCode() -> Bool
         NSLog("test: escapce color")
 
         let codes: Array<MITextColor> = [
-                .black(true),
-                .red(false),
-                .green(true),
-                .yellow(false),
-                .blue(true),
-                .magenta(false),
-                .cyan(true),
-                .white(false),
+                .black,
+                .red,
+                .green,
+                .yellow,
+                .blue,
+                .magenta,
+                .cyan,
+                .white
         ]
         var result = true
         for code in codes {
@@ -91,8 +91,8 @@ private func testColorCode(source src: MITextColor) -> Bool
         NSLog("source: " + srcstr)
 
         let result: Bool
-        let srccodes = src.encode()
-        if let dst = MITextColor.decode(colorCodes: srccodes) {
+        let srccodes = src.encode(isForeground: true)
+        if let (_, dst) = MITextColor.decode(colorCodes: srccodes) {
                 let dststr = dst.name
                 if srcstr == dststr {
                         result = true
@@ -158,7 +158,7 @@ private func testEscapeCode() -> Bool
                 .eraceEntireLine,
                 .setCharacterAttribute([.blink(true), .bold(false)]),
                 .resetAllCharacterAttributes,
-                .setColor(.blue(false))
+                .setForegroundColor(.blue)
         ]
         var result = true
         for code in codes {

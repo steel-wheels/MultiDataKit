@@ -21,7 +21,7 @@ public extension Process
                 self.environment = env.encode()
         }
 
-        func tryRun() -> Int32 {
+        func start() -> Int32 {
                 do {
                         try self.run()
                         return self.processIdentifier
@@ -41,6 +41,13 @@ public extension Process
                 } else {
                         NSLog("[Error] \(str)")
                 }
+        }
+
+        static func wait(process proc: Process) -> Int32 {
+                while proc.isRunning {
+                        Thread.sleep(forTimeInterval: 0.0001)
+                }
+                return proc.terminationStatus
         }
 }
 
