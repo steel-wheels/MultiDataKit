@@ -45,11 +45,12 @@ public class MIEnvVariables
 
 extension MIEnvVariables
 {
-        public static let debugModeVariable     = "DEBUG"
-        public static let homeVariable          = "HOME"
-        public static let pathVariable          = "PATH"
-        public static let rowVariable           = "ROW"
-        public static let columnVariable        = "COLUMN"
+        public static let debugModeVariable             = "DEBUG"
+        public static let homeVariable                  = "HOME"
+        public static let currentDirctoryVariable       = "PWD"
+        public static let pathVariable                  = "PATH"
+        public static let rowVariable                   = "ROW"
+        public static let columnVariable                = "COLUMN"
 
         public var debugMode: Bool {
                 get {
@@ -66,6 +67,15 @@ extension MIEnvVariables
                 }
                 set(path) {
                         self.set(urlValue: path, for: MIEnvVariables.pathVariable)
+                }
+        }
+
+        public var currentDirectory: URL? {
+                get {
+                        return self.urlValue(for: MIEnvVariables.currentDirctoryVariable)
+                }
+                set(path) {
+                        self.set(urlValue: path, for: MIEnvVariables.currentDirctoryVariable)
                 }
         }
 
