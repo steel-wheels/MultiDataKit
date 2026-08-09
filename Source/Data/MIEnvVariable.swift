@@ -14,38 +14,7 @@ import Foundation
 
 public class MIEnvVariables
 {
-        public static let debugMode             = "DEBUG"
-        public static let home                  = "HOME"
-        public static let paths                 = "PATH"
-        public static let terminalRowNumber     = "LINES"
-        public static let terminalColumnNumber  = "COLUMNS"
-
-        public static let TrueValue             = "true"
-        public static let FalseValue            = "false"
-
-        public enum EnvValue {
-                case bool(Bool)
-                case string(String)
-                case strings(Array<String>)
-                case url(URL)
-                case number(NSNumber)
-                case textColor(MITextColor)
-
-                public func encode() -> String {
-                        let result: String
-                        switch self {
-                        case .bool(let flag):           result = flag ? TrueValue : FalseValue
-                        case .string(let str):          result = str
-                        case .strings(let strs):        result = strs.joined(separator: ":")
-                        case .url(let url):             result = url.path
-                        case .number(let val):          result = "\(val)"
-                        case .textColor(let col):       result = "color(\(col.name))"
-                        }
-                        return result
-                }
-        }
-
-        private var mDictionary:                Dictionary<String, EnvValue>    // env-name, env-value
+        private var mDictionary:                Dictionary<String, String>
         private var mParentEnvVariable:         MIEnvVariables?
 
         public init(parent par: MIEnvVariables?) {
@@ -53,204 +22,142 @@ public class MIEnvVariables
                 mParentEnvVariable      = par
         }
 
-        public func encode() -> [String:String] {
-                var result: [String:String] = [:]
-                for (key, val) in mDictionary {
-                        result[key] = val.encode()
-                }
-                return result
+        public func value(for key: String) -> String? {
+                return mDictionary[key]
+        }
+
+        public func set(value val: String, for key: String) {
+                mDictionary[key] = val
+        }
+
+        public func reset(for key: String) {
+                mDictionary[key] = nil
         }
 
         public var allKeys: Array<String> { get {
                 return Array(mDictionary.keys.sorted())
         }}
 
-        /* native value */
-        public func value(for key: String) -> EnvValue? {
-                return mDictionary[key]
-        }
-
-        public func set(value val: EnvValue, for key: String) {
-                mDictionary[key] = val
-        }
-
-        /* Boolean */
-        public func bool(forKey key: String) -> Bool? {
-                if let val = mDictionary[key] {
-                        let result: Bool?
-                        switch val {
-                        case .bool(let flag):   result = flag
-                        default:                result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(bool flag: Bool, forKey key: String) {
-                mDictionary[key] = .bool(flag)
-        }
-
-        /* String */
-        public func string(forKey key: String) -> String? {
-                if let val = mDictionary[key] {
-                        let result: String?
-                        switch val {
-                        case .string(let str):  result = str
-                        default:                result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(string str: String, forKey key: String) {
-                mDictionary[key] = .string(str)
-        }
-
-        /* Strings */
-        public func strings(forKey key: String) -> Array<String>? {
-                if let val = mDictionary[key] {
-                        let result: Array<String>?
-                        switch val {
-                        case .strings(let strs):        result = strs
-                        default:                        result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(strings str: Array<String>, forKey key: String) {
-                mDictionary[key] = .strings(str)
-        }
-
-        /* Number */
-        public func number(forKey key: String) -> NSNumber? {
-                if let val = mDictionary[key] {
-                        let result: NSNumber?
-                        switch val {
-                        case .number(let num):     result = num
-                        default:                result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(number num: NSNumber, forKey key: String) {
-                mDictionary[key] = .number(num)
-        }
-
-        /* intValue */
-        public func intValue(forKey key: String) -> Int? {
-                if let num = number(forKey: key) {
-                        return num.intValue
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(intValue num: Int, forKey key: String) {
-                let obj = NSNumber(value: num)
-                set(number: obj, forKey: key)
-        }
-
-        /* URL */
-        public func url(forKey key: String) -> URL? {
-                if let val = mDictionary[key] {
-                        let result: URL?
-                        switch val {
-                        case .url(let u):       result = u
-                        default:                result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(url path: URL, forKey key: String) {
-                mDictionary[key] = .url(path)
-        }
-
-        /* text color */
-        public func textColor(forKey key: String) -> MITextColor? {
-                if let val = mDictionary[key] {
-                        let result: MITextColor?
-                        switch val {
-                        case .textColor(let c): result = c
-                        default:                result = nil
-                        }
-                        return result
-                } else {
-                        return nil
-                }
-        }
-
-        public func set(textColor col: MITextColor, forKey key: String) {
-                mDictionary[key] = .textColor(col)
+        public func encode() -> [String:String] {
+                return mDictionary
         }
 }
 
 extension MIEnvVariables
 {
-        public static let ForegroundColor               = "FGCOL"
-        public static let BackgroundColor               = "BGCOL"
+        public static let debugModeVariable     = "DEBUG"
+        public static let homeVariable          = "HOME"
+        public static let pathVariable          = "PATH"
+        public static let rowVariable           = "ROW"
+        public static let columnVariable        = "COLUMN"
 
-        public func setDebugMode(_ flag: Bool) {
-                set(bool: flag, forKey: MIEnvVariables.debugMode)
-        }
-
-        public func debugMode() -> Bool {
-                if let flag = self.bool(forKey: MIEnvVariables.debugMode) {
-                        return flag
-                } else {
-                        return false
+        public var debugMode: Bool {
+                get {
+                        self.boolValue(for: MIEnvVariables.debugModeVariable)
+                }
+                set(val){
+                        self.set(boolValue: val, for: MIEnvVariables.debugModeVariable)
                 }
         }
 
-        public func fileNameToExecutableCommandPath(fileName fname: String) -> Result<URL, NSError> {
-                /* check the given path is absolute */
-                if let c = fname.first {
-                        if c == "/" {
-                                if FileManager.default.isExecutableFile(atPath: fname) {
-                                        return .success(URL(filePath: fname))
-                                }
+        public var home: URL? {
+                get {
+                        return self.urlValue(for: MIEnvVariables.pathVariable)
+                }
+                set(path) {
+                        self.set(urlValue: path, for: MIEnvVariables.pathVariable)
+                }
+        }
+
+        public var paths: Array<URL> {
+                get {
+                        guard let str = self.value(for: MIEnvVariables.pathVariable) else {
+                                return []
                         }
-                } else {
-                        return .failure(MIError.fileError(message: "No file name"))
+                        var result: Array<URL> = []
+                        let substrs = str.components(separatedBy: ":")
+                        for substr in substrs {
+                                result.append(URL(fileURLWithPath: substr))
+                        }
+                        return result
                 }
-                if let paths = self.strings(forKey: MIEnvVariables.paths) {
-                        for pathstr in paths {
-                                let dirpath = URL(filePath: pathstr)
-                                let cmdpath = dirpath.appendingPathComponent(fname)
-                                if FileManager.default.isExecutableFile(atPath: cmdpath.path) {
-                                        return .success(cmdpath)
+                set(arr){
+                        let pnum = arr.count
+                        if pnum > 0 {
+                                var result = arr[0].path()
+                                for i in 1 ..< pnum {
+                                        result += ":" + arr[i].path()
                                 }
+                                self.set(value: result, for: MIEnvVariables.pathVariable)
+                        } else {
+                                self.set(value: "", for: MIEnvVariables.pathVariable)
                         }
                 }
-                return .failure(MIError.fileError(message: "File named \"\(fname)\" is NOT executable"))
         }
 
-        public func foregroundTextColor() -> MITextColor? {
-                return self.textColor(forKey: MIEnvVariables.ForegroundColor)
+        public var row: Int? {
+                get      {
+                        return intValue(for: MIEnvVariables.rowVariable)
+                }
+                set(val) {
+                        if let v = val {
+                                self.set(intValue: v, for: MIEnvVariables.rowVariable)
+                        } else {
+                                self.reset(for: MIEnvVariables.rowVariable)
+                        }
+                }
         }
 
-        public func setForegroundTextColor(color col: MITextColor) {
-                return self.set(textColor: col, forKey: MIEnvVariables.ForegroundColor)
+        public var column: Int? {
+                get      {
+                        return intValue(for: MIEnvVariables.columnVariable)
+                }
+                set(val) {
+                        if let v = val {
+                                self.set(intValue: v, for: MIEnvVariables.columnVariable)
+                        } else {
+                                self.reset(for: MIEnvVariables.columnVariable)
+                        }
+                }
         }
 
-        public func backgroundTextColor() -> MITextColor? {
-                return self.textColor(forKey: MIEnvVariables.ForegroundColor)
+        private func intValue(for key: String) -> Int? {
+                if let str = mDictionary[key] {
+                        return Int(str)
+                } else {
+                        return nil
+                }
         }
 
-        public func setBackgroundTextColor(color col: MITextColor) {
-                return self.set(textColor: col, forKey: MIEnvVariables.ForegroundColor)
+        public func set(intValue val: Int, for key: String) {
+                mDictionary[key] = String(val)
+        }
+
+        private func boolValue(for key: String) -> Bool {
+                return self.value(for: key) != nil
+        }
+
+        public func set(boolValue val: Bool, for key: String) {
+                if val {
+                        self.set(value: "1", for: key)
+                } else {
+                        self.reset(for: key)
+                }
+        }
+
+        private func urlValue(for key: String) -> URL? {
+                if let path = self.value(for: key) {
+                        return URL(filePath: path)
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(urlValue val: URL?, for key: String) {
+                if let url = val {
+                        self.set(value: url.path, for: key)
+                } else {
+                        self.reset(for: key)
+                }
         }
 }
-

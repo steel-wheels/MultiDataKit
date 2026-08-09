@@ -13,12 +13,16 @@ open class MIFileThread: Thread
         public var standardOutput:      FileHandle
         public var standardError:       FileHandle
 
-        public var exitCode:            Int
+        public var arguments:           Array<String>
+        public var executableURL:       URL?
+        public var exitCode:            Int32
 
         public override init() {
                 self.standardInput  = FileHandle.standardInput
                 self.standardOutput = FileHandle.standardOutput
                 self.standardError  = FileHandle.standardError
+                self.arguments      = []
+                self.executableURL  = nil
                 self.exitCode       = 0
         }
 

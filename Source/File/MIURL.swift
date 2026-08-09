@@ -15,4 +15,15 @@ public extension URL
             }
             return self.path.hasPrefix("/")
         }
+
+        func loadText() -> Result<String, NSError> {
+                do {
+                        let text = try String(contentsOf: self, encoding: .utf8)
+                        return .success(text)
+                } catch {
+                        return .failure(MIError.error(
+                                errorCode: .fileError,
+                                message: "Failed to load from URL \(self.path)"))
+                }
+        }
 }
