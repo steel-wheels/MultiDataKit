@@ -121,4 +121,16 @@ extension FileManager
                         return self.copyFile(from: src, to: cachefile)
                 }
         }
+
+        public func searchExecutableFile(name nm: String, in env: MIEnvVariables) -> URL? {
+                let paths = env.paths
+                for path in paths {
+                        let file = path.appendingPathComponent(nm)
+                        if self.fileExists(atPath: file.path)
+                           && self.isExecutableFile(atPath: file.path) {
+                                return file
+                        }
+                }
+                return nil
+        }
 }

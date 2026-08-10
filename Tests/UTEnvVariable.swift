@@ -10,55 +10,18 @@ import Foundation
 
 public func testEnvVariable() -> Bool
 {
+        var result: Bool = true
         NSLog("test: environment variable")
 
         let envvar = MIEnvVariables(parent: nil)
 
-        var result: Bool = true
+        let path = URL(filePath: "/bin")
+        envvar.set(urlValue: path, for: MIEnvVariables.pathVariable)
 
-        let NUMKEY = "NUMBER"
-        envvar.set(number: NSNumber(value: 123), forKey: NUMKEY)
-        if let num = envvar.number(forKey: NUMKEY) {
-                if num.intValue != 123 {
-                        NSLog("[Error] Unexpexted number: \(num.intValue)")
-                        result = false
-                }
+        if let lscmd = FileManager.default.searchExecutableFile(name: "ls", in: envvar) {
+                NSLog("ls command: \(lscmd.path)")
         } else {
-                NSLog("[Error] Failed to set number")
-                result = false
-        }
-
-        let STRKEY = "STR"
-        envvar.set(string: "Hello", forKey: STRKEY)
-        if let str = envvar.string(forKey: STRKEY) {
-                if str != "Hello" {
-                        NSLog("[Error] Unexpexted string: \(str)")
-                        result = false
-                }
-        } else {
-                NSLog("[Error] Failed to set string")
-                result = false
-        }
-
-        let paths: Array<String> = [
-                "/bin", " /usr/bin"
-        ]
-        envvar.set(strings: paths, forKey: MIEnvVariables.paths)
-        if let p = envvar.strings(forKey: MIEnvVariables.paths) {
-                if p.count != 2 {
-                        NSLog("[Error] Unexpexted array element num: \(p.count)")
-                        result = false
-                }
-        } else {
-                NSLog("[Error] Failed to set strings")
-                result = false
-        }
-        switch envvar.fileNameToExecutableCommandPath(fileName: "ls") {
-        case .success(let url):
-                NSLog("ls command: \(url.path)")
-        case .failure(let err):
-                let msg = MIError.errorToString(error: err)
-                NSLog("[Error] \(msg)")
+                NSLog("[Error] Failed to search ls command")
                 result = false
         }
 
