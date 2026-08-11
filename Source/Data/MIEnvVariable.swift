@@ -48,7 +48,7 @@ extension MIEnvVariables
         public static let debugModeVariable             = "DEBUG"
         public static let homeVariable                  = "HOME"
         public static let currentDirctoryVariable       = "PWD"
-        public static let pathVariable                  = "PATH"
+        public static let searchPathVariable            = "PATH"
         public static let rowVariable                   = "ROW"
         public static let columnVariable                = "COLUMN"
 
@@ -63,10 +63,10 @@ extension MIEnvVariables
 
         public var home: URL? {
                 get {
-                        return self.urlValue(for: MIEnvVariables.pathVariable)
+                        return self.urlValue(for: MIEnvVariables.homeVariable)
                 }
                 set(path) {
-                        self.set(urlValue: path, for: MIEnvVariables.pathVariable)
+                        self.set(urlValue: path, for: MIEnvVariables.homeVariable)
                 }
         }
 
@@ -79,9 +79,9 @@ extension MIEnvVariables
                 }
         }
 
-        public var paths: Array<URL> {
+        public var searchPaths: Array<URL> {
                 get {
-                        guard let str = self.value(for: MIEnvVariables.pathVariable) else {
+                        guard let str = self.value(for: MIEnvVariables.searchPathVariable) else {
                                 return []
                         }
                         var result: Array<URL> = []
@@ -98,9 +98,9 @@ extension MIEnvVariables
                                 for i in 1 ..< pnum {
                                         result += ":" + arr[i].path()
                                 }
-                                self.set(value: result, for: MIEnvVariables.pathVariable)
+                                self.set(value: result, for: MIEnvVariables.searchPathVariable)
                         } else {
-                                self.set(value: "", for: MIEnvVariables.pathVariable)
+                                self.set(value: "", for: MIEnvVariables.searchPathVariable)
                         }
                 }
         }

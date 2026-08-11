@@ -123,14 +123,44 @@ extension FileManager
         }
 
         public func searchExecutableFile(name nm: String, in env: MIEnvVariables) -> URL? {
-                let paths = env.paths
-                for path in paths {
-                        let file = path.appendingPathComponent(nm)
-                        if self.fileExists(atPath: file.path)
-                           && self.isExecutableFile(atPath: file.path) {
-                                return file
+                guard let c = nm.first else {
+                        return nil
+                }
+                switch c {
+                case ".":
+                        /* check as offset against current directory */
+                        if let curdir = env.currentDirectory {
+                                let file = curdir.appendingPathComponent(nm)
+                                if let url = checkExecutableFile(path: file.path) {
+                                        return url
+                                }
+                        } else {
+                                NSLog("[Error] No current directory")
+                                return nil
+                        }
+                case "/":
+                        /* check as full path */
+                        if let url = checkExecutableFile(path: nm) {
+                                return url
+                        }
+                default:
+                        /* check as offset from path environment values*/
+                        let paths = env.searchPaths
+                        for path in paths {
+                                let file = path.appendingPathComponent(nm)
+                                if let url = checkExecutableFile(path: file.path) {
+                                        return url
+                                }
                         }
                 }
                 return nil
+        }
+
+        private func checkExecutableFile(path pth: String) -> URL? {
+                if self.fileExists(atPath: pth) && self.isExecutableFile(atPath: pth) {
+                        return URL(fileURLWithPath: pth)
+                } else {
+                        return nil
+                }
         }
 }
