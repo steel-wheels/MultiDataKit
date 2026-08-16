@@ -18,7 +18,7 @@ public extension Process
         }
 
         func set(environment env: MIEnvVariables) {
-                self.environment = env.encode()
+                self.environment = env.dictionaryValue
         }
 
         func start() -> Int32 {

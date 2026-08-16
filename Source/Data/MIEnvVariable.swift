@@ -22,6 +22,10 @@ public class MIEnvVariables
                 mParentEnvVariable      = par
         }
 
+        public var dictionaryValue: Dictionary<String, String> { get {
+                return mDictionary
+        }}
+
         public func value(for key: String) -> String? {
                 return mDictionary[key]
         }
@@ -38,14 +42,36 @@ public class MIEnvVariables
                 return Array(mDictionary.keys.sorted())
         }}
 
-        public func encode() -> [String:String] {
-                return mDictionary
+        public func encode() -> MIValue {
+                var value: Dictionary<String, MIValue> = [:]
+                for (key, val) in mDictionary {
+                        value[key] = MIValue(stringValue: val)
+                }
+                return MIValue(dictionaryValue: value)
+        }
+
+        public func decode(value src: MIValue) -> NSError? {
+                guard let dict = src.dictionaryValue else {
+                        let err = MIError.parseError(message: "Dictionary value is required", line: 0)
+                        return err
+                }
+                for (key, val) in dict {
+                        if let str = val.stringValue {
+                                set(value: str, for: key)
+                        } else {
+                                let err = MIError.parseError(message: "Dictionary member must be string", line: 0)
+                                return err
+                        }
+                }
+                return nil
         }
 }
 
 extension MIEnvVariables
 {
+        public static let backgroundColorVariable       = "BGCOL"
         public static let debugModeVariable             = "DEBUG"
+        public static let foregroundColorVariable       = "FGCOL"
         public static let homeVariable                  = "HOME"
         public static let currentDirctoryVariable       = "PWD"
         public static let searchPathVariable            = "PATH"
@@ -131,6 +157,32 @@ extension MIEnvVariables
                 }
         }
 
+        public var foregroundColor: MITextColor? {
+                get      {
+                        return colorValue(for: MIEnvVariables.foregroundColorVariable)
+                }
+                set(val) {
+                        if let v = val {
+                                self.set(colorValue: v, for: MIEnvVariables.foregroundColorVariable)
+                        } else {
+                                self.reset(for: MIEnvVariables.foregroundColorVariable)
+                        }
+                }
+        }
+
+        public var backgroundColor: MITextColor? {
+                get      {
+                        return colorValue(for: MIEnvVariables.backgroundColorVariable)
+                }
+                set(val) {
+                        if let v = val {
+                                self.set(colorValue: v, for: MIEnvVariables.backgroundColorVariable)
+                        } else {
+                                self.reset(for: MIEnvVariables.backgroundColorVariable)
+                        }
+                }
+        }
+
         private func intValue(for key: String) -> Int? {
                 if let str = mDictionary[key] {
                         return Int(str)
@@ -170,4 +222,38 @@ extension MIEnvVariables
                         self.reset(for: key)
                 }
         }
+
+        private func colorValue(for key: String) -> MITextColor? {
+                if let val = self.value(for: key) {
+                        return MITextColor.decode(name: val)
+                } else {
+                        return nil
+                }
+        }
+
+        public func set(colorValue val: MITextColor?, for key: String) {
+                if let col = val {
+                        self.set(value: col.name, for: key)
+                } else {
+                        self.reset(for: key)
+                }
+        }
 }
+
+extension MIEnvVariables
+{
+        public func loadDefaults(forClass cls: AnyClass) -> NSError? {
+                guard let resdir  = FileManager.default.resourceDirectory(forClass: cls) else {
+                        let err = MIError.fileError(message: "No resource directory")
+                        return err
+                }
+                let deffile = resdir.appending(path: "Library/defaults.json")
+                switch MIJsonFile.load(from: deffile) {
+                case .success(let val):
+                        return self.decode(value: val)
+                case .failure(let err):
+                        return err
+                }
+        }
+}
+

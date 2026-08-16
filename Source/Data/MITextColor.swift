@@ -85,53 +85,20 @@ public enum MITextColor: Int
                         return nil
                 }
         }
-}
 
-/*
-public enum MITextColor
-{
-        case black(Bool)        // true: foreground, false: background
-        case red(Bool)
-        case green(Bool)
-        case yellow(Bool)
-        case blue(Bool)
-        case magenta(Bool)
-        case cyan(Bool)
-        case white(Bool)
-
-        public var name: String { get {
-                let result: String
-                switch self {
-                case .black(let fg):    result = "black(\(fg))"
-                case .red(let fg):      result = "red(\(fg))"
-                case .green(let fg):    result = "green(\(fg))"
-                case .yellow(let fg):   result = "yellow(\(fg))"
-                case .blue(let fg):     result = "blue(\(fg))"
-                case .magenta(let fg):  result = "magenta(\(fg))"
-                case .cyan(let fg):     result = "cyan(\(fg))"
-                case .white(let fg):    result = "white(\(fg))"
-                }
-                return result
-        }}
-
-        public func encode() -> Array<Int> {
-                let result: Array<Int>
-                switch self {
-                case .black(let fg):            result = [fg ? 30 : 40]
-                case .red(let fg):              result = [fg ? 31 : 41]
-                case .green(let fg):            result = [fg ? 32 : 42]
-                case .yellow(let fg):           result = [fg ? 33 : 43]
-                case .blue(let fg):             result = [fg ? 34 : 44]
-                case .magenta(let fg):          result = [fg ? 35 : 45]
-                case .cyan(let fg):             result = [fg ? 36 : 46]
-                case .white(let fg):            result = [fg ? 37 : 47]
+        public static func decode(name nm: String) -> MITextColor? {
+                let result: MITextColor?
+                switch nm {
+                case MITextColor.black.name:    result = .black
+                case MITextColor.red.name:      result = .red
+                case MITextColor.green.name:    result = .green
+                case MITextColor.yellow.name:   result = .yellow
+                case MITextColor.blue.name:     result = .blue
+                case MITextColor.magenta.name:  result = .magenta
+                case MITextColor.cyan.name:     result = .cyan
+                case MITextColor.white.name:    result = .white
+                default:                        result = nil
                 }
                 return result
         }
-
-
 }
-
-
-*/
-
